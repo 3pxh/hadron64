@@ -1,0 +1,523 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 63;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		027C310DC7C940DB509EEEBC /* StatsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CDB3D3F430D143347D3B82 /* StatsStore.swift */; };
+		2498C9BCE1D9440B3A6DF003 /* GameScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA93D74DCC2962C78EBF488 /* GameScreen.swift */; };
+		2715F8EF0D954DA4A035FDF8 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E720C9ADB2268DC3531F50C /* Theme.swift */; };
+		31D4156FAD5CFA6EB72A7F44 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F02994FCF78C0F72EA5299 /* CardView.swift */; };
+		3B517793E5E1960E9846E11B /* Drills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC0EEB5F9C43D054EFCCFB8 /* Drills.swift */; };
+		3EB1922985B2F3B2C12BEF44 /* DrillScreens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0F7BF4D10A81714AAC17DA /* DrillScreens.swift */; };
+		402013BFF948B15EE6C85BDB /* CardMathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0EAC4AACD15CE0024A6966 /* CardMathTests.swift */; };
+		47FD259C834EFEEB667454B1 /* Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF7665830E3F3F079EBEDD8 /* Table.swift */; };
+		4934AD1D5FF7FB9D213507E9 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA08071783D1E3065260F2E /* Card.swift */; };
+		6AD392455B380F935443ADA0 /* Records.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D80998D718DBB33137C844 /* Records.swift */; };
+		7867E57A9E6B50AF61F3A5A1 /* GameMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93240C25ABBEEDB838474EF2 /* GameMode.swift */; };
+		7D5E0F49B41F4B872B6BA205 /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF41F14461D843927A3DCA3 /* ResultsView.swift */; };
+		81254032D258D6571E293CC6 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927A01D8DF93D632CA9A4C39 /* HomeView.swift */; };
+		8208602D6073A5B5B0971CCE /* Hadron64App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A65ED8977DA4AD8F4F0B72C /* Hadron64App.swift */; };
+		967BDC0C5C27F45EB2B41755 /* DeckGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07432F35873566E6CB67BA1 /* DeckGame.swift */; };
+		9693B8B012CC98849DD385F7 /* GameClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807FDED270036EE86F433BEB /* GameClock.swift */; };
+		9C502B76B142EBA54A7A10C1 /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63EA00DFB5FE2B2608477A4 /* TableView.swift */; };
+		ACE91475D81110678C0BABBC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 645511F5D13FC7DDA08B930A /* Assets.xcassets */; };
+		C15A986C7E5E8BE75B7068B6 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB07A8F050FB0706E242AC9 /* Tutorial.swift */; };
+		F1A6375A7D5E5D21A3691FC4 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96802921E0C54FFBD7707E86 /* StatisticsView.swift */; };
+		FF8BAF3EC618A5CE4F044F5A /* GameCenterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8037E25C587B51F73C54EDD9 /* GameCenterService.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CDCBA7FF4D2DC6B05DC0DB00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9B6BCE7DA9ACC439C9FC02F3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D4A95B80C35CC528D4E93F99;
+			remoteInfo = Hadron64;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		06CDB3D3F430D143347D3B82 /* StatsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsStore.swift; sourceTree = "<group>"; };
+		1AA93D74DCC2962C78EBF488 /* GameScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScreen.swift; sourceTree = "<group>"; };
+		1AC0EEB5F9C43D054EFCCFB8 /* Drills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drills.swift; sourceTree = "<group>"; };
+		4EF41F14461D843927A3DCA3 /* ResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsView.swift; sourceTree = "<group>"; };
+		5D0F7BF4D10A81714AAC17DA /* DrillScreens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrillScreens.swift; sourceTree = "<group>"; };
+		645511F5D13FC7DDA08B930A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		70F60E846AFD20C08F1693B4 /* Hadron64Tests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = Hadron64Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C036C33062CF8A0CCC53F08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8037E25C587B51F73C54EDD9 /* GameCenterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterService.swift; sourceTree = "<group>"; };
+		807FDED270036EE86F433BEB /* GameClock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClock.swift; sourceTree = "<group>"; };
+		89D80998D718DBB33137C844 /* Records.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Records.swift; sourceTree = "<group>"; };
+		8A65ED8977DA4AD8F4F0B72C /* Hadron64App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hadron64App.swift; sourceTree = "<group>"; };
+		927A01D8DF93D632CA9A4C39 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		93240C25ABBEEDB838474EF2 /* GameMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMode.swift; sourceTree = "<group>"; };
+		963CC64C55CD7F3B20B2BB1E /* Hadron64.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hadron64.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		96802921E0C54FFBD7707E86 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
+		9E720C9ADB2268DC3531F50C /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		9FB07A8F050FB0706E242AC9 /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
+		AE0EAC4AACD15CE0024A6966 /* CardMathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardMathTests.swift; sourceTree = "<group>"; };
+		BEF7665830E3F3F079EBEDD8 /* Table.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Table.swift; sourceTree = "<group>"; };
+		CCA08071783D1E3065260F2E /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		E0F02994FCF78C0F72EA5299 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		F07432F35873566E6CB67BA1 /* DeckGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckGame.swift; sourceTree = "<group>"; };
+		F63EA00DFB5FE2B2608477A4 /* TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		106BC3BCA77C80D7286D85B2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E0F02994FCF78C0F72EA5299 /* CardView.swift */,
+				1AA93D74DCC2962C78EBF488 /* GameScreen.swift */,
+				927A01D8DF93D632CA9A4C39 /* HomeView.swift */,
+				4EF41F14461D843927A3DCA3 /* ResultsView.swift */,
+				F63EA00DFB5FE2B2608477A4 /* TableView.swift */,
+				9E720C9ADB2268DC3531F50C /* Theme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		28B75E801408D43886B1A57F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				963CC64C55CD7F3B20B2BB1E /* Hadron64.app */,
+				70F60E846AFD20C08F1693B4 /* Hadron64Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3313BD205E44D8BDBF931F72 /* Training */ = {
+			isa = PBXGroup;
+			children = (
+				1AC0EEB5F9C43D054EFCCFB8 /* Drills.swift */,
+				5D0F7BF4D10A81714AAC17DA /* DrillScreens.swift */,
+				9FB07A8F050FB0706E242AC9 /* Tutorial.swift */,
+			);
+			path = Training;
+			sourceTree = "<group>";
+		};
+		4B2290E16DEF551C6035C56E /* GameCenter */ = {
+			isa = PBXGroup;
+			children = (
+				8037E25C587B51F73C54EDD9 /* GameCenterService.swift */,
+			);
+			path = GameCenter;
+			sourceTree = "<group>";
+		};
+		56DAE4460A26314A1194BC7A = {
+			isa = PBXGroup;
+			children = (
+				8C06448DDFC07410389ABBD9 /* Hadron64 */,
+				693CF503BC27AF6F46CF4DD3 /* Hadron64Tests */,
+				28B75E801408D43886B1A57F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		65C491618ED6EFA4C945AE08 /* Stats */ = {
+			isa = PBXGroup;
+			children = (
+				89D80998D718DBB33137C844 /* Records.swift */,
+				96802921E0C54FFBD7707E86 /* StatisticsView.swift */,
+				06CDB3D3F430D143347D3B82 /* StatsStore.swift */,
+			);
+			path = Stats;
+			sourceTree = "<group>";
+		};
+		693CF503BC27AF6F46CF4DD3 /* Hadron64Tests */ = {
+			isa = PBXGroup;
+			children = (
+				AE0EAC4AACD15CE0024A6966 /* CardMathTests.swift */,
+			);
+			path = Hadron64Tests;
+			sourceTree = "<group>";
+		};
+		6F26804E3E41B46972242D0C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CCA08071783D1E3065260F2E /* Card.swift */,
+				F07432F35873566E6CB67BA1 /* DeckGame.swift */,
+				807FDED270036EE86F433BEB /* GameClock.swift */,
+				93240C25ABBEEDB838474EF2 /* GameMode.swift */,
+				BEF7665830E3F3F079EBEDD8 /* Table.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8C06448DDFC07410389ABBD9 /* Hadron64 */ = {
+			isa = PBXGroup;
+			children = (
+				645511F5D13FC7DDA08B930A /* Assets.xcassets */,
+				7C036C33062CF8A0CCC53F08 /* Info.plist */,
+				CC80FA8310C3B47E69BEEBD1 /* App */,
+				4B2290E16DEF551C6035C56E /* GameCenter */,
+				6F26804E3E41B46972242D0C /* Model */,
+				65C491618ED6EFA4C945AE08 /* Stats */,
+				3313BD205E44D8BDBF931F72 /* Training */,
+				106BC3BCA77C80D7286D85B2 /* Views */,
+			);
+			path = Hadron64;
+			sourceTree = "<group>";
+		};
+		CC80FA8310C3B47E69BEEBD1 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				8A65ED8977DA4AD8F4F0B72C /* Hadron64App.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C57366CCEA8DE5F2E5EEAA39 /* Hadron64Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 80D5E575C0D482604A3A8C21 /* Build configuration list for PBXNativeTarget "Hadron64Tests" */;
+			buildPhases = (
+				2E046747B32357E4E596D18F /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				72C2654142C287B667F63B9D /* PBXTargetDependency */,
+			);
+			name = Hadron64Tests;
+			packageProductDependencies = (
+			);
+			productName = Hadron64Tests;
+			productReference = 70F60E846AFD20C08F1693B4 /* Hadron64Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D4A95B80C35CC528D4E93F99 /* Hadron64 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DB8CC05B98F4E3D4A1D9667A /* Build configuration list for PBXNativeTarget "Hadron64" */;
+			buildPhases = (
+				E5B8E80221ED2B3BB134016E /* Sources */,
+				4C66D791A2685ADCEFDEB7B4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Hadron64;
+			packageProductDependencies = (
+			);
+			productName = Hadron64;
+			productReference = 963CC64C55CD7F3B20B2BB1E /* Hadron64.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9B6BCE7DA9ACC439C9FC02F3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+			};
+			buildConfigurationList = B648F88F0F34232DE27F4151 /* Build configuration list for PBXProject "Hadron64" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 56DAE4460A26314A1194BC7A;
+			minimizedProjectReferenceProxies = 1;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D4A95B80C35CC528D4E93F99 /* Hadron64 */,
+				C57366CCEA8DE5F2E5EEAA39 /* Hadron64Tests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4C66D791A2685ADCEFDEB7B4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACE91475D81110678C0BABBC /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2E046747B32357E4E596D18F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				402013BFF948B15EE6C85BDB /* CardMathTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5B8E80221ED2B3BB134016E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4934AD1D5FF7FB9D213507E9 /* Card.swift in Sources */,
+				31D4156FAD5CFA6EB72A7F44 /* CardView.swift in Sources */,
+				967BDC0C5C27F45EB2B41755 /* DeckGame.swift in Sources */,
+				3EB1922985B2F3B2C12BEF44 /* DrillScreens.swift in Sources */,
+				3B517793E5E1960E9846E11B /* Drills.swift in Sources */,
+				FF8BAF3EC618A5CE4F044F5A /* GameCenterService.swift in Sources */,
+				9693B8B012CC98849DD385F7 /* GameClock.swift in Sources */,
+				7867E57A9E6B50AF61F3A5A1 /* GameMode.swift in Sources */,
+				2498C9BCE1D9440B3A6DF003 /* GameScreen.swift in Sources */,
+				8208602D6073A5B5B0971CCE /* Hadron64App.swift in Sources */,
+				81254032D258D6571E293CC6 /* HomeView.swift in Sources */,
+				6AD392455B380F935443ADA0 /* Records.swift in Sources */,
+				7D5E0F49B41F4B872B6BA205 /* ResultsView.swift in Sources */,
+				F1A6375A7D5E5D21A3691FC4 /* StatisticsView.swift in Sources */,
+				027C310DC7C940DB509EEEBC /* StatsStore.swift in Sources */,
+				47FD259C834EFEEB667454B1 /* Table.swift in Sources */,
+				9C502B76B142EBA54A7A10C1 /* TableView.swift in Sources */,
+				2715F8EF0D954DA4A035FDF8 /* Theme.swift in Sources */,
+				C15A986C7E5E8BE75B7068B6 /* Tutorial.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		72C2654142C287B667F63B9D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D4A95B80C35CC528D4E93F99 /* Hadron64 */;
+			targetProxy = CDCBA7FF4D2DC6B05DC0DB00 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		287188FAB88BCAEEF2B1481E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		7C2E13EFD220766BAA883FC6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 4H25332LKW;
+				INFOPLIST_FILE = Hadron64/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoqqanen.hadron64;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		82B6FC59E1B37BA29D8972C4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		B670BE2CB0E353E341DC466A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 4H25332LKW;
+				INFOPLIST_FILE = Hadron64/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoqqanen.hadron64;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B6C9E165088A99DA59A6030B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoqqanen.Hadron64Tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hadron64.app/Hadron64";
+			};
+			name = Release;
+		};
+		F2F09628757A52BFB07FFC17 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoqqanen.Hadron64Tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hadron64.app/Hadron64";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		80D5E575C0D482604A3A8C21 /* Build configuration list for PBXNativeTarget "Hadron64Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F2F09628757A52BFB07FFC17 /* Debug */,
+				B6C9E165088A99DA59A6030B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B648F88F0F34232DE27F4151 /* Build configuration list for PBXProject "Hadron64" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				82B6FC59E1B37BA29D8972C4 /* Debug */,
+				287188FAB88BCAEEF2B1481E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DB8CC05B98F4E3D4A1D9667A /* Build configuration list for PBXNativeTarget "Hadron64" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B670BE2CB0E353E341DC466A /* Debug */,
+				7C2E13EFD220766BAA883FC6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9B6BCE7DA9ACC439C9FC02F3 /* Project object */;
+}
