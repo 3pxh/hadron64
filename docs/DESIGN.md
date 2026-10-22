@@ -31,6 +31,8 @@ Every dot has a black outline.
 | Free Play / Time Trial / Simple Cards | `Views/GameScreen.swift` + `Model/DeckGame.swift` |
 | Remainder, Remainder Matching, Set Size | `Training/DrillScreens.swift` + `Training/Drills.swift` |
 | Tutorial | `Training/Tutorial.swift` |
+| Multiplayer | `Views/MultiplayerScreen.swift` |
+| Support / unlock | `Store/SupportView.swift` + `Store/Supporter.swift` |
 | Statistics | `Stats/StatisticsView.swift` |
 
 All play screens share `TableLayout` (board slots in 2-3-2 rows with equal gaps, controls row,
@@ -67,6 +69,37 @@ with a decoy; five cards whose only set has four cards; then a real deal. After 
 hand only appears when the player stalls, and it points at a wrong card to undo it first. Shown
 automatically on first launch, and from `?` on Home or from Training.
 
+### Multiplayer
+
+Up to four people around one phone lying flat. Anyone taps cards; a collected set waits in the middle
+(the board is blocked) until it's slid toward the edge of whoever found it, crediting that seat with
+the set and its cards. Each edge has a score strip turned to face its player. Multiplayer games don't
+go into Statistics.
+
+## Supporter unlock
+
+One non-consumable in-app purchase, `com.hoqqanen.hadron64.supporter` (StoreKit 2, `Supporter`).
+Each training mode is free 3 times per calendar day and multiplayer once; Free Play, Time Trial and
+the tutorial are always free. Nothing shows until a mode's plays are used up; then it gets a small
+lock and tapping it opens the unlock sheet. Home's "Support the Game" opens the same purchase.
+Replaying Simple Cards or multiplayer from the results screen counts as another play.
+`StoreKit/Hadron64.storekit` backs purchases when running from Xcode.
+
+## Localization
+
+All UI text lives in `Hadron64/Localizable.xcstrings` (plus `InfoPlist.xcstrings`), generated from
+`scripts/l10n/translations.py` for 20 languages, with plural variants where a language needs them.
+Write UI strings as literals passed to SwiftUI (`Text("…")`, `Label("…", …)`) or `String(localized:)`,
+then re-export and rebuild the catalogs:
+
+```sh
+xcodebuild -exportLocalizations -project Hadron64.xcodeproj -localizationPath build/loc -exportLanguage en
+python3 scripts/l10n/build_catalogs.py "build/loc/en.xcloc/Localized Contents/en.xliff"   # lists missing keys
+```
+
+Cards, the table, dot rows and the multiplayer board use `fixedCardLayout()` so right-to-left
+languages never mirror them: a dot's column is part of its meaning.
+
 ## Statistics
 
 `StatsStore` saves to `Application Support/hadron64-stats.json`:
@@ -90,5 +123,14 @@ xcodebuild -scheme Hadron64 -destination 'platform=iOS Simulator,name=iPhone 17 
 swift scripts/make_icon.swift Hadron64/Assets.xcassets/AppIcon.appiconset/icon-1024.png
 ```
 
-Debug builds accept `-debugScreen <freePlay|timeTrialHard|simple3|remainder|remainderMatch|setSize|training|statistics>`
-and `-hasSeenTutorial YES` as launch arguments, to jump straight to a screen.
+Debug builds accept launch arguments for screenshots and testing:
+
+- `-debugScreen <freePlay|timeTrialHard|simple3|remainder|remainderMatch|setSize|multiplayer|training|statistics>`
+  and `-hasSeenTutorial YES` jump straight to a screen.
+- `-debugFinds N`, `-debugClock S`, `-debugHint N`, `-debugSelect N` stage a game: collect N sets, push
+  the clock forward, press the hint, leave a partial selection (or enter remainder dots).
+- `-debugAutoplay 0.9` plays a whole deck, one tap every 0.9s (for the app preview video).
+- `-debugSeedStats YES` shows six weeks of generated stats (in memory only).
+- `-debugSupporter YES` acts as if the unlock was bought.
+
+App Store assets: see [APPSTORE.md](APPSTORE.md).

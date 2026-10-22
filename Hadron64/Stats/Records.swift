@@ -15,7 +15,7 @@ struct FindEvent: Codable, Identifiable, Hashable {
     var size: Int { cards.count }
 }
 
-/// One finished game (deck cleared, or time trial clock ran out).
+/// One finished game (deck cleared, or time trial clock ran out; time trials never clear their endless deck).
 struct GameRecord: Codable, Identifiable, Hashable {
     var id = UUID()
     var date = Date.now

@@ -20,6 +20,8 @@ final class TutorialModel {
     private(set) var selected: Set<Int> = []
     private(set) var hint: Int?
     private(set) var celebrating = false
+    /// The cards of the set just made, glowing on the board before they're collected.
+    private(set) var found: Set<Int> = []
     private(set) var isDone = false
 
     @ObservationIgnored private var hintTask: Task<Void, Never>?
@@ -52,10 +54,13 @@ final class TutorialModel {
         hintTask?.cancel()
         hint = nil
         celebrating = true
-        table.collect(table.boardCards.filter(selected.contains), refill: false)
+        found = selected
         selected = []
         Task {
-            try? await Task.sleep(for: .seconds(1.3))
+            try? await Task.sleep(for: .seconds(DeckGame.celebrationTime))
+            table.collect(table.boardCards.filter(found.contains), refill: false)
+            found = []
+            try? await Task.sleep(for: .seconds(1.0))
             celebrating = false
             step += 1
             if step >= Self.stepCount {
@@ -91,15 +96,18 @@ struct TutorialScreen: View {
     @State private var model = TutorialModel()
     @AppStorage("hasSeenTutorial") private var hasSeenTutorial = false
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.uiScale) private var s
 
     var body: some View {
         GeometryReader { geo in
-            let layout = TableLayout(size: geo.size, slotCount: model.table.slots.count)
+            let layout = TableLayout(size: geo.size, slotCount: model.table.slots.count, scale: s)
             ZStack {
-                CardTableView(table: model.table, layout: layout, selected: model.selected, showsCounts: false) {
+                CardTableView(table: model.table, layout: layout, selected: model.selected,
+                              celebrating: model.found, showsCounts: false) {
                     model.toggle($0)
                 }
-                RemainderBar(value: model.parity).position(layout.controlsCenter)
+                ParityCard(value: model.parity, height: layout.controlsHeight, success: !model.found.isEmpty)
+                    .position(layout.controlsCenter)
 
                 if let hint = model.hint, let index = model.table.slots.firstIndex(where: { $0?.number == hint }) {
                     TapHint(cardSize: layout.cardSize)
@@ -108,9 +116,9 @@ struct TutorialScreen: View {
                         .transition(.opacity)
                 }
 
-                if model.celebrating {
+                if model.celebrating && model.found.isEmpty {
                     Image(systemName: "checkmark.circle.fill")
-                        .font(.system(size: 96, weight: .bold))
+                        .font(.system(size: 96 * s, weight: .bold))
                         .foregroundStyle(Palette.ink)
                         .transition(.scale(scale: 0.4).combined(with: .opacity))
                 }
@@ -120,7 +128,7 @@ struct TutorialScreen: View {
                 }
 
                 topBar
-                    .frame(height: TableLayout.topBarHeight)
+                    .frame(height: layout.topBarHeight)
                     .frame(maxHeight: .infinity, alignment: .top)
             }
         }
@@ -139,13 +147,13 @@ struct TutorialScreen: View {
             IconButton(systemName: "xmark") { dismiss() }
             Spacer()
         }
-        .padding(.horizontal, 16)
+        .padding(.horizontal, 16 * s)
         .overlay {
-            HStack(spacing: 8) {
+            HStack(spacing: 8 * s) {
                 ForEach(0..<TutorialModel.stepCount, id: \.self) { i in
                     Circle()
                         .fill(i < model.step ? Palette.ink : (i == model.step ? Palette.ink.opacity(0.5) : Palette.faint))
-                        .frame(width: i == model.step ? 12 : 9, height: i == model.step ? 12 : 9)
+                        .frame(width: (i == model.step ? 12 : 9) * s, height: (i == model.step ? 12 : 9) * s)
                 }
             }
             .animation(.spring(duration: 0.3), value: model.step)
@@ -153,16 +161,16 @@ struct TutorialScreen: View {
     }
 
     private var finale: some View {
-        VStack(spacing: 28) {
+        VStack(spacing: 28 * s) {
             Image(systemName: "checkmark.seal.fill")
-                .font(.system(size: 88, weight: .semibold))
+                .font(.system(size: 88 * s, weight: .semibold))
                 .foregroundStyle(Palette.ink)
                 .symbolEffect(.bounce, value: model.isDone)
             Button { dismiss() } label: {
                 Image(systemName: "play.fill")
-                    .font(.system(size: 34, weight: .bold))
+                    .font(.system(size: 34 * s, weight: .bold))
                     .foregroundStyle(Palette.paper)
-                    .frame(width: 96, height: 96)
+                    .frame(width: 96 * s, height: 96 * s)
                     .background(Circle().fill(Palette.ink))
             }
         }

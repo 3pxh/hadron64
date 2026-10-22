@@ -1,0 +1,33 @@
+{
+  "identifier" : "6B0F6C2E-2A43-4C1B-9E55-6A1D2F0C6401",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : true,
+      "internalID" : "6740000001",
+      "localizations" : [
+        {
+          "description" : "Support the game and unlock unlimited training.",
+          "displayName" : "Supporter",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.hoqqanen.hadron64.supporter",
+      "referenceName" : "Supporter",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

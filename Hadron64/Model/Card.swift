@@ -35,11 +35,10 @@ enum CardGeometry {
     static let margin: CGFloat = 135
     static let spacerV: CGFloat = (height - (dotRadius * 6 + margin * 2)) / 2
     static let spacerH: CGFloat = width - (dotRadius * 4 + margin * 2)
-    static let strokeWidth: CGFloat = 12
-    static let stripeWidth: CGFloat = 14
-    static let stripeSpacing: CGFloat = 25
-    /// Offset of the first stripe from the dot's left edge, chosen so stripes sit symmetrically.
-    static let stripeInset: CGFloat = 6
+    static let strokeWidth: CGFloat = 16
+    /// Equal-width vertical bands across the inside of the outline, alternating white and color
+    /// with white at both edges (so an odd count: 4 white, 3 colored).
+    static let stripeBands = 7
 
     static var aspect: CGFloat { width / height }
 

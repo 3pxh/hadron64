@@ -1,7 +1,8 @@
 import SwiftUI
 
-/// Rules for the deck-based modes: Free Play, Time Trial, and the Simple Cards drills.
-/// Tap cards to select them; the moment the selection's dots all cancel, it's collected.
+/// Rules for the deck-based modes: Free Play, Time Trial (endless deck), and the Simple Cards drills.
+/// Tap cards to select them; the moment the selection's dots all cancel, the set celebrates on the
+/// board for a moment and is then collected.
 @Observable @MainActor
 final class DeckGame {
     let mode: GameMode
@@ -12,6 +13,10 @@ final class DeckGame {
     private(set) var setsFound = 0
     private(set) var bonusTime: TimeInterval = 0
     private(set) var isFinished = false
+    /// The set just found, held on the board for `celebrationTime` before it's collected.
+    private(set) var celebrating: Set<Int> = []
+
+    static let celebrationTime = 0.6
 
     /// Free Play hints, reset after every find. Level 1 reveals the size of a smallest set on the
     /// board; level 2 reveals one card: a member for sets of 3–4, a non-member for 5–6, all of a 7.
@@ -24,12 +29,15 @@ final class DeckGame {
     var hintsAllowed: Bool { mode == .freePlay }
 
     @ObservationIgnored private var roundStart: TimeInterval = 0
+    /// The final set has been found and is celebrating; the clock stays stopped.
+    @ObservationIgnored private var isClearing = false
     @ObservationIgnored var onFind: ((FindEvent) -> Void)?
     @ObservationIgnored var onFinish: ((GameRecord) -> Void)?
 
     init(mode: GameMode) {
         self.mode = mode
-        table = Table(slotCount: mode.dealSize, deck: CardMath.deck(mask: mode.dotMask).shuffled())
+        let cards = CardMath.deck(mask: mode.dotMask)
+        table = Table(slotCount: mode.dealSize, deck: cards.shuffled(), endlessDeck: mode.hasEndlessDeck ? cards : nil)
         clock.onTick = { [weak self] in self?.checkClock() }
     }
 
@@ -46,10 +54,10 @@ final class DeckGame {
     }
 
     func pause() { clock.pause() }
-    func resume() { if !isFinished { clock.start() } }
+    func resume() { if !isFinished && !isClearing { clock.start() } }
 
     func toggle(_ card: Int) {
-        guard !isFinished, clock.isRunning else { return }
+        guard !isFinished, clock.isRunning, celebrating.isEmpty else { return }
         if selected.contains(card) { selected.remove(card) } else { selected.insert(card) }
         if !selected.isEmpty && parity == 0 { collectSelection() }
     }
@@ -57,18 +65,28 @@ final class DeckGame {
     private func collectSelection() {
         let now = clock.current
         let cards = table.boardCards.filter(selected.contains)
-        onFind?(FindEvent(mode: mode, duration: max(0, now - roundStart), cards: cards,
-                          hints: hintsAllowed ? hintLevel : nil))
+        let event = FindEvent(mode: mode, duration: max(0, now - roundStart), cards: cards,
+                              hints: hintsAllowed ? hintLevel : nil)
+        let clearsDeck = !table.isEndless && table.deck.isEmpty && cards.count == table.boardCards.count
         selected = []
         clearHint()
         setsFound += 1
         if let bonus = mode.timeTrial?.bonus { bonusTime += bonus }
-        roundStart = now + table.collect(cards)
-        if table.isCleared { finish(completed: true) }
+        // The last set stops the clock now; the celebration isn't part of the player's time.
+        if clearsDeck { isClearing = true; clock.pause() }
+        celebrating = Set(cards)
+        Task { [weak self] in
+            try? await Task.sleep(for: .seconds(Self.celebrationTime))
+            guard let self else { return }
+            celebrating = []
+            onFind?(event)
+            roundStart = clock.current + table.collect(cards)
+            if table.isCleared { finish(completed: true, at: now) }
+        }
     }
 
     func hint() {
-        guard hintsAllowed, !isFinished, clock.isRunning, hintLevel < 2 else { return }
+        guard hintsAllowed, !isFinished, clock.isRunning, celebrating.isEmpty, hintLevel < 2 else { return }
         let board = table.boardCards
         if hintLevel == 0 {
             let sets = CardMath.allSets(in: board)
@@ -100,12 +118,12 @@ final class DeckGame {
         if let remaining = timeRemaining, remaining <= 0 { finish(completed: false) }
     }
 
-    private func finish(completed: Bool) {
+    private func finish(completed: Bool, at time: TimeInterval? = nil) {
         guard !isFinished else { return }
         isFinished = true
         clock.pause()
         // A time trial that runs out lasted exactly its allotted time, regardless of tick jitter.
-        let duration = completed ? clock.current : (mode.timeTrial.map { $0.start + bonusTime } ?? clock.current)
+        let duration = completed ? (time ?? clock.current) : (mode.timeTrial.map { $0.start + bonusTime } ?? clock.current)
         // GameCenter: GameRecord flows to StatsStore.log, which forwards it to GameCenterService.submit.
         onFinish?(GameRecord(mode: mode, duration: duration, completed: completed,
                              cardsCollected: table.collectedCount, setsFound: setsFound,

@@ -14,6 +14,8 @@ enum Palette {
     static let red = Color(hex: 0xBB5566)
     static let blue = Color(hex: 0x004488)
     static let rows = [yellow, red, blue]
+    /// Success only (a found set), never a dot color.
+    static let green = Color(hex: 0x2BC253)
 
     static let paper = Color(hex: 0xF3EFE6)
     static let ink = Color(hex: 0x1C1C1E)
@@ -28,17 +30,45 @@ extension Font {
     }
 }
 
+/// How much bigger to draw text and chrome than on a phone. 1 on iPhone (and narrow iPad windows),
+/// up to 1.5 on a full-screen iPad. Card sizes come from `TableLayout` instead.
+private struct UIScaleKey: EnvironmentKey {
+    static let defaultValue: CGFloat = 1
+}
+
+extension EnvironmentValues {
+    var uiScale: CGFloat {
+        get { self[UIScaleKey.self] }
+        set { self[UIScaleKey.self] = newValue }
+    }
+}
+
+extension View {
+    /// Sets `uiScale` for this view's subtree from the space it fills. Apply at the root of each
+    /// window, sheet and full-screen cover.
+    func adaptiveScale() -> some View {
+        GeometryReader { geo in
+            let side = min(geo.size.width, geo.size.height)
+            self.environment(\.uiScale, min(max(side / 460, 1), 1.5))
+        }
+    }
+}
+
 /// Big outlined menu button.
 struct MenuButtonStyle: ButtonStyle {
     var filled = false
+    @Environment(\.uiScale) private var s
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.rounded(19))
-            .frame(maxWidth: .infinity, minHeight: 56)
+            .font(.rounded(19 * s))
+            .lineLimit(1)
+            .minimumScaleFactor(0.7)
+            .padding(.horizontal, 8 * s)
+            .frame(maxWidth: .infinity, minHeight: 56 * s)
             .foregroundStyle(filled ? Palette.paper : Palette.ink)
-            .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(filled ? Palette.ink : Palette.card))
-            .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(Palette.ink, lineWidth: 2))
+            .background(RoundedRectangle(cornerRadius: 16 * s, style: .continuous).fill(filled ? Palette.ink : Palette.card))
+            .overlay(RoundedRectangle(cornerRadius: 16 * s, style: .continuous).strokeBorder(Palette.ink, lineWidth: 2))
             .scaleEffect(configuration.isPressed ? 0.97 : 1)
             .animation(.spring(duration: 0.2), value: configuration.isPressed)
     }
@@ -49,12 +79,13 @@ struct IconButton: View {
     let systemName: String
     var size: CGFloat = 44
     let action: () -> Void
+    @Environment(\.uiScale) private var s
 
     var body: some View {
         Button(action: action) {
             Image(systemName: systemName)
-                .font(.system(size: size * 0.4, weight: .bold))
-                .frame(width: size, height: size)
+                .font(.system(size: size * s * 0.4, weight: .bold))
+                .frame(width: size * s, height: size * s)
                 .foregroundStyle(Palette.ink)
                 .background(Circle().fill(Palette.card))
                 .overlay(Circle().strokeBorder(Palette.ink.opacity(0.12), lineWidth: 1))

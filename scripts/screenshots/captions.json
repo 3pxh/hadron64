@@ -1,0 +1,223 @@
+{
+  "_order": ["1-play", "2-multiplayer", "3-timetrial", "4-stats", "5-training", "6-remainder", "7-hint", "8-tutorial", "9-home"],
+  "en": {
+    "1-play": ["One rule.", "Find cards where every dot appears an even number of times."],
+    "2-multiplayer": ["Play around one phone.", "Up to four players. Slide each set to whoever found it."],
+    "3-timetrial": ["Hard means hard.", "Twenty seconds on the clock. Each set buys ten more."],
+    "4-stats": ["Every find, timed.", "Watch yourself get faster, deck after deck."],
+    "5-training": ["Train each skill.", "Focused drills for the moves the game demands."],
+    "6-remainder": ["See what doesn't cancel.", "Read the odd dots across seven cards at a glance."],
+    "7-hint": ["Hints only if you ask.", "Hinted games never count toward your records."],
+    "8-tutorial": ["Learn by doing.", "A wordless tutorial in four short steps."],
+    "9-home": ["Quiet by design.", "No ads. No clutter. Just the cards and your attention."]
+  },
+  "de": {
+    "1-play": ["Eine Regel.", "Finde Karten, auf denen jeder Punkt gerade oft vorkommt."],
+    "2-multiplayer": ["Spielt um ein Handy herum.", "Bis zu vier Spieler. Schiebt jedes Set zu dem, der es gefunden hat."],
+    "3-timetrial": ["Schwer heißt schwer.", "Zwanzig Sekunden auf der Uhr. Jedes Set bringt zehn mehr."],
+    "4-stats": ["Jeder Fund gestoppt.", "Sieh zu, wie du Stapel für Stapel schneller wirst."],
+    "5-training": ["Trainiere jede Fähigkeit.", "Gezielte Übungen für alles, was das Spiel verlangt."],
+    "6-remainder": ["Sieh, was übrig bleibt.", "Erkenne die ungeraden Punkte auf sieben Karten auf einen Blick."],
+    "7-hint": ["Tipps nur auf Wunsch.", "Spiele mit Tipps zählen nie für deine Rekorde."],
+    "8-tutorial": ["Lernen durch Spielen.", "Eine Anleitung ohne Worte in vier kurzen Schritten."],
+    "9-home": ["Bewusst ruhig.", "Keine Werbung. Kein Ballast. Nur Karten und deine Aufmerksamkeit."]
+  },
+  "fr": {
+    "1-play": ["Une seule règle.", "Trouvez des cartes où chaque point apparaît un nombre pair de fois."],
+    "2-multiplayer": ["Jouez autour d'un téléphone.", "Jusqu'à quatre joueurs. Glissez chaque ensemble vers celui qui l'a trouvé."],
+    "3-timetrial": ["Difficile, vraiment.", "Vingt secondes au chrono. Chaque ensemble en ajoute dix."],
+    "4-stats": ["Chaque trouvaille chronométrée.", "Devenez plus rapide, paquet après paquet."],
+    "5-training": ["Travaillez chaque compétence.", "Des exercices ciblés pour tout ce que le jeu exige."],
+    "6-remainder": ["Voyez ce qui reste.", "Repérez d'un coup d'œil les points impairs sur sept cartes."],
+    "7-hint": ["Des indices, sur demande.", "Les parties avec indices ne comptent jamais pour vos records."],
+    "8-tutorial": ["Apprendre en jouant.", "Un tutoriel sans mots, en quatre courtes étapes."],
+    "9-home": ["Calme par nature.", "Sans pub. Sans fioritures. Juste les cartes et votre attention."]
+  },
+  "es": {
+    "1-play": ["Una sola regla.", "Encuentra cartas donde cada punto aparezca un número par de veces."],
+    "2-multiplayer": ["Jugad alrededor de un móvil.", "Hasta cuatro jugadores. Desliza cada conjunto hacia quien lo encontró."],
+    "3-timetrial": ["Difícil de verdad.", "Veinte segundos en el reloj. Cada conjunto suma diez más."],
+    "4-stats": ["Cada hallazgo, cronometrado.", "Mira cómo te vuelves más rápido, mazo tras mazo."],
+    "5-training": ["Entrena cada habilidad.", "Ejercicios específicos para lo que el juego exige."],
+    "6-remainder": ["Mira lo que no se anula.", "Lee de un vistazo los puntos impares de siete cartas."],
+    "7-hint": ["Pistas solo si las pides.", "Las partidas con pistas nunca cuentan para tus récords."],
+    "8-tutorial": ["Aprende jugando.", "Un tutorial sin palabras en cuatro pasos breves."],
+    "9-home": ["Tranquilo por diseño.", "Sin anuncios. Sin ruido. Solo las cartas y tu atención."]
+  },
+  "it": {
+    "1-play": ["Una sola regola.", "Trova le carte in cui ogni punto compare un numero pari di volte."],
+    "2-multiplayer": ["Giocate attorno a un telefono.", "Fino a quattro giocatori. Fai scorrere ogni insieme verso chi l'ha trovato."],
+    "3-timetrial": ["Difficile davvero.", "Venti secondi sul cronometro. Ogni insieme ne aggiunge dieci."],
+    "4-stats": ["Ogni scoperta, cronometrata.", "Diventa più veloce, mazzo dopo mazzo."],
+    "5-training": ["Allena ogni abilità.", "Esercizi mirati per ciò che il gioco richiede."],
+    "6-remainder": ["Vedi cosa non si annulla.", "Leggi a colpo d'occhio i punti dispari su sette carte."],
+    "7-hint": ["Suggerimenti solo se li chiedi.", "Le partite con suggerimenti non contano mai per i record."],
+    "8-tutorial": ["Impara giocando.", "Un tutorial senza parole in quattro brevi passi."],
+    "9-home": ["Silenzioso per scelta.", "Niente pubblicità. Niente fronzoli. Solo carte e attenzione."]
+  },
+  "pt-BR": {
+    "1-play": ["Uma regra.", "Encontre cartas em que cada ponto aparece um número par de vezes."],
+    "2-multiplayer": ["Joguem em volta de um celular.", "Até quatro jogadores. Deslize cada conjunto para quem o encontrou."],
+    "3-timetrial": ["Difícil de verdade.", "Vinte segundos no relógio. Cada conjunto vale mais dez."],
+    "4-stats": ["Cada achado, cronometrado.", "Veja você ficar mais rápido, baralho após baralho."],
+    "5-training": ["Treine cada habilidade.", "Exercícios focados em tudo o que o jogo exige."],
+    "6-remainder": ["Veja o que não se cancela.", "Leia num relance os pontos ímpares em sete cartas."],
+    "7-hint": ["Dicas só se você pedir.", "Partidas com dicas nunca contam para seus recordes."],
+    "8-tutorial": ["Aprenda jogando.", "Um tutorial sem palavras em quatro passos curtos."],
+    "9-home": ["Calmo por natureza.", "Sem anúncios. Sem distrações. Só as cartas e sua atenção."]
+  },
+  "nl": {
+    "1-play": ["Eén regel.", "Vind kaarten waarop elke stip een even aantal keer voorkomt."],
+    "2-multiplayer": ["Speel rond één telefoon.", "Tot vier spelers. Schuif elke set naar wie hem vond."],
+    "3-timetrial": ["Moeilijk is moeilijk.", "Twintig seconden op de klok. Elke set levert er tien op."],
+    "4-stats": ["Elke vondst getimed.", "Zie jezelf sneller worden, stapel na stapel."],
+    "5-training": ["Train elke vaardigheid.", "Gerichte oefeningen voor alles wat het spel vraagt."],
+    "6-remainder": ["Zie wat niet wegvalt.", "Lees de oneven stippen op zeven kaarten in één oogopslag."],
+    "7-hint": ["Hints alleen als je vraagt.", "Spellen met hints tellen nooit mee voor je records."],
+    "8-tutorial": ["Leer door te doen.", "Een uitleg zonder woorden in vier korte stappen."],
+    "9-home": ["Rustig van opzet.", "Geen advertenties. Geen rommel. Alleen de kaarten en je aandacht."]
+  },
+  "pl": {
+    "1-play": ["Jedna zasada.", "Znajdź karty, na których każda kropka występuje parzystą liczbę razy."],
+    "2-multiplayer": ["Grajcie wokół jednego telefonu.", "Do czterech graczy. Przesuń każdy zestaw do tego, kto go znalazł."],
+    "3-timetrial": ["Trudny znaczy trudny.", "Dwadzieścia sekund na zegarze. Każdy zestaw daje dziesięć więcej."],
+    "4-stats": ["Każde znalezisko na czas.", "Patrz, jak przyspieszasz, talia po talii."],
+    "5-training": ["Ćwicz każdą umiejętność.", "Celowane ćwiczenia na wszystko, czego wymaga gra."],
+    "6-remainder": ["Zobacz, co się nie znosi.", "Odczytaj nieparzyste kropki z siedmiu kart jednym spojrzeniem."],
+    "7-hint": ["Podpowiedzi tylko na życzenie.", "Gry z podpowiedziami nigdy nie liczą się do rekordów."],
+    "8-tutorial": ["Ucz się, grając.", "Samouczek bez słów w czterech krótkich krokach."],
+    "9-home": ["Spokój z założenia.", "Bez reklam. Bez zbędności. Tylko karty i twoja uwaga."]
+  },
+  "ru": {
+    "1-play": ["Одно правило.", "Найдите карты, на которых каждая точка встречается чётное число раз."],
+    "2-multiplayer": ["Играйте вокруг одного телефона.", "До четырёх игроков. Отправьте каждый набор тому, кто его нашёл."],
+    "3-timetrial": ["Сложно — значит сложно.", "Двадцать секунд на часах. Каждый набор даёт ещё десять."],
+    "4-stats": ["Каждая находка — на время.", "Смотрите, как вы становитесь быстрее с каждой колодой."],
+    "5-training": ["Тренируйте каждый навык.", "Точечные упражнения для всего, что требует игра."],
+    "6-remainder": ["Видьте, что не сокращается.", "Считывайте нечётные точки на семи картах с одного взгляда."],
+    "7-hint": ["Подсказки — только по запросу.", "Игры с подсказками не идут в ваши рекорды."],
+    "8-tutorial": ["Учитесь в игре.", "Обучение без слов в четыре коротких шага."],
+    "9-home": ["Тишина как принцип.", "Без рекламы. Без лишнего. Только карты и ваше внимание."]
+  },
+  "uk": {
+    "1-play": ["Одне правило.", "Знайдіть карти, на яких кожна точка трапляється парну кількість разів."],
+    "2-multiplayer": ["Грайте навколо одного телефона.", "До чотирьох гравців. Відправте кожен набір тому, хто його знайшов."],
+    "3-timetrial": ["Складно — отже, складно.", "Двадцять секунд на годиннику. Кожен набір дає ще десять."],
+    "4-stats": ["Кожна знахідка — на час.", "Дивіться, як ви стаєте швидшими з кожною колодою."],
+    "5-training": ["Тренуйте кожну навичку.", "Точкові вправи для всього, чого вимагає гра."],
+    "6-remainder": ["Бачте, що не скорочується.", "Зчитуйте непарні точки на семи картах з одного погляду."],
+    "7-hint": ["Підказки — лише на запит.", "Ігри з підказками не йдуть у ваші рекорди."],
+    "8-tutorial": ["Навчайтеся граючи.", "Навчання без слів у чотири короткі кроки."],
+    "9-home": ["Тиша як принцип.", "Без реклами. Без зайвого. Лише карти й ваша увага."]
+  },
+  "tr": {
+    "1-play": ["Tek kural.", "Her noktanın çift sayıda göründüğü kartları bul."],
+    "2-multiplayer": ["Tek telefonun etrafında oynayın.", "Dört oyuncuya kadar. Her seti bulan kişiye kaydır."],
+    "3-timetrial": ["Zor gerçekten zor.", "Saatte yirmi saniye. Her set on saniye daha kazandırır."],
+    "4-stats": ["Her bulma, süreli.", "Desteden desteye nasıl hızlandığını gör."],
+    "5-training": ["Her beceriyi çalış.", "Oyunun istediği her hamle için odaklı alıştırmalar."],
+    "6-remainder": ["Neyin sadeleşmediğini gör.", "Yedi karttaki tek noktaları bir bakışta oku."],
+    "7-hint": ["İpucu sadece istersen.", "İpucu kullanılan oyunlar asla rekorlarına sayılmaz."],
+    "8-tutorial": ["Yaparak öğren.", "Dört kısa adımda kelimesiz bir eğitim."],
+    "9-home": ["Bilinçli olarak sade.", "Reklam yok. Kalabalık yok. Sadece kartlar ve dikkatin."]
+  },
+  "vi": {
+    "1-play": ["Một luật duy nhất.", "Tìm các lá bài mà mỗi chấm xuất hiện một số chẵn lần."],
+    "2-multiplayer": ["Chơi quanh một chiếc điện thoại.", "Tối đa bốn người. Vuốt mỗi bộ về phía người tìm ra nó."],
+    "3-timetrial": ["Khó là khó thật.", "Hai mươi giây trên đồng hồ. Mỗi bộ thêm mười giây."],
+    "4-stats": ["Mỗi lần tìm đều được bấm giờ.", "Thấy mình nhanh hơn qua từng bộ bài."],
+    "5-training": ["Luyện từng kỹ năng.", "Bài tập tập trung cho mọi điều trò chơi đòi hỏi."],
+    "6-remainder": ["Thấy phần không triệt tiêu.", "Đọc nhanh các chấm lẻ trên bảy lá bài."],
+    "7-hint": ["Gợi ý chỉ khi bạn cần.", "Ván có gợi ý không bao giờ tính vào kỷ lục."],
+    "8-tutorial": ["Học bằng cách chơi.", "Hướng dẫn không lời trong bốn bước ngắn."],
+    "9-home": ["Tĩnh lặng có chủ đích.", "Không quảng cáo. Không rối mắt. Chỉ có lá bài và sự tập trung."]
+  },
+  "id": {
+    "1-play": ["Satu aturan.", "Temukan kartu yang setiap titiknya muncul dalam jumlah genap."],
+    "2-multiplayer": ["Main bersama di satu ponsel.", "Hingga empat pemain. Geser setiap set ke orang yang menemukannya."],
+    "3-timetrial": ["Sulit berarti sulit.", "Dua puluh detik di jam. Setiap set menambah sepuluh detik."],
+    "4-stats": ["Setiap temuan dicatat waktunya.", "Lihat dirimu makin cepat, dek demi dek."],
+    "5-training": ["Latih setiap keterampilan.", "Latihan terarah untuk semua yang dituntut game ini."],
+    "6-remainder": ["Lihat yang tidak saling hapus.", "Baca titik ganjil di tujuh kartu sekilas."],
+    "7-hint": ["Petunjuk hanya jika diminta.", "Permainan dengan petunjuk tidak dihitung untuk rekor."],
+    "8-tutorial": ["Belajar sambil bermain.", "Tutorial tanpa kata dalam empat langkah singkat."],
+    "9-home": ["Tenang sejak awal.", "Tanpa iklan. Tanpa gangguan. Hanya kartu dan perhatianmu."]
+  },
+  "th": {
+    "1-play": ["กติกาเดียว", "หาการ์ดที่ทุกจุดปรากฏเป็นจำนวนคู่"],
+    "2-multiplayer": ["เล่นรอบโทรศัพท์เครื่องเดียว", "สูงสุดสี่คน ปัดแต่ละชุดไปหาคนที่หาเจอ"],
+    "3-timetrial": ["ยากคือยากจริง", "ยี่สิบวินาทีบนนาฬิกา ทุกชุดได้เพิ่มอีกสิบวินาที"],
+    "4-stats": ["จับเวลาทุกครั้งที่หาเจอ", "เห็นตัวเองเร็วขึ้นทีละสำรับ"],
+    "5-training": ["ฝึกทีละทักษะ", "แบบฝึกเฉพาะจุดสำหรับทุกสิ่งที่เกมต้องการ"],
+    "6-remainder": ["มองเห็นสิ่งที่ไม่หักล้าง", "อ่านจุดคี่บนการ์ดเจ็ดใบได้ในพริบตา"],
+    "7-hint": ["คำใบ้เมื่อคุณขอเท่านั้น", "เกมที่ใช้คำใบ้จะไม่นับเป็นสถิติของคุณ"],
+    "8-tutorial": ["เรียนรู้ด้วยการลงมือ", "บทเรียนไร้คำพูดสี่ขั้นตอนสั้น ๆ"],
+    "9-home": ["เงียบสงบโดยตั้งใจ", "ไม่มีโฆษณา ไม่รก มีแค่การ์ดกับสมาธิของคุณ"]
+  },
+  "ja": {
+    "1-play": ["ルールはひとつ。", "どの点も偶数回ずつ現れるカードの組を見つけよう。"],
+    "2-multiplayer": ["1台のスマホを囲んで。", "最大4人。見つけた人のほうへセットをスライド。"],
+    "3-timetrial": ["むずかしいは本気。", "持ち時間は20秒。セットごとに10秒追加。"],
+    "4-stats": ["すべての発見をタイム計測。", "デッキを重ねるごとに速くなる自分を確かめよう。"],
+    "5-training": ["スキルを一つずつ鍛える。", "ゲームが求める力に絞ったトレーニング。"],
+    "6-remainder": ["打ち消されないものを見抜く。", "7枚のカードの奇数の点をひと目で読み取ろう。"],
+    "7-hint": ["ヒントは頼んだときだけ。", "ヒントを使ったゲームは記録に残りません。"],
+    "8-tutorial": ["遊びながら覚える。", "言葉のいらない4ステップのチュートリアル。"],
+    "9-home": ["静けさを大切に。", "広告なし。余計なものなし。カードと集中だけ。"]
+  },
+  "ko": {
+    "1-play": ["규칙은 하나.", "모든 점이 짝수 번씩 나오는 카드를 찾으세요."],
+    "2-multiplayer": ["휴대폰 하나를 둘러싸고.", "최대 4명. 찾은 사람에게 세트를 밀어 주세요."],
+    "3-timetrial": ["어려움은 정말 어렵게.", "시계에 20초. 세트마다 10초가 더해집니다."],
+    "4-stats": ["찾을 때마다 기록.", "덱을 거듭할수록 빨라지는 자신을 확인하세요."],
+    "5-training": ["기술 하나하나를 훈련.", "게임이 요구하는 동작에 집중한 연습."],
+    "6-remainder": ["상쇄되지 않는 것을 보세요.", "카드 7장의 홀수 점을 한눈에 읽어 내세요."],
+    "7-hint": ["힌트는 원할 때만.", "힌트를 쓴 게임은 기록에 포함되지 않습니다."],
+    "8-tutorial": ["직접 해 보며 배우기.", "말 없이 짧은 4단계로 배우는 튜토리얼."],
+    "9-home": ["조용하게, 의도적으로.", "광고 없음. 잡동사니 없음. 카드와 집중만."]
+  },
+  "zh-Hans": {
+    "1-play": ["一条规则。", "找出每个点都出现偶数次的一组卡牌。"],
+    "2-multiplayer": ["围着一部手机玩。", "最多四人。把每一组滑向找到它的人。"],
+    "3-timetrial": ["困难就是困难。", "计时 20 秒，每找到一组再加 10 秒。"],
+    "4-stats": ["每次发现都有计时。", "一局又一局，看着自己越来越快。"],
+    "5-training": ["逐项训练技能。", "针对游戏所需能力的专项练习。"],
+    "6-remainder": ["看清无法抵消的部分。", "一眼读出七张牌上的奇数点。"],
+    "7-hint": ["提示，只在你需要时。", "使用提示的对局永远不计入纪录。"],
+    "8-tutorial": ["边玩边学。", "无需文字，四个简短步骤即可上手。"],
+    "9-home": ["刻意的安静。", "没有广告，没有杂乱。只有卡牌和你的专注。"]
+  },
+  "zh-Hant": {
+    "1-play": ["一條規則。", "找出每個點都出現偶數次的一組卡牌。"],
+    "2-multiplayer": ["圍著一支手機玩。", "最多四人。把每一組滑向找到它的人。"],
+    "3-timetrial": ["困難就是困難。", "計時 20 秒，每找到一組再加 10 秒。"],
+    "4-stats": ["每次發現都有計時。", "一局又一局，看著自己越來越快。"],
+    "5-training": ["逐項訓練技巧。", "針對遊戲所需能力的專項練習。"],
+    "6-remainder": ["看清無法抵消的部分。", "一眼讀出七張牌上的奇數點。"],
+    "7-hint": ["提示，只在你需要時。", "使用提示的對局永遠不計入紀錄。"],
+    "8-tutorial": ["邊玩邊學。", "無需文字，四個簡短步驟即可上手。"],
+    "9-home": ["刻意的安靜。", "沒有廣告，沒有雜亂。只有卡牌和你的專注。"]
+  },
+  "hi": {
+    "1-play": ["एक नियम।", "ऐसे कार्ड ढूँढें जिनमें हर बिंदु सम संख्या में आए।"],
+    "2-multiplayer": ["एक फ़ोन के चारों ओर खेलें।", "चार खिलाड़ियों तक। हर सेट उसकी ओर सरकाएँ जिसने उसे ढूँढा।"],
+    "3-timetrial": ["कठिन मतलब कठिन।", "घड़ी पर बीस सेकंड। हर सेट दस सेकंड और देता है।"],
+    "4-stats": ["हर खोज का समय दर्ज।", "हर डेक के साथ ख़ुद को तेज़ होते देखें।"],
+    "5-training": ["हर कौशल का अभ्यास।", "गेम जिन चालों की माँग करता है, उनके लिए केंद्रित अभ्यास।"],
+    "6-remainder": ["देखें क्या रद्द नहीं होता।", "सात कार्डों के विषम बिंदु एक नज़र में पढ़ें।"],
+    "7-hint": ["संकेत केवल माँगने पर।", "संकेत वाले गेम कभी आपके रिकॉर्ड में नहीं गिने जाते।"],
+    "8-tutorial": ["खेलकर सीखें।", "चार छोटे चरणों में बिना शब्दों का ट्यूटोरियल।"],
+    "9-home": ["सोच-समझकर शांत।", "कोई विज्ञापन नहीं। कोई भीड़ नहीं। बस कार्ड और आपका ध्यान।"]
+  },
+  "ar": {
+    "1-play": ["قاعدة واحدة.", "اعثر على بطاقات تظهر فيها كل نقطة عددًا زوجيًا من المرات."],
+    "2-multiplayer": ["العبوا حول هاتف واحد.", "حتى أربعة لاعبين. اسحب كل مجموعة نحو من وجدها."],
+    "3-timetrial": ["الصعب صعب حقًا.", "عشرون ثانية على الساعة. كل مجموعة تضيف عشر ثوانٍ."],
+    "4-stats": ["كل اكتشاف محسوب بالوقت.", "شاهد نفسك تزداد سرعة مجموعة بعد أخرى."],
+    "5-training": ["درّب كل مهارة.", "تمارين مركّزة لكل ما تتطلبه اللعبة."],
+    "6-remainder": ["انظر إلى ما لا يُلغى.", "اقرأ النقاط الفردية في سبع بطاقات بنظرة واحدة."],
+    "7-hint": ["تلميحات عند الطلب فقط.", "الألعاب التي تستخدم التلميحات لا تُحسب في أرقامك القياسية."],
+    "8-tutorial": ["تعلّم بالممارسة.", "شرح بلا كلمات في أربع خطوات قصيرة."],
+    "9-home": ["هادئة عن قصد.", "بلا إعلانات. بلا فوضى. فقط البطاقات وانتباهك."]
+  }
+}

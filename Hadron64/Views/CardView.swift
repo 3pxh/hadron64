@@ -1,21 +1,22 @@
 import SwiftUI
 
 enum DotRenderer {
-    /// Draws one dot the way the print reference does: a filled disc, or vertical stripes
-    /// clipped to the disc, then a black outline. All widths scale with the radius.
+    /// Draws one dot: a filled disc, or white with colored vertical bands clipped to the disc,
+    /// then a black outline. All widths scale with the radius.
     static func draw(_ dot: Dot, center c: CGPoint, radius r: CGFloat, in ctx: inout GraphicsContext) {
         let k = r / CardGeometry.dotRadius
         let disc = Path(ellipseIn: CGRect(x: c.x - r, y: c.y - r, width: 2 * r, height: 2 * r))
         if dot.isSolid {
             ctx.fill(disc, with: .color(dot.color))
         } else {
+            // Bands span the inside of the outline; odd indices are colored, so white sits at both edges.
+            let inner = r - CardGeometry.strokeWidth * k / 2
+            let band = 2 * inner / CGFloat(CardGeometry.stripeBands)
             var stripes = Path()
-            let w = CardGeometry.stripeWidth * k
-            var dx = -r + CardGeometry.stripeInset * k
-            while dx < r {
-                stripes.addRect(CGRect(x: c.x + dx - w / 2, y: c.y - r, width: w, height: 2 * r))
-                dx += CardGeometry.stripeSpacing * k
+            for i in stride(from: 1, to: CardGeometry.stripeBands, by: 2) {
+                stripes.addRect(CGRect(x: c.x - inner + CGFloat(i) * band, y: c.y - r, width: band, height: 2 * r))
             }
+            ctx.fill(disc, with: .color(.white))
             var clipped = ctx
             clipped.clip(to: disc)
             clipped.fill(stripes, with: .color(dot.color))
@@ -63,13 +64,14 @@ struct CardBackView: View {
             let k = size.width / CardGeometry.width
             for dot in Dot.allCases {
                 let p = CardGeometry.center(of: dot)
-                let r = CardGeometry.dotRadius * k * 0.8
+                let r = CardGeometry.dotRadius * k
                 let c = CGPoint(x: p.x * k, y: p.y * k)
-                ctx.stroke(Path(ellipseIn: CGRect(x: c.x - r, y: c.y - r, width: 2 * r, height: 2 * r)),
-                           with: .color(Palette.paper.opacity(0.35)), lineWidth: 10 * k)
+                ctx.fill(Path(ellipseIn: CGRect(x: c.x - r, y: c.y - r, width: 2 * r, height: 2 * r)),
+                         with: .color(Palette.faint))
             }
         }
-        .background(CardShape().fill(Palette.ink))
+        .background(CardShape().fill(Palette.card))
+        .overlay(CardShape().strokeBorder(Palette.ink.opacity(0.1), lineWidth: 1))
     }
 }
 

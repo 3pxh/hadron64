@@ -19,6 +19,8 @@ final class Table {
     private(set) var stack: [PlacedCard] = []
     private(set) var collectedCount = 0
     private(set) var deck: [Int]
+    /// Endless tables reshuffle these cards into a new deck whenever the deck runs out.
+    @ObservationIgnored private let endlessDeck: [Int]?
 
     @ObservationIgnored private var nextUID = 0
     @ObservationIgnored private var generation = 0
@@ -27,10 +29,13 @@ final class Table {
     static let dealStagger = 0.07
     static let flightTime = 0.45
 
-    init(slotCount: Int, deck: [Int]) {
+    init(slotCount: Int, deck: [Int], endlessDeck: [Int]? = nil) {
         slots = Array(repeating: nil, count: slotCount)
         self.deck = deck
+        self.endlessDeck = endlessDeck
     }
+
+    var isEndless: Bool { endlessDeck != nil }
 
     var boardCards: [Int] { slots.compactMap { $0?.number } }
     var isCleared: Bool { deck.isEmpty && slots.allSatisfy { $0 == nil } }
@@ -49,8 +54,14 @@ final class Table {
         var transaction = Transaction()
         transaction.disablesAnimations = true
         withTransaction(transaction) {
-            for i in slots.indices where slots[i] == nil && !deck.isEmpty {
-                let card = PlacedCard(uid: nextUID, number: deck.removeLast())
+            for i in slots.indices where slots[i] == nil {
+                if deck.isEmpty, let endlessDeck {
+                    // Leave out cards still on the board: two copies of one card would cancel as a "set".
+                    let board = Set(boardCards)
+                    deck = endlessDeck.filter { !board.contains($0) }.shuffled()
+                }
+                guard let number = deck.popLast() else { break }
+                let card = PlacedCard(uid: nextUID, number: number)
                 nextUID += 1
                 slots[i] = card
                 dealt.append(card)

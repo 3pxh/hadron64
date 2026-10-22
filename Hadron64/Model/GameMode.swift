@@ -13,16 +13,16 @@ enum GameMode: String, Codable, CaseIterable, Identifiable, Hashable {
 
     var title: String {
         switch self {
-        case .freePlay: "Free Play"
-        case .timeTrialEasy: "Time Trial · Easy"
-        case .timeTrialMedium: "Time Trial · Medium"
-        case .timeTrialHard: "Time Trial · Hard"
-        case .simple3: "Simple Cards · 3"
-        case .simple4: "Simple Cards · 4"
-        case .simple5: "Simple Cards · 5"
-        case .remainder: "Remainder"
-        case .remainderMatch: "Remainder Matching"
-        case .setSize: "Set Size"
+        case .freePlay: String(localized: "Free Play")
+        case .timeTrialEasy: String(localized: "Time Trial · Easy")
+        case .timeTrialMedium: String(localized: "Time Trial · Medium")
+        case .timeTrialHard: String(localized: "Time Trial · Hard")
+        case .simple3: String(localized: "Simple Cards · 3")
+        case .simple4: String(localized: "Simple Cards · 4")
+        case .simple5: String(localized: "Simple Cards · 5")
+        case .remainder: String(localized: "Remainder")
+        case .remainderMatch: String(localized: "Remainder Matching")
+        case .setSize: String(localized: "Set Size")
         }
     }
 
@@ -51,12 +51,24 @@ enum GameMode: String, Codable, CaseIterable, Identifiable, Hashable {
 
     var isTimeTrial: Bool { timeTrial != nil }
 
+    /// Time trials never run out of cards: when the deck is used up a fresh one is shuffled in,
+    /// so the board always has its full deal and the game ends only when the clock does.
+    var hasEndlessDeck: Bool { isTimeTrial }
+
+    /// Training modes are limited per day without the supporter unlock (see `Supporter`).
+    var isTraining: Bool {
+        switch self {
+        case .freePlay, .timeTrialEasy, .timeTrialMedium, .timeTrialHard: false
+        default: true
+        }
+    }
+
     /// Starting clock and per-set bonus, in seconds.
     var timeTrial: (start: TimeInterval, bonus: TimeInterval)? {
         switch self {
-        case .timeTrialEasy: (60, 40)
-        case .timeTrialMedium: (40, 20)
-        case .timeTrialHard: (20, 10)
+        case .timeTrialEasy: (60, 15)
+        case .timeTrialMedium: (40, 10)
+        case .timeTrialHard: (20, 5)
         default: nil
         }
     }

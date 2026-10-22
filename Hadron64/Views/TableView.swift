@@ -1,5 +1,13 @@
 import SwiftUI
 
+extension View {
+    /// Card faces, the table and dot rows keep their physical left-to-right layout in every language:
+    /// a dot's column is part of what it means, so right-to-left locales must not mirror it.
+    func fixedCardLayout() -> some View {
+        environment(\.layoutDirection, .leftToRight)
+    }
+}
+
 /// Where everything sits on a play screen. All positions share one coordinate space,
 /// so cards can fly between the deck, the board and the collection stack.
 ///
@@ -11,12 +19,16 @@ import SwiftUI
 ///   │   • • • • • •         │  controls (remainder line / buttons)
 ///   │ [stack]       [deck]  │  piles
 ///   └───────────────────────┘
+///
+/// On a wide screen (iPad) the controls sit between the piles instead, leaving more room for the board.
 struct TableLayout {
-    static let topBarHeight: CGFloat = 56
-    static let controlsHeight: CGFloat = 64
     static let pileScale: CGFloat = 0.42
 
     let size: CGSize
+    /// The environment's `uiScale`: the top bar and controls grow with it on iPad.
+    let scale: CGFloat
+    let topBarHeight: CGFloat
+    let controlsHeight: CGFloat
     let cardSize: CGSize
     let gap: CGFloat
     let slotCenters: [CGPoint]
@@ -38,37 +50,47 @@ struct TableLayout {
         }
     }
 
-    init(size: CGSize, slotCount: Int) {
+    init(size: CGSize, slotCount: Int, scale: CGFloat = 1) {
         self.size = size
-        let pad: CGFloat = 16
+        self.scale = scale
+        topBarHeight = 56 * scale
+        controlsHeight = 64 * scale
+        let pad: CGFloat = 16 * scale
         let a = CardGeometry.aspect
         let gapRatio: CGFloat = 0.1
 
         // Size cards for a 3x3 grid (the widest/tallest board) so card size is the same in every mode.
         var w = (size.width - 2 * pad) / (3 + 2 * gapRatio)
         var h = w / a
-        let fixed = Self.topBarHeight + Self.controlsHeight + 28
-        let available = size.height - fixed
-        if 3 * h + 2 * gapRatio * w + Self.pileScale * h > available {
-            h = available / (3 + 2 * gapRatio * a + Self.pileScale)
-            w = h * a
+        // Room between the piles (and their counts) for the widest controls?
+        let controlsBesidePiles = size.width - 2 * (pad + Self.pileScale * w + 50 * scale) >= 320 * scale
+        let rows = 3 + 2 * gapRatio * a
+        if controlsBesidePiles {
+            let available = size.height - topBarHeight - 28 * scale
+            h = min(h, available / (rows + Self.pileScale), (available - controlsHeight) / rows)
+        } else {
+            let available = size.height - topBarHeight - controlsHeight - 28 * scale
+            h = min(h, available / (rows + Self.pileScale))
         }
+        w = h * a
         cardSize = CGSize(width: w, height: h)
         gap = gapRatio * w
 
         let pileW = w * Self.pileScale, pileH = h * Self.pileScale
-        let pileY = size.height - 10 - pileH / 2
+        let pileY = size.height - 10 * scale - pileH / 2
         stackCenter = CGPoint(x: pad + pileW / 2 + 6, y: pileY)
         deckCenter = CGPoint(x: size.width - pad - pileW / 2 - 6, y: pileY)
-        controlsCenter = CGPoint(x: size.width / 2, y: pileY - pileH / 2 - 4 - Self.controlsHeight / 2)
+        controlsCenter = controlsBesidePiles
+            ? CGPoint(x: size.width / 2, y: size.height - 10 * scale - max(pileH, controlsHeight) / 2)
+            : CGPoint(x: size.width / 2, y: pileY - pileH / 2 - 4 * scale - controlsHeight / 2)
 
-        let boardTop = Self.topBarHeight
-        let boardBottom = controlsCenter.y - Self.controlsHeight / 2
-        let rows = Self.rows(for: slotCount)
-        let boardH = CGFloat(rows.count) * h + CGFloat(rows.count - 1) * gap
+        let boardTop = topBarHeight
+        let boardBottom = min(controlsCenter.y - controlsHeight / 2, controlsBesidePiles ? pileY - pileH / 2 : .infinity)
+        let pattern = Self.rows(for: slotCount)
+        let boardH = CGFloat(pattern.count) * h + CGFloat(pattern.count - 1) * gap
         let firstY = (boardTop + boardBottom) / 2 - boardH / 2 + h / 2
         var centers: [CGPoint] = []
-        for (r, n) in rows.enumerated() {
+        for (r, n) in pattern.enumerated() {
             let rowW = CGFloat(n) * w + CGFloat(n - 1) * gap
             let firstX = size.width / 2 - rowW / 2 + w / 2
             for i in 0..<n {
@@ -90,6 +112,8 @@ struct CardTableView: View {
     var marked: Set<Int> = []
     /// Cards to fade and cross out (hinted non-members).
     var crossed: Set<Int> = []
+    /// A set that was just found: it pops and glows yellow before it's collected.
+    var celebrating: Set<Int> = []
     /// Show how many cards are left in the deck (deck modes only).
     var showsCounts = true
     var onTap: ((Int) -> Void)?
@@ -108,6 +132,10 @@ struct CardTableView: View {
     }
 
     var body: some View {
+        content.fixedCardLayout()
+    }
+
+    @ViewBuilder private var content: some View {
         ZStack {
             pile(count: table.collectedCount, isDeck: false).position(layout.stackCenter)
             pile(count: table.deck.count, isDeck: true).position(layout.deckCenter)
@@ -125,7 +153,9 @@ struct CardTableView: View {
         switch item.place {
         case .slot(let i):
             let landed = table.isArrived(item.card)
-            let lifted = landed && (selected.contains(number) || highlighted.contains(number) || marked.contains(number))
+            let found = landed && celebrating.contains(number)
+            let lifted = landed && (found || selected.contains(number) || highlighted.contains(number) || marked.contains(number))
+            let k = layout.scale
             ZStack {
                 CardView(number: number)
                 CardBackView().opacity(landed ? 0 : 1)
@@ -133,8 +163,9 @@ struct CardTableView: View {
             .frame(width: layout.cardSize.width, height: layout.cardSize.height)
             .contentShape(CardShape())
             .onTapGesture { if landed { onTap?(number) } }
-            .overlay(CardShape().strokeBorder(Palette.ink, lineWidth: selected.contains(number) && landed ? 3 : 0))
-            .overlay(CardShape().inset(by: -5).strokeBorder(Palette.yellow, lineWidth: marked.contains(number) && landed ? 4 : 0))
+            .overlay(CardShape().strokeBorder(Palette.ink, lineWidth: selected.contains(number) && landed ? 3 * k : 0))
+            .overlay(CardShape().inset(by: -5 * k).strokeBorder(Palette.yellow, lineWidth: marked.contains(number) && landed ? 4 * k : 0))
+            .overlay(CardShape().inset(by: -3 * k).strokeBorder(Palette.yellow, lineWidth: found ? 6 * k : 0))
             .overlay {
                 if crossed.contains(number) && landed {
                     ZStack {
@@ -148,11 +179,13 @@ struct CardTableView: View {
                 }
             }
             .shadow(color: .black.opacity(lifted ? 0.22 : 0.08), radius: lifted ? 10 : 3, y: lifted ? 6 : 1.5)
-            .scaleEffect(landed ? (lifted ? 1.04 : 1) : TableLayout.pileScale)
-            .offset(y: lifted ? -layout.cardSize.height * 0.04 : 0)
+            .shadow(color: Palette.yellow.opacity(found ? 0.9 : 0), radius: found ? 22 * k : 0)
+            .scaleEffect(landed ? (found ? 1.1 : lifted ? 1.04 : 1) : TableLayout.pileScale)
+            .offset(y: lifted ? -layout.cardSize.height * (found ? 0.06 : 0.04) : 0)
             .animation(.spring(duration: 0.22, bounce: 0.3), value: lifted)
+            .animation(.spring(duration: 0.4, bounce: 0.6), value: found)
             .position(landed ? layout.slotCenters[i] : layout.deckCenter)
-            .zIndex(landed ? 50 : 60)
+            .zIndex(landed ? (found ? 55 : 50) : 60)
             .allowsHitTesting(landed && onTap != nil)
         case .stack(let depth):
             // A little deterministic jitter makes the stack look hand-made.
@@ -186,14 +219,68 @@ struct CardTableView: View {
         .overlay(alignment: isDeck ? .leading : .trailing) {
             if showsCounts {
                 Text("\(count)")
-                    .font(.rounded(15).monospacedDigit())
+                    .font(.rounded(15 * layout.scale).monospacedDigit())
                     .foregroundStyle(Palette.muted)
                     .fixedSize()
-                    .offset(x: isDeck ? -size.width * 0.5 - 14 : size.width * 0.5 + 14)
+                    .offset(x: isDeck ? -size.width * 0.5 - 14 * layout.scale : size.width * 0.5 + 14 * layout.scale)
                     .contentTransition(.numericText())
                     .animation(.default, value: count)
             }
         }
+    }
+}
+
+/// A small card under the board showing which dots are odd in the current selection, at the dots'
+/// card positions. Even dots stay in place but faded; dots outside `mask` aren't drawn.
+struct ParityCard: View {
+    let value: Int
+    var mask: Int = CardMath.fullMask
+    var height: CGFloat = 64
+    /// A set was just found: glow green and show a check.
+    var success = false
+
+    var body: some View {
+        content.fixedCardLayout()
+    }
+
+    @ViewBuilder private var content: some View {
+        let k = height / CardGeometry.height
+        let side = (CardGeometry.dotRadius * 2 + CardGeometry.strokeWidth) * k
+        ZStack(alignment: .topLeading) {
+            ForEach(Dot.allCases.filter { mask & $0.bit != 0 }) { dot in
+                let p = CardGeometry.center(of: dot)
+                DotView(dot: dot)
+                    .frame(width: side, height: side)
+                    .opacity(value & dot.bit != 0 ? 1 : 0.12)
+                    .scaleEffect(value & dot.bit != 0 ? 1 : 0.85)
+                    .position(x: p.x * k, y: p.y * k)
+            }
+        }
+        .frame(width: CardGeometry.width * k, height: height)
+        .background(CardShape().fill(Palette.card))
+        .overlay(CardShape().strokeBorder(Palette.ink.opacity(0.1), lineWidth: 1))
+        .shadow(color: .black.opacity(0.08), radius: 3, y: 1.5)
+        .background {
+            CardShape()
+                .fill(Palette.green)
+                .blur(radius: height * 0.18)
+                .opacity(success ? 0.85 : 0)
+                .scaleEffect(success ? 1.25 : 0.9)
+        }
+        .overlay {
+            if success {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: height * 0.62, weight: .bold))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.white, Palette.green)
+                    .shadow(color: .black.opacity(0.15), radius: 2, y: 1)
+                    .transition(.scale(scale: 0.3).combined(with: .opacity))
+            }
+        }
+        .animation(.spring(duration: 0.25, bounce: 0.4), value: value)
+        .animation(.spring(duration: 0.35, bounce: 0.55), value: success)
+        .accessibilityElement()
+        .accessibilityLabel("Odd dots")
     }
 }
 
@@ -206,6 +293,10 @@ struct RemainderBar: View {
     var onToggle: ((Dot) -> Void)?
 
     var body: some View {
+        content.fixedCardLayout()
+    }
+
+    @ViewBuilder private var content: some View {
         HStack(spacing: dotSize * 0.7) {
             ForEach(0..<3) { row in
                 let dots = Dot.readingOrder.filter { $0.row == row && mask & $0.bit != 0 }

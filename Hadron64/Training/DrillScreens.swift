@@ -8,14 +8,15 @@ private struct DrillScaffold<Content: View>: View {
     @Environment(StatsStore.self) private var stats
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.uiScale) private var s
 
     var body: some View {
         GeometryReader { geo in
-            let layout = TableLayout(size: geo.size, slotCount: drill.table.slots.count)
+            let layout = TableLayout(size: geo.size, slotCount: drill.table.slots.count, scale: s)
             ZStack {
                 content(layout)
                 topBar
-                    .frame(height: TableLayout.topBarHeight)
+                    .frame(height: layout.topBarHeight)
                     .frame(maxHeight: .infinity, alignment: .top)
             }
         }
@@ -38,7 +39,7 @@ private struct DrillScaffold<Content: View>: View {
     }
 
     private var topBar: some View {
-        HStack(spacing: 18) {
+        HStack(spacing: 18 * s) {
             IconButton(systemName: "xmark") { dismiss() }
             Spacer()
             Label("\(drill.solved)", systemImage: "checkmark")
@@ -46,10 +47,10 @@ private struct DrillScaffold<Content: View>: View {
                 .animation(.default, value: drill.solved)
             Label(drill.averageTime?.shortString ?? "–", systemImage: "stopwatch")
         }
-        .font(.rounded(18).monospacedDigit())
+        .font(.rounded(18 * s).monospacedDigit())
         .foregroundStyle(Palette.ink)
         .labelStyle(.titleAndIcon)
-        .padding(.horizontal, 16)
+        .padding(.horizontal, 16 * s)
     }
 }
 
@@ -59,12 +60,22 @@ struct RemainderDrillScreen: View {
     var body: some View {
         DrillScaffold(drill: drill) { layout in
             CardTableView(table: drill.table, layout: layout, showsCounts: false)
-            RemainderBar(value: drill.guess, dotSize: 40) { drill.toggle($0) }
+            RemainderBar(value: drill.guess, dotSize: 40 * layout.scale) { drill.toggle($0) }
                 .scaleEffect(drill.isResolving ? 1.12 : 1)
                 .animation(.spring(duration: 0.3, bounce: 0.5), value: drill.isResolving)
                 .position(layout.controlsCenter)
         }
         .sensoryFeedback(.selection, trigger: drill.guess)
+        #if DEBUG
+        .task {
+            // Screenshot staging (`-debugSelect N`): enter up to N of the odd dots, always leaving one to go.
+            let n = UserDefaults.standard.integer(forKey: "debugSelect")
+            guard n > 0 else { return }
+            try? await Task.sleep(for: .seconds(1.5))
+            let odd = Dot.readingOrder.filter { drill.answer & $0.bit != 0 }
+            for dot in odd.prefix(min(n, odd.count - 1)) { drill.toggle(dot) }
+        }
+        #endif
     }
 }
 
@@ -76,21 +87,21 @@ struct SetSizeDrillScreen: View {
             CardTableView(table: drill.table, layout: layout,
                           highlighted: drill.revealed ? Set(drill.answerSet) : [],
                           showsCounts: false)
-            HStack(spacing: 10) {
-                ForEach(3...7, id: \.self) { n in sizeButton(n) }
+            HStack(spacing: 10 * layout.scale) {
+                ForEach(3...7, id: \.self) { n in sizeButton(n, scale: layout.scale) }
             }
             .position(layout.controlsCenter)
         }
         .sensoryFeedback(.error, trigger: drill.misses)
     }
 
-    private func sizeButton(_ n: Int) -> some View {
+    private func sizeButton(_ n: Int, scale s: CGFloat) -> some View {
         let isAnswer = drill.revealed && n == drill.answerSet.count
         let isMiss = drill.lastMiss == n
         return Button { drill.guess(n) } label: {
             Text("\(n)")
-                .font(.rounded(22, .bold))
-                .frame(width: 50, height: 50)
+                .font(.rounded(22 * s, .bold))
+                .frame(width: 50 * s, height: 50 * s)
                 .foregroundStyle(isAnswer ? Palette.paper : Palette.ink)
                 .background(Circle().fill(isAnswer ? Palette.ink : Palette.card))
                 .overlay(Circle().strokeBorder(isMiss ? Palette.red : Palette.ink, lineWidth: 2))
@@ -112,9 +123,9 @@ struct RemainderMatchScreen: View {
             CardTableView(table: drill.table, layout: layout,
                           selected: drill.selected, marked: drill.locked,
                           showsCounts: false) { drill.toggle($0) }
-            HStack(spacing: 14) {
-                lockButton
-                RemainderBar(value: drill.parity, dotSize: 26)
+            HStack(spacing: 14 * layout.scale) {
+                lockButton(scale: layout.scale)
+                RemainderBar(value: drill.parity, dotSize: 26 * layout.scale)
             }
             .scaleEffect(drill.isResolving ? 1.08 : 1)
             .animation(.spring(duration: 0.3, bounce: 0.5), value: drill.isResolving)
@@ -127,19 +138,19 @@ struct RemainderMatchScreen: View {
 
     /// Unlocked: a lock that lights up yellow when the current group qualifies.
     /// Locked: shows the remainder to match.
-    private var lockButton: some View {
+    private func lockButton(scale s: CGFloat) -> some View {
         let isLocked = !drill.locked.isEmpty
         return Button { drill.toggleLock() } label: {
-            HStack(spacing: 6) {
+            HStack(spacing: 6 * s) {
                 Image(systemName: isLocked ? "lock.fill" : "lock.open.fill")
-                    .font(.system(size: 16, weight: .bold))
+                    .font(.system(size: 16 * s, weight: .bold))
                 if isLocked {
-                    RemainderBar(value: drill.lockedRemainder, mask: CardMath.yellowMask, dotSize: 18)
+                    RemainderBar(value: drill.lockedRemainder, mask: CardMath.yellowMask, dotSize: 18 * s)
                 }
             }
             .foregroundStyle(Palette.ink)
-            .padding(.horizontal, 12)
-            .frame(minWidth: 48, minHeight: 48)
+            .padding(.horizontal, 12 * s)
+            .frame(minWidth: 48 * s, minHeight: 48 * s)
             .background(Capsule().fill(drill.canLock || isLocked ? Palette.yellow.opacity(0.45) : Palette.card))
             .overlay(Capsule().strokeBorder(drill.canLock || isLocked ? Palette.yellow : Palette.faint, lineWidth: 2))
         }

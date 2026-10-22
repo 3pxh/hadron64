@@ -2,17 +2,25 @@ import SwiftUI
 
 @main
 struct Hadron64App: App {
-    @State private var stats = StatsStore()
+    @State private var stats: StatsStore = {
+        #if DEBUG
+        if UserDefaults.standard.bool(forKey: "debugSeedStats") { return .demo() }
+        #endif
+        return StatsStore()
+    }()
+    @State private var supporter = Supporter()
 
     var body: some Scene {
         WindowGroup {
             HomeView()
                 .environment(stats)
+                .environment(supporter)
+                .adaptiveScale()
                 .preferredColorScheme(.light)
                 .tint(Palette.ink)
                 // GameCenter: authenticate as early as possible so the access point and
                 // score submission are ready by the first finished game. No-op until enabled.
-                .task { GameCenterService.shared.authenticate() }
+                .task { GameCenterService.shared.authenticate(stats: stats) }
         }
     }
 }
@@ -23,6 +31,7 @@ enum Session: Identifiable, Hashable {
     case remainder
     case remainderMatch
     case setSize
+    case multiplayer
     case tutorial
 
     var id: Self { self }
@@ -37,9 +46,11 @@ extension View {
                 case .remainder: RemainderDrillScreen()
                 case .remainderMatch: RemainderMatchScreen()
                 case .setSize: SetSizeDrillScreen()
+                case .multiplayer: MultiplayerScreen()
                 case .tutorial: TutorialScreen()
                 }
             }
+            .adaptiveScale()
         }
     }
 }

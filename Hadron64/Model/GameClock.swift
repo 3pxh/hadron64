@@ -40,6 +40,14 @@ final class GameClock {
         ticker = nil
     }
 
+    #if DEBUG
+    /// Screenshot staging: pretend the game has been running longer.
+    func debugAdvance(by seconds: TimeInterval) {
+        accumulated += seconds
+        elapsed = current
+    }
+    #endif
+
     func reset() {
         pause()
         accumulated = 0
@@ -62,6 +70,7 @@ extension TimeInterval {
 
     /// 4.25 -> "4.3s", 75 -> "1:15"
     var shortString: String {
-        self < 60 ? String(format: "%.1fs", self) : clockString
+        self < 60 ? String(localized: "\(self, format: .number.precision(.fractionLength(1)))s",
+                           comment: "Seconds with one decimal, e.g. 4.3s") : clockString
     }
 }

@@ -7,16 +7,17 @@ struct StatisticsView: View {
     /// 0 = all set sizes.
     @State private var setSize = 0
     @State private var span: Span = .month
+    @Environment(\.uiScale) private var s
 
     enum Span: Int, CaseIterable, Identifiable {
         case week = 7, month = 30, quarter = 90, year = 365
         var id: Int { rawValue }
         var label: String {
             switch self {
-            case .week: "7D"
-            case .month: "30D"
-            case .quarter: "90D"
-            case .year: "1Y"
+            case .week: String(localized: "7D", comment: "Chart range: 7 days")
+            case .month: String(localized: "30D", comment: "Chart range: 30 days")
+            case .quarter: String(localized: "90D", comment: "Chart range: 90 days")
+            case .year: String(localized: "1Y", comment: "Chart range: 1 year")
             }
         }
     }
@@ -25,14 +26,18 @@ struct StatisticsView: View {
         let events = stats.events(for: mode)
         let games = stats.scoredGames(for: mode)
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 20 * s) {
                 modePicker
                 tiles(events: events, games: games)
+                if GameCenterService.shared.isAuthenticated, !GameCenterCatalog.leaderboards(for: mode).isEmpty {
+                    FriendsCard(mode: mode)
+                }
                 histogramCard(events: events)
                 trendCard(events: events, games: games)
             }
             .padding(20)
-            .frame(maxWidth: 640)
+            .controlSize(s > 1 ? .large : .regular)
+            .frame(maxWidth: 640 * s)
             .frame(maxWidth: .infinity)
         }
         .background(Palette.paper.ignoresSafeArea())
@@ -51,8 +56,8 @@ struct StatisticsView: View {
             }
         } label: {
             HStack {
-                Text(mode.title).font(.rounded(20, .bold))
-                Image(systemName: "chevron.up.chevron.down").font(.system(size: 14, weight: .semibold))
+                Text(mode.title).font(.rounded(20 * s, .bold))
+                Image(systemName: "chevron.up.chevron.down").font(.system(size: 14 * s, weight: .semibold))
             }
             .foregroundStyle(Palette.ink)
         }
@@ -63,7 +68,7 @@ struct StatisticsView: View {
     private func tiles(events: [FindEvent], games: [GameRecord]) -> some View {
         let format: (Double) -> String = { mode.isTimeTrial ? "\(Int($0.rounded()))" : $0.clockString }
         let findTimes = events.map(\.duration).sorted()
-        return LazyVGrid(columns: [GridItem(.adaptive(minimum: 96), spacing: 10)], spacing: 10) {
+        return LazyVGrid(columns: [GridItem(.adaptive(minimum: 96 * s), spacing: 10 * s)], spacing: 10 * s) {
             if mode.isDeckMode {
                 tile(mode.isTimeTrial ? "Best cards" : "Best deck", stats.best(for: mode).map(format))
                 tile(mode.isTimeTrial ? "Avg cards" : "Avg deck", stats.average(for: mode).map(format))
@@ -75,14 +80,14 @@ struct StatisticsView: View {
         }
     }
 
-    private func tile(_ title: String, _ value: String?) -> some View {
+    private func tile(_ title: LocalizedStringKey, _ value: String?) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(value ?? "–").font(.rounded(22, .bold).monospacedDigit()).foregroundStyle(Palette.ink)
-            Text(title).font(.rounded(12, .medium)).foregroundStyle(Palette.muted)
+            Text(value ?? "–").font(.rounded(22 * s, .bold).monospacedDigit()).foregroundStyle(Palette.ink)
+            Text(title).font(.rounded(12 * s, .medium)).foregroundStyle(Palette.muted)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(12)
-        .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(Palette.card))
+        .padding(12 * s)
+        .background(RoundedRectangle(cornerRadius: 14 * s, style: .continuous).fill(Palette.card))
     }
 
     // MARK: Histogram
@@ -104,7 +109,7 @@ struct StatisticsView: View {
             } else {
                 histogramChart(bins, median: median)
                 Text("Last bar includes everything slower.")
-                    .font(.rounded(11)).foregroundStyle(Palette.muted)
+                    .font(.rounded(11 * s)).foregroundStyle(Palette.muted)
             }
         }
     }
@@ -125,18 +130,18 @@ struct StatisticsView: View {
                     .lineStyle(StrokeStyle(lineWidth: 1.5, dash: [4, 3]))
                     .annotation(position: .top, alignment: .leading) {
                         Text("median \(median.shortString)")
-                            .font(.rounded(11, .medium)).foregroundStyle(Palette.ink)
+                            .font(.rounded(11 * s, .medium)).foregroundStyle(Palette.ink)
                     }
             }
         }
         .chartXAxis {
             AxisMarks { value in
                 AxisGridLine().foregroundStyle(Palette.faint)
-                AxisValueLabel { if let s = value.as(Double.self) { Text(s.shortString) } }
+                AxisValueLabel { if let t = value.as(Double.self) { Text(t.shortString) } }.font(.rounded(11 * s, .medium))
             }
         }
-        .chartYAxis { AxisMarks { _ in AxisGridLine().foregroundStyle(Palette.faint); AxisValueLabel() } }
-        .frame(height: 200)
+        .chartYAxis { AxisMarks { _ in AxisGridLine().foregroundStyle(Palette.faint); AxisValueLabel().font(.rounded(11 * s, .medium)) } }
+        .frame(height: 200 * s)
     }
 
     // MARK: Trend
@@ -156,12 +161,12 @@ struct StatisticsView: View {
             // live on very different scales.
             if mode.isDeckMode {
                 Text(mode.isTimeTrial ? "Average cards per game" : "Average deck time")
-                    .font(.rounded(13, .semibold)).foregroundStyle(Palette.muted)
+                    .font(.rounded(13 * s, .semibold)).foregroundStyle(Palette.muted)
                 trendChart(gameSeries, start: start, color: Palette.ink,
                            label: { mode.isTimeTrial ? "\(Int($0.rounded()))" : $0.clockString })
             }
             Text(mode == .remainder ? "Average remainder time" : "Average set time")
-                .font(.rounded(13, .semibold)).foregroundStyle(Palette.muted)
+                .font(.rounded(13 * s, .semibold)).foregroundStyle(Palette.muted)
             trendChart(findSeries, start: start, color: Palette.red, label: { $0.shortString })
         }
     }
@@ -184,11 +189,11 @@ struct StatisticsView: View {
             .chartYAxis {
                 AxisMarks { value in
                     AxisGridLine().foregroundStyle(Palette.faint)
-                    AxisValueLabel { if let v = value.as(Double.self) { Text(label(v)) } }
+                    AxisValueLabel { if let v = value.as(Double.self) { Text(label(v)) } }.font(.rounded(11 * s, .medium))
                 }
             }
-            .chartXAxis { AxisMarks { _ in AxisGridLine().foregroundStyle(Palette.faint); AxisValueLabel() } }
-            .frame(height: 160)
+            .chartXAxis { AxisMarks { _ in AxisGridLine().foregroundStyle(Palette.faint); AxisValueLabel().font(.rounded(11 * s, .medium)) } }
+            .frame(height: 160 * s)
         }
     }
 
@@ -198,22 +203,22 @@ struct StatisticsView: View {
         HStack {
             Spacer()
             VStack(spacing: 6) {
-                Image(systemName: "chart.bar.xaxis").font(.system(size: 26))
-                Text("No data yet").font(.rounded(13, .medium))
+                Image(systemName: "chart.bar.xaxis").font(.system(size: 26 * s))
+                Text("No data yet").font(.rounded(13 * s, .medium))
             }
             .foregroundStyle(Palette.muted)
             Spacer()
         }
-        .frame(height: 120)
+        .frame(height: 120 * s)
     }
 
-    private func card<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
+    private func card<Content: View>(title: LocalizedStringKey, @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text(title).font(.rounded(17, .bold)).foregroundStyle(Palette.ink)
+            Text(title).font(.rounded(17 * s, .bold)).foregroundStyle(Palette.ink)
             content()
         }
-        .padding(16)
-        .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(Palette.card))
+        .padding(16 * s)
+        .background(RoundedRectangle(cornerRadius: 20 * s, style: .continuous).fill(Palette.card))
     }
 }
 

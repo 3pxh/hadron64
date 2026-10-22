@@ -13,9 +13,9 @@ func rgb(_ h: UInt32) -> CGColor {
 ctx.translateBy(x: 0, y: S); ctx.scaleBy(x: 1, y: -1)
 ctx.setFillColor(rgb(0xF3EFE6)); ctx.fill(CGRect(x: 0, y: 0, width: S, height: S))
 
-// Dot geometry in card units (R 81, stroke 12, stripes 14 every 25), scaled 1.5x the old icon's 0.78.
+// Dot geometry in card units (R 81, stroke 16), scaled 1.5x the old icon's 0.78.
 let k: CGFloat = 0.78 * 1.5
-let R: CGFloat = 81, line: CGFloat = 12
+let R: CGFloat = 81, line: CGFloat = 16
 // Equal gap g between neighbouring dots and between the side dots and the icon edge:
 // neighbours sit one circumradius apart (2·Ro + g), and the side extent is circumradius + Ro + g = S/2.
 let Ro = (R + line / 2) * k
@@ -40,8 +40,11 @@ for col in 0..<2 {
             ctx.addEllipse(in: disc); ctx.clip()
             ctx.setFillColor(rgb(0xFFFFFF)); ctx.fill(disc)
             ctx.setFillColor(rgb(colors[row]))
-            var dx = -R + 6
-            while dx < R { ctx.fill(CGRect(x: dx - 7, y: -R, width: 14, height: 2 * R)); dx += 25 }
+            // Four white and three colored bands of equal width across the inside of the outline, white at both edges.
+            let band = (2 * R - line) / 7
+            for i in stride(from: 1, to: 7, by: 2) {
+                ctx.fill(CGRect(x: -R + line / 2 + CGFloat(i) * band, y: -R, width: band, height: 2 * R))
+            }
             ctx.restoreGState()
         }
         ctx.setStrokeColor(rgb(0x000000)); ctx.setLineWidth(line); ctx.strokeEllipse(in: disc)
