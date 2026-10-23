@@ -9,13 +9,13 @@ final class CardMathTests: XCTestCase {
     }
 
     func testSimpleDecksOnlyUseTheirDotsAndCancel() {
-        for mode in [GameMode.simple3, .simple4, .simple5] {
+        for mode in [GameMode.simple4, .simple5] {
             let deck = CardMath.deck(mask: mode.dotMask)
             XCTAssertEqual(deck.count, (1 << mode.dotCount) - 1, "\(mode)")
             XCTAssertTrue(deck.allSatisfy { $0 & ~mode.dotMask == 0 })
             XCTAssertEqual(CardMath.parity(deck), 0)
         }
-        XCTAssertEqual(GameMode.simple3.dealSize, 4)
+        XCTAssertEqual(GameMode.simple4.dealSize, 5)
         XCTAssertEqual(GameMode.simple5.dealSize, 6)
     }
 
@@ -58,8 +58,39 @@ final class CardMathTests: XCTestCase {
     func testTutorialHandsHaveTheIntendedSets() {
         let sets = TutorialModel.fixedHands.map { CardMath.allSets(in: $0) }
         XCTAssertEqual(sets.count, 2)
-        XCTAssertEqual(sets[0].map(Set.init), [[3, 6, 5]])
+        XCTAssertEqual(sets[0].map(Set.init), [[1, 3, 2]])
         XCTAssertEqual(sets[1].map(Set.init), [[32, 2, 34]], "10 is the decoy: its yellow can't cancel")
+    }
+
+    func testFoundSetCancelsPairByPair() {
+        // {Y░ R●} {R● B░} {Y░ B░}: yellow, then red, then blue, in reading order.
+        let pairs = CardMath.cancellingPairs([3, 6, 5])
+        XCTAssertEqual(pairs.map { [$0.first, $0.second, $0.bit] }, [[3, 5, 1], [3, 6, 2], [6, 5, 4]])
+        // Four cards sharing a dot cancel it in two pairs; the background (Extra Hard) comes last.
+        let shaded = [1 | 64, 1 | 64 | 8, 1 | 2, 1 | 2 | 8]
+        let bits = CardMath.cancellingPairs(shaded).map(\.bit)
+        XCTAssertEqual(bits.filter { $0 == 1 }.count, 2)
+        XCTAssertEqual(bits.last, 64)
+    }
+
+    func testDotsCancelInPairsInPickOrder() {
+        // {Y░} {Y░ R●} {Y░ B░}: the first two yellows cancel, and the third stays on the latest card.
+        XCTAssertEqual(CardMath.cancelled([1, 3, 5]), [1: 1, 3: 1, 5: 0])
+        XCTAssertEqual(CardMath.cancelled([5, 3, 1]), [5: 5 & ~4, 3: 1, 1: 0])
+        XCTAssertEqual(CardMath.cancelled([1, 3, 2]), [1: 1, 3: 3, 2: 2], "a set cancels completely")
+    }
+
+    @MainActor
+    func testTutorialDotsCancelInPairs() {
+        let model = TutorialModel()
+        model.start()                                       // {Y░} {Y░ R●} {R●}
+        model.toggle(1)
+        XCTAssertEqual(model.cancelled[1], 0, "nothing to pair with yet")
+        model.toggle(3)
+        XCTAssertEqual(model.cancelled[1], 1, "the yellows cancel")
+        XCTAssertEqual(model.cancelled[3], 1, "the red stays")
+        model.toggle(1)
+        XCTAssertEqual(model.cancelled[3], 0, "putting a card down brings its partner's dot back")
     }
 
     func testHistogramPutsOutliersInLastBin() {

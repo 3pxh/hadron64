@@ -58,6 +58,53 @@ struct CardView: View {
     }
 }
 
+/// A card face drawn dot by dot, so single dots can animate: cancelled dots swell and fade like a little burst
+/// (and come back if un-cancelled), lit dots grow inside an ink ring, stuck dots inside a red one. A shaded background
+/// (Extra Hard) cancels too, fading to plain.
+/// Draws like `CardView` otherwise; use that where dots never change.
+struct CancellingCardView: View {
+    let number: Int
+    var cancelled = 0
+    var lit = 0
+    var stuck = 0
+
+    var body: some View {
+        GeometryReader { geo in
+            let k = geo.size.width / CardGeometry.width
+            // DotView leaves room for the outline around the radius.
+            let side = 2 * (CardGeometry.dotRadius + CardGeometry.strokeWidth / 2) * k
+            ForEach(Dot.allCases.filter { number & $0.bit != 0 }) { dot in
+                let p = CardGeometry.center(of: dot)
+                let gone = cancelled & dot.bit != 0
+                let isLit = lit & dot.bit != 0
+                let isStuck = stuck & dot.bit != 0 && !gone
+                DotView(dot: dot)
+                    .frame(width: side, height: side)
+                    .background {
+                        Circle()
+                            .strokeBorder(isStuck ? Palette.red : Palette.ink, lineWidth: side * 0.08)
+                            .padding(-side * 0.16)
+                            .opacity(isLit || isStuck ? 1 : 0)
+                    }
+                    .scaleEffect(gone ? 1.6 : isLit || isStuck ? 1.15 : 1)
+                    .opacity(gone ? 0 : 1)
+                    .position(x: p.x * k, y: p.y * k)
+            }
+        }
+        .background {
+            CardShape().fill(Palette.shade)
+                .opacity(number & ~cancelled & CardMath.backgroundBit != 0 ? 1 : 0)
+                .background(CardShape().fill(Palette.card))
+        }
+        .overlay(CardShape().strokeBorder(Palette.ink.opacity(0.1), lineWidth: 1))
+        .animation(.easeOut(duration: 0.35), value: cancelled)
+        .animation(.spring(duration: 0.35), value: lit)
+        .animation(.spring(duration: 0.35), value: stuck)
+        .accessibilityElement()
+        .accessibilityLabel("Card \(number)")
+    }
+}
+
 struct CardBackView: View {
     var body: some View {
         Canvas { ctx, size in

@@ -1,8 +1,8 @@
 import SwiftUI
 
 /// Rules for the deck-based modes: Free Play, Time Trial (endless deck), and the Simple Cards drills.
-/// Tap cards to select them; the moment the selection's dots all cancel, the set celebrates on the
-/// board for a moment and is then collected.
+/// Tap cards to select them; the moment the selection's dots all cancel, the set stays on the board while its
+/// matching dots disappear pair by pair, and is then collected.
 @Observable @MainActor
 final class DeckGame {
     let mode: GameMode
@@ -15,8 +15,13 @@ final class DeckGame {
     private(set) var isFinished = false
     /// The set just found, held on the board for `celebrationTime` before it's collected.
     private(set) var celebrating: Set<Int> = []
+    /// The dots that have disappeared from each card of the set being celebrated.
+    private(set) var cancelled: [Int: Int] = [:]
 
-    static let celebrationTime = 0.6
+    /// The pairs of a set disappear one after another over this long, however many there are…
+    static let cancelWindow = 0.5
+    /// …and then the last pair gets this long to fade before the cards are collected.
+    static let celebrationTime = cancelWindow + 0.3
 
     /// Free Play hints, reset after every find. Level 1 reveals the size of a smallest set on the
     /// board; level 2 reveals one card: a member for sets of 3–4, a non-member for 5–6, all of a 7.
@@ -75,12 +80,21 @@ final class DeckGame {
         // The last set stops the clock now; the celebration isn't part of the player's time.
         if clearsDeck { isClearing = true; clock.pause() }
         celebrating = Set(cards)
+        let pairs = CardMath.cancellingPairs(cards)
+        let gap = Self.cancelWindow / Double(max(pairs.count - 1, 1))
         Task { [weak self] in
-            try? await Task.sleep(for: .seconds(Self.celebrationTime))
+            for (i, pair) in pairs.enumerated() {
+                if i > 0 { try? await Task.sleep(for: .seconds(gap)) }
+                self?.cancelled[pair.first, default: 0] |= pair.bit
+                self?.cancelled[pair.second, default: 0] |= pair.bit
+            }
+            try? await Task.sleep(for: .seconds(Self.celebrationTime - Self.cancelWindow))
             guard let self else { return }
             celebrating = []
             onFind?(event)
             roundStart = clock.current + table.collect(cards)
+            // Only once the cards are in the stack, which draws them blank, so they don't fill back in on the way.
+            cancelled = [:]
             if table.isCleared { finish(completed: true, at: now) }
         }
     }

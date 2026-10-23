@@ -1,78 +1,95 @@
 import SwiftUI
 
-/// A wordless, hands-on tutorial. Each step is a small table with one goal: make the remainder line empty.
+/// A wordless, hands-on tutorial. Each step is a small table with one goal: pick cards until every dot on them has
+/// cancelled. Picked cards show it directly: matching dots fade out in pairs, and come back when a card is put down.
 ///
-/// 1. Three cards, the hand shows each tap. The player watches dots appear in the hexagon and cancel in pairs,
-///    and an arrow carries the eye down to the empty hexagon before the celebration.
+/// 1. Three cards, the hand shows each tap: one dot, a card that cancels it and adds another, then that dot alone.
+///    Every tap after the first visibly cancels something.
 /// 2. A random deal from the three-dot deck, so there's less to look at while it sinks in.
-///    The hand only appears if the player stalls.
-/// 3. Four fixed three-dot cards where one is a decoy: its yellow can't cancel, and the hexagon rings that dot in red.
+///    The hand only appears if the player stalls or goes back to a selection they've already tried.
+/// 3. Four fixed three-dot cards where one is a decoy: its yellow can't cancel, so once picked it's ringed in red.
 /// 4. Random four-dot deals. The player is left alone for a minute, then the cards outside a set are crossed out.
+///    The very last one plays like the real game: nothing cancels until the set is complete, then it cancels pair by
+///    pair.
 ///
-/// After the first two tables, a page of card sums spells out the rule: dots add, pairs cancel, nothing left is a win.
+/// A check answers each set: at once where the dots cancelled as they were picked, after the cancelling otherwise.
+///
+/// After the first two tables, a page of three-card sums spells out the rule: matching dots cancel in pairs, and a
+/// set is three cards with nothing left over. The last sum is a near miss, with a dot left and a red cross.
 ///
 /// It ends by offering four-dot practice or Free Play.
 @Observable @MainActor
 final class TutorialModel {
     private enum Deal {
-        case fixed([Int], mask: Int)
-        case random(GameMode)
+        case fixed([Int])
+        /// A deal from the deck with these dots, one card more than there are dots, so it always has a set.
+        case random(mask: Int)
     }
 
+    private static let solids = Dot.yellowSolid.bit | Dot.redSolid.bit | Dot.blueSolid.bit
+
     private static let deals: [Deal] = [
-        .fixed([3, 6, 5], mask: CardMath.fullMask),                   // {Y░ R●} {R● B░} {Y░ B░}
-        .random(.simple3),
-        .fixed([32, 2, 10, 34], mask: GameMode.simple3.dotMask),      // {B●} {R●} {Y● R●} {R● B●}: 10 is the decoy
-        .random(.simple4),
-        .random(.simple4),
+        .fixed([1, 3, 2]),              // {Y░} {Y░ R●} {R●}
+        .random(mask: solids),
+        .fixed([32, 2, 10, 34]),        // {B●} {R●} {Y● R●} {R● B●}: 10 is the decoy
+        .random(mask: GameMode.simple4.dotMask),
+        .random(mask: GameMode.simple4.dotMask),
     ]
     static let stepCount = deals.count
 
     /// The hand-picked tables, in order.
     static var fixedHands: [[Int]] {
-        deals.compactMap { if case .fixed(let cards, _) = $0 { cards } else { nil } }
+        deals.compactMap { if case .fixed(let cards) = $0 { cards } else { nil } }
     }
     /// The step the card sums are shown before.
     static let equationsStep = 2
 
     let table = Table(slotCount: 3, deck: [])
     private(set) var step = 0
-    private(set) var selected: Set<Int> = []
+    /// The picked cards, in the order they were picked.
+    private(set) var picks: [Int] = []
     private(set) var hint: Int?
     /// Cards crossed out by the hint on the last tables: they aren't part of the set.
     private(set) var crossed: Set<Int> = []
     private(set) var celebrating = false
-    /// The cards of the set just made, glowing on the board before they're collected.
+    /// The cards of the set just made, held on the board before they're collected.
     private(set) var found: Set<Int> = []
+    /// The check that answers a finished set.
+    private(set) var showsCheck = false
+    /// The last table, like play, only cancels once the set is complete: these are its dots gone so far.
+    private(set) var popped: [Int: Int] = [:]
     private(set) var isDone = false
     private(set) var showingEquations = false
-    /// First table only: the last card tapped, where the arrow starts before it moves down to the hexagon.
-    private(set) var pointerCard: Int?
-    private(set) var pointerArrived = false
 
     @ObservationIgnored private var hintTask: Task<Void, Never>?
+    /// When the current table was dealt: tapping doesn't push the hint back past this plus `hintDelay`.
+    @ObservationIgnored private var dealtAt = Date.now
+    /// Selections already tried on this table. Coming back to one means the player is going in circles.
+    @ObservationIgnored private var tried: Set<Set<Int>> = []
 
-    var parity: Int { CardMath.parity(selected) }
+    var selected: Set<Int> { Set(picks) }
+    var parity: Int { CardMath.parity(picks) }
 
-    /// One more tap finishes a set: the odd dots are exactly a card still on the board.
-    var isOneAway: Bool {
-        parity != 0 && !selected.contains(parity) && table.boardCards.contains(parity)
+    /// The dots that have cancelled on each card. A found set has cancelled completely, except on the last table,
+    /// where it cancels pair by pair once it's found.
+    var cancelled: [Int: Int] {
+        guard cancelsAsPicked else { return popped }
+        return CardMath.cancelled(picks).merging(found.map { ($0, $0) }) { $1 }
     }
 
-    /// Odd dots that no card left on the board can clear: the selection can't become a set from here.
-    var stuckDots: Int {
-        parity & ~table.boardCards.filter { !selected.contains($0) }.reduce(0, |)
-    }
-
-    /// Which dots the current table uses.
-    var mask: Int {
-        switch deal {
-        case .fixed(_, let mask): mask
-        case .random(let mode): mode.dotMask
-        }
+    /// Dots left on picked cards that nothing else on the board can cancel: the picks can't become a set from here.
+    /// Not on the last table, where nothing cancels until the set is complete.
+    var stuck: [Int: Int] {
+        guard cancelsAsPicked else { return [:] }
+        let stuckDots = parity & ~table.boardCards.filter { !selected.contains($0) }.reduce(0, |)
+        let cancelled = cancelled
+        return Dictionary(uniqueKeysWithValues: picks.map { ($0, $0 & ~(cancelled[$0] ?? 0) & stuckDots) })
     }
 
     private var deal: Deal { Self.deals[min(step, Self.stepCount - 1)] }
+
+    /// Every table but the last cancels dots as cards are picked.
+    private var cancelsAsPicked: Bool { step < Self.stepCount - 1 }
 
     /// The last tables hint by crossing out unused cards, and only after a long wait.
     private var crossesOut: Bool { step >= Self.stepCount - 2 }
@@ -91,23 +108,33 @@ final class TutorialModel {
 
     private func load() {
         let cards = switch deal {
-        case .fixed(let cards, _): cards
-        case .random(let mode): Array(CardMath.deck(mask: mode.dotMask).shuffled().prefix(mode.dealSize))
+        case .fixed(let cards): cards
+        case .random(let mask): Array(CardMath.deck(mask: mask).shuffled().prefix(mask.nonzeroBitCount + 1))
         }
-        selected = []
+        picks = []
         crossed = []
+        tried = []
         let settle = table.replace(with: cards)
+        dealtAt = .now.addingTimeInterval(settle)
         scheduleHint(after: settle + (step == 0 ? 0.3 : hintDelay))
     }
 
     func toggle(_ card: Int) {
         guard !celebrating else { return }
-        if selected.contains(card) { selected.remove(card) } else { selected.insert(card) }
-        if !selected.isEmpty && parity == 0 {
-            complete(last: card)
+        if let i = picks.firstIndex(of: card) { picks.remove(at: i) } else { picks.append(card) }
+        if !picks.isEmpty && parity == 0 {
+            complete()
         } else if !crossesOut {
-            scheduleHint(after: hintDelay)
+            let isRepeat = !tried.insert(selected).inserted
+            scheduleHint(after: isRepeat && !selected.isEmpty ? 0.4 : nextHintDelay)
         }
+    }
+
+    /// The idle wait before the hand returns, cut short once the table has gone on longer than `hintDelay`.
+    /// Never instant, so a tap isn't immediately answered by the hand.
+    private var nextHintDelay: Double {
+        let overdue = dealtAt.addingTimeInterval(hintDelay).timeIntervalSinceNow
+        return min(hintDelay, max(overdue, 1.5))
     }
 
     func finishEquations() {
@@ -115,23 +142,37 @@ final class TutorialModel {
         load()
     }
 
-    private func complete(last card: Int) {
+    private func complete() {
         hintTask?.cancel()
         hint = nil
         crossed = []
         celebrating = true
-        // The first table holds the selection while the arrow moves, so the empty hexagon is what it lands on.
-        let pointing = step == 0
-        if pointing { withAnimation(.easeOut(duration: 0.2)) { pointerCard = card } } else { celebrate() }
+        let set = table.boardCards.filter(selected.contains)
+        found = Set(set)
+        picks = []
         Task {
-            if pointing {
-                await pointDown()
-                celebrate()
+            if cancelsAsPicked {
+                // The dots cancelled as the cards were picked, so the check answers the last pick straight away.
+                showsCheck = true
+            } else {
+                // As in play: the set cancels pair by pair, and then it's answered.
+                let pairs = CardMath.cancellingPairs(set)
+                let gap = DeckGame.cancelWindow / Double(max(pairs.count - 1, 1))
+                for (i, pair) in pairs.enumerated() {
+                    if i > 0 { try? await Task.sleep(for: .seconds(gap)) }
+                    popped[pair.first, default: 0] |= pair.bit
+                    popped[pair.second, default: 0] |= pair.bit
+                }
+                try? await Task.sleep(for: .seconds(0.3))
+                showsCheck = true
             }
-            try? await Task.sleep(for: .seconds(DeckGame.celebrationTime))
-            table.collect(table.boardCards.filter(found.contains), refill: false)
+            try? await Task.sleep(for: .seconds(0.9))
+            table.collect(set, refill: false)
+            try? await Task.sleep(for: .seconds(0.6))
+            // Only now: the collected cards fade out blank.
             found = []
-            try? await Task.sleep(for: .seconds(1.0))
+            popped = [:]
+            showsCheck = false
             celebrating = false
             step += 1
             if step >= Self.stepCount {
@@ -144,20 +185,6 @@ final class TutorialModel {
                 load()
             }
         }
-    }
-
-    private func celebrate() {
-        found = selected
-        selected = []
-    }
-
-    /// Move the eye from the board to the hexagon, now empty, so the player sees why the set counts.
-    private func pointDown() async {
-        try? await Task.sleep(for: .seconds(0.35))
-        withAnimation(.easeInOut(duration: 0.8)) { pointerArrived = true }
-        try? await Task.sleep(for: .seconds(1.2))
-        withAnimation(.easeOut(duration: 0.2)) { pointerCard = nil }
-        pointerArrived = false
     }
 
     private func scheduleHint(after delay: Double) {
@@ -206,31 +233,14 @@ struct TutorialScreen: View {
             ZStack {
                 CardTableView(table: model.table, layout: layout, selected: model.selected,
                               crossed: model.crossed, celebrating: model.found,
+                              cancelled: model.cancelled, stuck: model.stuck,
                               showsCounts: false, showsStack: false) {
                     model.toggle($0)
-                }
-                if !model.showingEquations {
-                    ParityHex(value: model.parity, mask: model.mask, height: layout.controlsHeight,
-                              success: !model.found.isEmpty,
-                              guide: .init(active: !model.selected.isEmpty, oneAway: model.isOneAway,
-                                           stuck: model.stuckDots))
-                        .position(layout.controlsCenter)
-                        .transition(.opacity)
                 }
 
                 if let hint = model.hint, let index = model.table.slots.firstIndex(where: { $0?.number == hint }) {
                     TapHint(cardSize: layout.cardSize)
                         .position(layout.slotCenters[index])
-                        .allowsHitTesting(false)
-                        .transition(.opacity)
-                }
-
-                if let card = model.pointerCard, let index = model.table.slots.firstIndex(where: { $0?.number == card }) {
-                    let size = layout.cardSize.width * 0.42
-                    let goal = CGPoint(x: layout.controlsCenter.x,
-                                       y: layout.controlsCenter.y - layout.controlsHeight / 2 - size * 0.6)
-                    GoalPointer(size: size)
-                        .position(model.pointerArrived ? goal : layout.slotCenters[index])
                         .allowsHitTesting(false)
                         .transition(.opacity)
                 }
@@ -241,7 +251,7 @@ struct TutorialScreen: View {
                         .transition(.opacity)
                 }
 
-                if model.celebrating && model.found.isEmpty && model.pointerCard == nil {
+                if model.showsCheck {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.system(size: 96 * s, weight: .bold))
                         .symbolRenderingMode(.palette)
@@ -260,11 +270,11 @@ struct TutorialScreen: View {
             }
         }
         .background(Palette.paper.ignoresSafeArea())
-        .animation(.spring(duration: 0.4, bounce: 0.4), value: model.celebrating)
+        .animation(.spring(duration: 0.4, bounce: 0.4), value: model.showsCheck)
         .animation(.spring(duration: 0.5), value: model.isDone)
         .animation(.easeInOut(duration: 0.4), value: model.showingEquations)
         .sensoryFeedback(.selection, trigger: model.selected)
-        .sensoryFeedback(.success, trigger: model.step)
+        .sensoryFeedback(trigger: model.showsCheck) { _, shown in shown ? .success : nil }
         .onAppear { model.start() }
         .onDisappear { hasSeenTutorial = true }
         .sheet(item: $unlock) { SupportView(reason: $0) }
@@ -333,49 +343,88 @@ struct TutorialScreen: View {
     }
 }
 
-/// A downward arrow drawn like the tap hint's hand, but with no ring or bobbing: "look here", not "tap here".
-private struct GoalPointer: View {
-    let size: CGFloat
-
-    var body: some View {
-        Image(systemName: "arrowshape.down.fill")
-            .font(.system(size: size))
-            .foregroundStyle(Palette.ink)
-            .shadow(color: Palette.paper, radius: 0, x: 1.5, y: 1.5)
-            .shadow(color: Palette.paper, radius: 0, x: -1.5, y: -1.5)
-    }
-}
-
-/// Three card sums, each starting from the last one's result: two single dots make a pair, two pairs sharing a dot
-/// keep the other two, and a card plus itself is nothing, which is a win. Each sum is built up card by card.
+/// A few cards at a time, added up. Dots that appear on two of the cards light up together and pop, one pair at a
+/// time. The first two sums cancel completely, a set, and get a green check; the last keeps a dot with no partner,
+/// which is ringed in red under a red cross.
 private struct EquationsPage: View {
     let onContinue: () -> Void
 
-    // The first table's dots: {Y░} + {R●} = {Y░ R●}, + {R● B░} = {Y░ B░}, + {Y░ B░} = nothing.
-    private static let sums: [(Int, Int)] = [(1, 2), (3, 6), (5, 5)]
-    /// Beats per row: the first card, then "+ card", then "= card".
-    private static let partsPerRow = 3
-    /// After the last row, the check lands on the empty card, then the button appears.
-    private static let checkBeat = sums.count * partsPerRow
-    private static let buttonBeat = checkBeat + 1
+    // {Y░} {Y░ R●} {R●}: the first table again. {Y░} {R●} {B░} {Y░ R● B░}: a set can be more than three cards.
+    // {Y░ R●} {R● B░} {Y░}: the blue has no partner.
+    private static let examples: [[Int]] = [[1, 3, 2], [1, 2, 4, 7], [3, 6, 1]]
 
-    /// How many beats have been revealed.
-    @State private var shown = 0
+    @State private var example = 0
+    /// How many of the current sum's cards are on the page.
+    @State private var dealt = 0
+    /// The dot whose pair is lit, about to pop.
+    @State private var pairing: Dot?
+    /// Dots whose pairs have popped.
+    @State private var popped = 0
+    @State private var showsResult = false
+    @State private var showsButton = false
     @Environment(\.uiScale) private var s
+
+    private var cards: [Int] { Self.examples[example] }
+    private var leftover: Int { CardMath.parity(cards) }
+    /// The card indices on each row: four cards go in two rows of two.
+    private var rows: [[Int]] {
+        cards.count == 4 ? [[0, 1], [2, 3]] : [Array(cards.indices)]
+    }
+    /// Dots on exactly two of the cards, in reading order: the pairs that pop.
+    private var pairs: [Dot] {
+        Dot.readingOrder.filter { dot in cards.filter { $0 & dot.bit != 0 }.count == 2 }
+    }
 
     var body: some View {
         GeometryReader { geo in
             let symbol = 28 * s
             let gap = 10 * s
+            let verdict = 88 * s
             let button = 72 * s
-            let byWidth = (geo.size.width - 32 - 2 * symbol - 4 * gap) / 3
-            let byHeight = (geo.size.height - button - 40 * s - 2 * 24 * s) / 3 * CardGeometry.aspect
+            let spacing = 32 * s
+            let rowGap = 2 * gap
+            let rows = self.rows
+            // Later rows open with a plus, so every row keeps a sign's width in front and the cards line up.
+            let lead = rows.count > 1
+            // Every sum uses the cards of three in a row, and its first row starts where that one row would sit
+            // centered. A second row, the check and the button still have to fit below it.
+            let below = 2 * spacing + verdict + button
+            let byWidth = (geo.size.width - 32 - 2 * (symbol + 2 * gap)) / 3
+            let byHeight = (geo.size.height - 2 * spacing - 2 * rowGap - below) / 3 * CardGeometry.aspect
             let w = min(byWidth, byHeight, 150 * s)
-            VStack(spacing: 24 * s) {
-                ForEach(Self.sums.indices, id: \.self) { i in
-                    let (a, b) = Self.sums[i]
-                    row(i, a, b, cardWidth: w, symbol: symbol, gap: gap)
+            let top = (geo.size.height - w / CardGeometry.aspect - below) / 2
+            VStack(spacing: spacing) {
+                VStack(spacing: rowGap) {
+                    ForEach(rows.indices, id: \.self) { r in
+                        HStack(spacing: gap) {
+                            if r == 0 && lead { Color.clear.frame(width: symbol, height: 1) }
+                            ForEach(rows[r], id: \.self) { i in
+                                Group {
+                                    if i > 0 { sign("plus", size: symbol) }
+                                    card(cards[i], width: w)
+                                }
+                                .revealed(dealt > i, lift: 12 * s)
+                            }
+                        }
+                    }
                 }
+                .fixedCardLayout()
+                .accessibilityElement()
+                .accessibilityLabel(cards.count == 4
+                    ? Text("Card \(cards[0]) plus card \(cards[1]) plus card \(cards[2]) plus card \(cards[3])")
+                    : Text("Card \(cards[0]) plus card \(cards[1]) plus card \(cards[2])"))
+                .accessibilityValue(!showsResult ? Text(verbatim: "") : leftover == 0 ? Text("Set found") : Text("Not a set"))
+
+                Image(systemName: leftover == 0 ? "checkmark.circle.fill" : "xmark.circle.fill")
+                    .font(.system(size: verdict * 0.9, weight: .bold))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.white, leftover == 0 ? Palette.green : Palette.red)
+                    .shadow(color: .black.opacity(0.15), radius: 2, y: 1)
+                    .frame(height: verdict)
+                    .opacity(showsResult ? 1 : 0)
+                    .scaleEffect(showsResult ? 1 : 0.3)
+                    .accessibilityHidden(true)
+
                 Button(action: onContinue) {
                     Image(systemName: "arrow.right")
                         .font(.system(size: 26 * s, weight: .bold))
@@ -384,61 +433,56 @@ private struct EquationsPage: View {
                         .background(Circle().fill(Palette.ink))
                 }
                 .buttonStyle(.plain)
-                .opacity(isShown(Self.buttonBeat) ? 1 : 0)
-                .scaleEffect(isShown(Self.buttonBeat) ? 1 : 0.8)
-                .allowsHitTesting(isShown(Self.buttonBeat))
-                .padding(.top, 16 * s)
+                .opacity(showsButton ? 1 : 0)
+                .scaleEffect(showsButton ? 1 : 0.8)
+                .allowsHitTesting(showsButton)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding(.top, top)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         }
-        .task {
-            // A short beat between the parts of a sum; a longer hold once a sum is complete, so it can be read.
-            for beat in 0...Self.buttonBeat {
-                let startsRow = beat % Self.partsPerRow == 0 && beat < Self.checkBeat
-                let pause = beat == 0 ? 0.4 : startsRow || beat == Self.buttonBeat ? 2.4 : 1.1
-                try? await Task.sleep(for: .seconds(pause))
-                withAnimation(beat == Self.checkBeat ? .spring(duration: 0.5, bounce: 0.5) : .spring(duration: 0.8, bounce: 0.2)) {
-                    shown += 1
+        .sensoryFeedback(trigger: popped) { old, new in new > old ? .impact(weight: .light) : nil }
+        .sensoryFeedback(trigger: showsResult) { _, shown in shown ? (leftover == 0 ? .success : .warning) : nil }
+        .task { try? await play() }
+    }
+
+    private func play() async throws {
+        for i in Self.examples.indices {
+            if i > 0 {
+                withAnimation(.easeIn(duration: 0.4)) {
+                    dealt = 0
+                    showsResult = false
                 }
+                try await pause(0.5)
+                example = i
+                popped = 0
             }
+            for n in 1...Self.examples[i].count {
+                try await pause(n == 1 ? 0.4 : 0.7)
+                withAnimation(.spring(duration: 0.6, bounce: 0.2)) { dealt = n }
+            }
+            try await pause(1.0)
+            for dot in pairs {
+                withAnimation(.spring(duration: 0.35)) { pairing = dot }
+                try await pause(0.8)
+                withAnimation(.easeOut(duration: 0.35)) {
+                    pairing = nil
+                    popped |= dot.bit
+                }
+                try await pause(0.6)
+            }
+            withAnimation(.spring(duration: 0.5, bounce: 0.5)) { showsResult = true }
+            try await pause(2.4)
         }
+        withAnimation(.spring(duration: 0.6)) { showsButton = true }
     }
 
-    private func isShown(_ beat: Int) -> Bool { beat < shown }
-
-    private func row(_ i: Int, _ a: Int, _ b: Int, cardWidth w: CGFloat, symbol: CGFloat, gap: CGFloat) -> some View {
-        let first = i * Self.partsPerRow
-        return HStack(spacing: gap) {
-            card(a, width: w).revealed(isShown(first), lift: 12 * s)
-            Group {
-                sign("plus", size: symbol)
-                card(b, width: w)
-            }
-            .revealed(isShown(first + 1), lift: 12 * s)
-            Group {
-                sign("equal", size: symbol)
-                card(a ^ b, width: w)
-                    .overlay {
-                        if a ^ b == 0 && isShown(Self.checkBeat) {
-                            Image(systemName: "checkmark.circle.fill")
-                                .font(.system(size: w * 0.5, weight: .bold))
-                                .symbolRenderingMode(.palette)
-                                .foregroundStyle(.white, Palette.green)
-                                .shadow(color: .black.opacity(0.15), radius: 2, y: 1)
-                                .transition(.scale(scale: 0.3).combined(with: .opacity))
-                        }
-                    }
-            }
-            .revealed(isShown(first + 2), lift: 12 * s)
-        }
-        .fixedCardLayout()
-        .accessibilityElement()
-        .accessibilityLabel("Card \(a) plus card \(b) equals card \(a ^ b)")
+    private func pause(_ seconds: Double) async throws {
+        try await Task.sleep(for: .seconds(seconds))
     }
 
-    private func card(_ number: Int, width: CGFloat) -> some View {
-        CardView(number: number)
-            .frame(width: width, height: width / CardGeometry.aspect)
+    private func card(_ number: Int, width w: CGFloat) -> some View {
+        CancellingCardView(number: number, cancelled: popped, lit: pairing?.bit ?? 0, stuck: showsResult ? leftover : 0)
+            .frame(width: w, height: w / CardGeometry.aspect)
             .shadow(color: .black.opacity(0.08), radius: 3, y: 1.5)
     }
 

@@ -4082,126 +4082,250 @@
         }
       }
     },
-    "Card %lld plus card %lld equals card %lld" : {
+    "Card %lld plus card %lld plus card %lld" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "البطاقة %1$lld زائد البطاقة %2$lld يساوي البطاقة %3$lld"
+            "value" : "البطاقة %1$lld زائد البطاقة %2$lld زائد البطاقة %3$lld"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Karte %1$lld plus Karte %2$lld ergibt Karte %3$lld"
+            "value" : "Karte %1$lld plus Karte %2$lld plus Karte %3$lld"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Card %1$lld plus card %2$lld equals card %3$lld"
+            "value" : "Card %1$lld plus card %2$lld plus card %3$lld"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Carta %1$lld más carta %2$lld es igual a carta %3$lld"
+            "value" : "Carta %1$lld más carta %2$lld más carta %3$lld"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Carte %1$lld plus carte %2$lld égale carte %3$lld"
+            "value" : "Carte %1$lld plus carte %2$lld plus carte %3$lld"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "कार्ड %1$lld और कार्ड %2$lld मिलकर कार्ड %3$lld"
+            "value" : "कार्ड %1$lld, कार्ड %2$lld और कार्ड %3$lld मिलकर"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kartu %1$lld ditambah kartu %2$lld sama dengan kartu %3$lld"
+            "value" : "Kartu %1$lld ditambah kartu %2$lld ditambah kartu %3$lld"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Carta %1$lld più carta %2$lld fa carta %3$lld"
+            "value" : "Carta %1$lld più carta %2$lld più carta %3$lld"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "カード%1$lld＋カード%2$lld＝カード%3$lld"
+            "value" : "カード%1$lld＋カード%2$lld＋カード%3$lld"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "카드 %1$lld 더하기 카드 %2$lld은 카드 %3$lld"
+            "value" : "카드 %1$lld 더하기 카드 %2$lld 더하기 카드 %3$lld"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kaart %1$lld plus kaart %2$lld is kaart %3$lld"
+            "value" : "Kaart %1$lld plus kaart %2$lld plus kaart %3$lld"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Karta %1$lld plus karta %2$lld to karta %3$lld"
+            "value" : "Karta %1$lld plus karta %2$lld plus karta %3$lld"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Carta %1$lld mais carta %2$lld é igual a carta %3$lld"
+            "value" : "Carta %1$lld mais carta %2$lld mais carta %3$lld"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Карта %1$lld плюс карта %2$lld равно карта %3$lld"
+            "value" : "Карта %1$lld плюс карта %2$lld плюс карта %3$lld"
           }
         },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "การ์ด %1$lld บวกการ์ด %2$lld เท่ากับการ์ด %3$lld"
+            "value" : "การ์ด %1$lld บวกการ์ด %2$lld บวกการ์ด %3$lld"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kart %1$lld artı kart %2$lld eşittir kart %3$lld"
+            "value" : "Kart %1$lld artı kart %2$lld artı kart %3$lld"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Карта %1$lld плюс карта %2$lld дорівнює карта %3$lld"
+            "value" : "Карта %1$lld плюс карта %2$lld плюс карта %3$lld"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lá %1$lld cộng lá %2$lld bằng lá %3$lld"
+            "value" : "Lá %1$lld cộng lá %2$lld cộng lá %3$lld"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "卡牌 %1$lld 加卡牌 %2$lld 等于卡牌 %3$lld"
+            "value" : "卡牌 %1$lld 加卡牌 %2$lld 加卡牌 %3$lld"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "卡牌 %1$lld 加卡牌 %2$lld 等於卡牌 %3$lld"
+            "value" : "卡牌 %1$lld 加卡牌 %2$lld 加卡牌 %3$lld"
+          }
+        }
+      }
+    },
+    "Card %lld plus card %lld plus card %lld plus card %lld" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "البطاقة %1$lld زائد البطاقة %2$lld زائد البطاقة %3$lld زائد البطاقة %4$lld"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Karte %1$lld plus Karte %2$lld plus Karte %3$lld plus Karte %4$lld"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Card %1$lld plus card %2$lld plus card %3$lld plus card %4$lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carta %1$lld más carta %2$lld más carta %3$lld más carta %4$lld"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carte %1$lld plus carte %2$lld plus carte %3$lld plus carte %4$lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कार्ड %1$lld, कार्ड %2$lld, कार्ड %3$lld और कार्ड %4$lld मिलकर"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kartu %1$lld ditambah kartu %2$lld ditambah kartu %3$lld ditambah kartu %4$lld"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carta %1$lld più carta %2$lld più carta %3$lld più carta %4$lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カード%1$lld＋カード%2$lld＋カード%3$lld＋カード%4$lld"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "카드 %1$lld 더하기 카드 %2$lld 더하기 카드 %3$lld 더하기 카드 %4$lld"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaart %1$lld plus kaart %2$lld plus kaart %3$lld plus kaart %4$lld"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Karta %1$lld plus karta %2$lld plus karta %3$lld plus karta %4$lld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carta %1$lld mais carta %2$lld mais carta %3$lld mais carta %4$lld"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Карта %1$lld плюс карта %2$lld плюс карта %3$lld плюс карта %4$lld"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "การ์ด %1$lld บวกการ์ด %2$lld บวกการ์ด %3$lld บวกการ์ด %4$lld"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kart %1$lld artı kart %2$lld artı kart %3$lld artı kart %4$lld"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Карта %1$lld плюс карта %2$lld плюс карта %3$lld плюс карта %4$lld"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lá %1$lld cộng lá %2$lld cộng lá %3$lld cộng lá %4$lld"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "卡牌 %1$lld 加卡牌 %2$lld 加卡牌 %3$lld 加卡牌 %4$lld"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "卡牌 %1$lld 加卡牌 %2$lld 加卡牌 %3$lld 加卡牌 %4$lld"
           }
         }
       }
@@ -8810,6 +8934,124 @@
         }
       }
     },
+    "Not a set" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ليست مجموعة"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kein Set"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No es un conjunto"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas un ensemble"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सेट नहीं"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bukan set"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non è un insieme"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セットではない"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "세트 아님"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen set"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To nie zestaw"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não é um conjunto"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не набор"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ไม่ใช่ชุด"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set değil"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не набір"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không phải bộ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不是一组"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不是一組"
+          }
+        }
+      }
+    },
     "Odd dots" : {
       "localizations" : {
         "ar" : {
@@ -10581,356 +10823,120 @@
         }
       }
     },
-    "Simple Cards · 3" : {
+    "Simple Cards" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "بطاقات بسيطة · 3"
+            "value" : "بطاقات بسيطة"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Einfache Karten · 3"
+            "value" : "Einfache Karten"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cartas simples · 3"
+            "value" : "Cartas simples"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cartes simples · 3"
+            "value" : "Cartes simples"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "सरल कार्ड · 3"
+            "value" : "सरल कार्ड"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kartu Sederhana · 3"
+            "value" : "Kartu Sederhana"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Carte semplici · 3"
+            "value" : "Carte semplici"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "シンプルカード・3"
+            "value" : "シンプルカード"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "간단한 카드 · 3"
+            "value" : "간단한 카드"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eenvoudige kaarten · 3"
+            "value" : "Eenvoudige kaarten"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proste karty · 3"
+            "value" : "Proste karty"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cartas simples · 3"
+            "value" : "Cartas simples"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Простые карты · 3"
+            "value" : "Простые карты"
           }
         },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "การ์ดง่าย · 3"
+            "value" : "การ์ดง่าย"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Basit Kartlar · 3"
+            "value" : "Basit Kartlar"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Прості карти · 3"
+            "value" : "Прості карти"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bài đơn giản · 3"
+            "value" : "Bài đơn giản"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "简单卡牌 · 3"
+            "value" : "简单卡牌"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "簡單卡牌 · 3"
-          }
-        }
-      }
-    },
-    "Simple Cards · 3 · Easy Trial" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "بطاقات بسيطة · 3 · تحدٍّ سهل"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Einfache Karten · 3 · Zeitrennen leicht"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cartas simples · 3 · Contrarreloj fácil"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cartes simples · 3 · Chrono facile"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "सरल कार्ड · 3 · आसान टाइम ट्रायल"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kartu Sederhana · 3 · Lawan Waktu Mudah"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Carte semplici · 3 · Contro il tempo facile"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "シンプルカード・3・タイムアタック・かんたん"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "간단한 카드 · 3 · 타임 어택 쉬움"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eenvoudige kaarten · 3 · Tijdrit makkelijk"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proste karty · 3 · Na czas – łatwy"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cartas simples · 3 · Contra o relógio fácil"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Простые карты · 3 · На время: легко"
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "การ์ดง่าย · 3 · แข่งกับเวลา ง่าย"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Basit Kartlar · 3 · Zamana Karşı Kolay"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Прості карти · 3 · На час: легко"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bài đơn giản · 3 · Đua thời gian dễ"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "简单卡牌 · 3 · 简单计时赛"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "簡單卡牌 · 3 · 簡單計時賽"
-          }
-        }
-      }
-    },
-    "Simple Cards · 3 · Hard Trial" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "بطاقات بسيطة · 3 · تحدٍّ صعب"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Einfache Karten · 3 · Zeitrennen schwer"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cartas simples · 3 · Contrarreloj difícil"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cartes simples · 3 · Chrono difficile"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "सरल कार्ड · 3 · कठिन टाइम ट्रायल"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kartu Sederhana · 3 · Lawan Waktu Sulit"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Carte semplici · 3 · Contro il tempo difficile"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "シンプルカード・3・タイムアタック・むずかしい"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "간단한 카드 · 3 · 타임 어택 어려움"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eenvoudige kaarten · 3 · Tijdrit moeilijk"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proste karty · 3 · Na czas – trudny"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cartas simples · 3 · Contra o relógio difícil"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Простые карты · 3 · На время: сложно"
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "การ์ดง่าย · 3 · แข่งกับเวลา ยาก"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Basit Kartlar · 3 · Zamana Karşı Zor"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Прості карти · 3 · На час: складно"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bài đơn giản · 3 · Đua thời gian khó"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "简单卡牌 · 3 · 困难计时赛"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "簡單卡牌 · 3 · 困難計時賽"
+            "value" : "簡單卡牌"
           }
         }
       }

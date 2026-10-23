@@ -115,7 +115,7 @@ struct HomeView: View {
             case let m? where m.hasPrefix("multiplayer:"):   // e.g. `multiplayer:extraHard`
                 if let mode = GameMode(rawValue: String(m.dropFirst("multiplayer:".count))) { session = .multiplayer(mode) }
             case "support"?: supportReason = .support
-            case let mode? where GameMode(rawValue: mode) != nil: session = .game(GameMode(rawValue: mode)!)
+            case let m? where GameMode.playable.contains { $0.rawValue == m }: session = .game(GameMode(rawValue: m)!)
             default: break
             }
             #endif
@@ -205,7 +205,7 @@ struct TrainingMenuView: View {
             // Simple Cards and Extra Hard: same tile, same choice of free play or a trial, solo or together.
             section("Choose Your Deck", icon: "rectangle.stack") {
                 HStack(spacing: 10 * s) {
-                    ForEach([GameMode.simple3, .simple4, .simple5]) { mode in
+                    ForEach([GameMode.simple4, .simple5]) { mode in
                         TrialOptionsButton(mode: mode, subtitle: "\(mode.dotCount) dots · \(mode.dealSize) cards", open: open) {
                             CardView(number: mode.dotMask)
                         } caption: {

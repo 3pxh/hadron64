@@ -79,6 +79,28 @@ enum CardMath {
         (1...(fullMask | backgroundBit)).filter { $0 & ~mask == 0 }
     }
 
+    /// The dots that have cancelled on each picked card. Each kind of dot cancels in pairs in the order the cards were
+    /// picked, so an odd one out stays on the latest card that has it.
+    static func cancelled(_ picks: [Int]) -> [Int: Int] {
+        var result: [Int: Int] = [:]
+        var left = parity(picks)
+        for card in picks.reversed() {
+            result[card] = card & ~left
+            left &= ~card
+        }
+        return result
+    }
+
+    /// How a set's dots cancel, one pair at a time: property by property in reading order (the shaded background
+    /// last), each pairing up the cards that have it in the order given.
+    static func cancellingPairs(_ set: [Int]) -> [(first: Int, second: Int, bit: Int)] {
+        let bits = Dot.readingOrder.map(\.bit) + [backgroundBit]
+        return bits.flatMap { bit in
+            let having = set.filter { $0 & bit != 0 }
+            return stride(from: 0, to: having.count - 1, by: 2).map { (having[$0], having[$0 + 1], bit) }
+        }
+    }
+
     /// All non-empty subsets of `cards` whose dots cancel.
     static func allSets(in cards: [Int]) -> [[Int]] {
         guard !cards.isEmpty, cards.count < 16 else { return [] }

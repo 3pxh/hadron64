@@ -9,7 +9,7 @@ dressed as a calm pattern-matching game.
 Consequences the code relies on:
 
 - **Seven cards always contain a set.** Seven vectors in a six-dimensional space are dependent. In
-  general an N-dot deck needs N+1 cards, which is where the Simple Cards deals (4/5/6) come from.
+  general an N-dot deck needs N+1 cards, which is where the Simple Cards deals (5/6) come from.
 - **A deck always finishes.** Each dot is on exactly half of the cards in any `CardMath.deck(mask:)`,
   so the full deck XORs to zero; after any number of sets, whatever is left on the board is a set.
 - **Set sizes are 3–7.** Cards are distinct and non-empty, so no set has fewer than three cards.
@@ -35,6 +35,10 @@ Every dot has a black outline.
 | Support / unlock | `Store/SupportView.swift` + `Store/Supporter.swift` |
 | Statistics | `Stats/StatisticsView.swift` |
 
+Play shows only which cards are picked: no indicator of the dots left over. When a set is found, its
+matching dots disappear pair by pair (`CardMath.cancellingPairs`), all within the same half second
+however big the set, and then the blank cards move down into the collection stack, which stays blank.
+
 All play screens share `TableLayout` (board slots in 2-3-2 rows with equal gaps, controls row,
 collection stack bottom-left, deck bottom-right) and `CardTableView`, which draws every card in one
 coordinate space so cards can fly deck → slot → stack. `Table` owns that physical state and its
@@ -52,7 +56,8 @@ Hinted games still count toward stats but not toward records or leaderboards.
 
 ### Training
 
-- **Simple Cards 3/4/5**: decks limited to solids / red+blue / all but yellow-striped, dealt N+1.
+- **Simple Cards 4/5**: decks limited to red+blue / all but yellow-striped, dealt N+1. (A three-dot
+  deck of solids is retired; the tutorial still deals from it.)
 - **Remainder**: seven cards; tap the six remainder dots until they match the odd dots across all
   seven. Deals are never all-even, so there is always something to enter.
 - **Remainder Matching**: seven full cards. Build a group whose remainder is only yellow, lock it,
@@ -64,10 +69,23 @@ Hinted games still count toward stats but not toward records or leaderboards.
 
 ### Tutorial (no words)
 
-Four steps, progress dots at the top: a three-card set with a pointing hand for every tap; four cards
-with a decoy; five cards whose only set has four cards; then a real deal. After the first step the
-hand only appears when the player stalls, and it points at a wrong card to undo it first. Shown
-automatically on first launch, and from `?` on Home or from Training.
+Five tables, progress dots at the top: a three-card set ({Y░} {Y░ R●} {R●}) with a pointing hand for
+every tap; a random three-dot deal; a page of sums; four cards with a decoy; then two random
+four-dot deals. Shown automatically on first launch, and from `?` on Home or from Training.
+
+Unlike in play, picked cards show the sum themselves (`CancellingCardView`): matching dots fade out
+in pairs, in pick order (`CardMath.cancelled`), so an odd one out stays on the latest card, and come
+back when a card is put down. A leftover dot that nothing on the board can cancel is ringed in red.
+A check answers the last pick straight away. The very last table plays like the real game instead:
+nothing cancels (or is ringed) until the set is complete, then it cancels pair by pair and the check
+follows.
+
+The sums page adds a few cards at a time, popping matching dots in pairs: three cards and then four
+(two rows of two, the second opening with a plus) cancel completely (green check), and a near miss keeps one dot, ringed in red under a red cross.
+
+After the first table the hand only appears when the player stalls or returns to a selection they
+already tried, and it points at a wrong card to undo it first. Tapping doesn't push the hint back
+forever: once a table has run past its hint delay, the hand returns 1.5s after any tap.
 
 ### Multiplayer
 
@@ -125,7 +143,7 @@ swift scripts/make_icon.swift Hadron64/Assets.xcassets/AppIcon.appiconset/icon-1
 
 Debug builds accept launch arguments for screenshots and testing:
 
-- `-debugScreen <freePlay|timeTrialHard|simple3|remainder|remainderMatch|setSize|multiplayer|training|statistics>`
+- `-debugScreen <freePlay|timeTrialHard|simple4|remainder|remainderMatch|setSize|multiplayer|training|statistics>`
   and `-hasSeenTutorial YES` jump straight to a screen.
 - `-debugFinds N`, `-debugClock S`, `-debugHint N`, `-debugSelect N` stage a game: collect N sets, push
   the clock forward, press the hint, leave a partial selection (or enter remainder dots).

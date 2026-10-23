@@ -25,10 +25,7 @@ struct GameScreen: View {
             ZStack {
                 CardTableView(table: game.table, layout: layout, selected: game.selected,
                               marked: game.hintIncluded, crossed: game.hintExcluded,
-                              celebrating: game.celebrating) { game.toggle($0) }
-                ParityHex(value: game.parity, mask: mode.dotMask, height: layout.controlsHeight,
-                          success: !game.celebrating.isEmpty)
-                    .position(layout.controlsCenter)
+                              celebrating: game.celebrating, cancelled: game.cancelled) { game.toggle($0) }
                 topBar
                     .frame(height: layout.topBarHeight)
                     .frame(maxHeight: .infinity, alignment: .top)

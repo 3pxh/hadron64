@@ -33,11 +33,9 @@ struct MultiplayerScreen: View {
             ZStack {
                 ZStack {
                     CardTableView(table: game.table, layout: layout, selected: game.selected,
-                                  celebrating: game.celebrating, showsCounts: false) { game.toggle($0) }
+                                  celebrating: game.celebrating, cancelled: game.cancelled,
+                                  showsCounts: false) { game.toggle($0) }
                         .allowsHitTesting(pending == nil)
-                    ParityHex(value: game.parity, mask: mode.dotMask, height: layout.controlsHeight,
-                              success: !game.celebrating.isEmpty)
-                        .position(layout.controlsCenter)
                     IconButton(systemName: "xmark") { dismiss() }
                         .position(x: 30 * s, y: layout.topBarHeight / 2)
                 }

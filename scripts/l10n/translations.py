@@ -62,8 +62,6 @@ STRINGS = {
                             "Đua thời gian · Vừa", "Lawan Waktu · Sedang", "แข่งกับเวลา · ปานกลาง", "タイムアタック・ふつう", "타임 어택 · 보통", "计时赛 · 中等", "計時賽 · 中等", "टाइम ट्रायल · मध्यम", "ضد الساعة · متوسط"],
     "Time Trial · Hard": ["Zeitrennen · Schwer", "Contre-la-montre · Difficile", "Contrarreloj · Difícil", "Contro il tempo · Difficile", "Contra o relógio · Difícil", "Tijdrit · Moeilijk", "Na czas · Trudny", "На время · Сложно", "На час · Складно", "Zamana Karşı · Zor",
                           "Đua thời gian · Khó", "Lawan Waktu · Sulit", "แข่งกับเวลา · ยาก", "タイムアタック・むずかしい", "타임 어택 · 어려움", "计时赛 · 困难", "計時賽 · 困難", "टाइम ट्रायल · कठिन", "ضد الساعة · صعب"],
-    "Simple Cards · 3": ["Einfache Karten · 3", "Cartes simples · 3", "Cartas simples · 3", "Carte semplici · 3", "Cartas simples · 3", "Eenvoudige kaarten · 3", "Proste karty · 3", "Простые карты · 3", "Прості карти · 3", "Basit Kartlar · 3",
-                         "Bài đơn giản · 3", "Kartu Sederhana · 3", "การ์ดง่าย · 3", "シンプルカード・3", "간단한 카드 · 3", "简单卡牌 · 3", "簡單卡牌 · 3", "सरल कार्ड · 3", "بطاقات بسيطة · 3"],
     "Simple Cards · 4": ["Einfache Karten · 4", "Cartes simples · 4", "Cartas simples · 4", "Carte semplici · 4", "Cartas simples · 4", "Eenvoudige kaarten · 4", "Proste karty · 4", "Простые карты · 4", "Прості карти · 4", "Basit Kartlar · 4",
                          "Bài đơn giản · 4", "Kartu Sederhana · 4", "การ์ดง่าย · 4", "シンプルカード・4", "간단한 카드 · 4", "简单卡牌 · 4", "簡單卡牌 · 4", "सरल कार्ड · 4", "بطاقات بسيطة · 4"],
     "Simple Cards · 5": ["Einfache Karten · 5", "Cartes simples · 5", "Cartas simples · 5", "Carte semplici · 5", "Cartas simples · 5", "Eenvoudige kaarten · 5", "Proste karty · 5", "Простые карты · 5", "Прості карти · 5", "Basit Kartlar · 5",

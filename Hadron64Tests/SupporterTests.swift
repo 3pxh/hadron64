@@ -17,7 +17,7 @@ final class SupporterTests: XCTestCase {
         }
         XCTAssertFalse(s.allows(.remainder))
         XCTAssertTrue(s.isLocked(.remainder))
-        XCTAssertTrue(s.allows(.game(.simple3)), "each mode has its own allowance")
+        XCTAssertTrue(s.allows(.game(.simple4)), "each mode has its own allowance")
     }
 
     func testMultiplayerAllowsOnePlayPerDay() {
@@ -32,7 +32,7 @@ final class SupporterTests: XCTestCase {
         XCTAssertTrue(s.allows(.game(.extraHard)))
         s.recordPlay(.game(.extraHard))
         XCTAssertFalse(s.allows(.game(.extraHard)))
-        XCTAssertTrue(s.allows(.game(.simple3)), "other training modes keep their own allowance")
+        XCTAssertTrue(s.allows(.game(.simple4)), "other training modes keep their own allowance")
     }
 
     func testMultiplayerInATrainingModeUsesBothAllowances() {

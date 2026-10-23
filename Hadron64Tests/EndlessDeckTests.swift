@@ -22,10 +22,10 @@ final class EndlessDeckTests: XCTestCase {
     func testOnlyTimeTrialsAreEndless() {
         XCTAssertEqual(GameMode.allCases.filter(\.hasEndlessDeck), [
             .timeTrialEasy, .timeTrialMedium, .timeTrialHard,
-            .simple3TrialEasy, .simple3TrialHard, .simple4TrialEasy, .simple4TrialHard, .simple5TrialEasy, .simple5TrialHard,
+            .simple4TrialEasy, .simple4TrialHard, .simple5TrialEasy, .simple5TrialHard,
             .extraHardTrialEasy, .extraHardTrialHard,
         ])
-        XCTAssertTrue(DeckGame(mode: .simple3TrialHard).table.isEndless)
+        XCTAssertTrue(DeckGame(mode: .simple4TrialHard).table.isEndless)
         XCTAssertTrue(DeckGame(mode: .timeTrialHard).table.isEndless)
         XCTAssertFalse(DeckGame(mode: .freePlay).table.isEndless)
     }
@@ -40,7 +40,10 @@ final class EndlessDeckTests: XCTestCase {
         XCTAssertEqual(GameMode.simple4TrialHard.timeTrial?.start, 10)
         XCTAssertEqual(GameMode.simple4TrialHard.timeTrial?.bonus, 5)
         XCTAssertEqual(GameMode.simple4TrialHard.dotMask, GameMode.simple4.dotMask)
-        XCTAssertEqual(GameMode.extraHardTrialHard.timeTrial?.start, 10)
+        XCTAssertEqual(GameMode.extraHardTrialEasy.timeTrial?.start, 60)
+        XCTAssertEqual(GameMode.extraHardTrialEasy.timeTrial?.bonus, 30)
+        XCTAssertEqual(GameMode.extraHardTrialHard.timeTrial?.start, 30)
+        XCTAssertEqual(GameMode.extraHardTrialHard.timeTrial?.bonus, 15)
         XCTAssertEqual(GameMode.extraHardTrialEasy.dealSize, 8)
     }
 }
