@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hadron 64 — a quiet card game with one rule</title>
+<meta name="description" content="Find cards where every dot appears an even number of times. A calm pattern-matching game for iPhone and iPad. No ads.">
+<link rel="canonical" href="https://hadron64.com/">
+<meta name="theme-color" content="#F3EFE6">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<!-- Replace APP_ID (the number in your App Store URL) here and in APP_STORE_URL below. -->
+<meta name="apple-itunes-app" content="app-id=APP_ID">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hadron64.com/">
+<meta property="og:title" content="Hadron 64">
+<meta property="og:description" content="One rule: find cards where every dot appears an even number of times.">
+<meta property="og:image" content="https://hadron64.com/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+  :root {
+    --paper: #F3EFE6;
+    --ink: #1C1C1E;
+    --muted: #8A857A;
+    --faint: #D6D0C4;
+    --card: #fff;
+    --yellow: #DDAA33;
+    --red: #BB5566;
+    --blue: #004488;
+    --green: #2BC253;
+    --font: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 18px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  img, video { max-width: 100%; display: block; }
+  a { color: inherit; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding-inline: max(20px, env(safe-area-inset-left)) max(20px, env(safe-area-inset-right)); }
+
+  /* Hero */
+  .hero {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items: center;
+    padding-block: 72px 56px;
+  }
+  .wordmark {
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    font-size: clamp(36px, 6vw, 60px);
+    margin: 20px 0 8px;
+    line-height: 1.1;
+  }
+  .logo { width: 96px; height: 96px; border-radius: 22px; box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(28,28,30,.08); }
+  .lede { font-size: clamp(20px, 2.4vw, 26px); font-weight: 600; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 28px; max-width: 30em; }
+  .badge { display: inline-block; }
+  .badge img { height: 54px; width: auto; }
+  .badge-fallback { display: inline-block; background: #000; color: #fff; font-weight: 600; font-size: 17px; padding: 14px 22px; border-radius: 12px; text-decoration: none; }
+  .fine { color: var(--muted); font-size: 14px; margin-top: 12px; }
+
+  .phone {
+    justify-self: center;
+    width: min(320px, 78vw);
+    aspect-ratio: 886 / 1920;
+    border-radius: 44px;
+    padding: 10px;
+    background: var(--ink);
+    box-shadow: 0 30px 60px -20px rgba(28,28,30,.35);
+  }
+  .phone video, .phone img { width: 100%; height: 100%; object-fit: cover; border-radius: 34px; background: var(--paper); }
+
+  /* Try it */
+  section { padding-block: 56px; }
+  h2 { font-size: clamp(26px, 3.4vw, 36px); margin: 0 0 10px; line-height: 1.2; }
+  .section-sub { color: var(--muted); margin: 0 0 32px; max-width: 36em; }
+
+  .demo { background: var(--card); border-radius: 28px; padding: 28px 20px; border: 2px solid var(--ink); }
+  .board {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  /* 2-3-2 layout, like the app's table */
+  .board .c { grid-column: span 2; }
+  .board .c:nth-child(1) { grid-column: 2 / span 2; }
+  .board .c:nth-child(6) { grid-column: 2 / span 2; }
+  .c {
+    appearance: none;
+    border: 0;
+    padding: 0;
+    background: var(--card);
+    border-radius: 10px;
+    aspect-ratio: 788 / 1088;
+    box-shadow: 0 0 0 1px var(--faint), 0 2px 6px rgba(28,28,30,.06);
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .c svg { width: 100%; height: 100%; display: block; }
+  .c[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--ink); transform: translateY(-3px); }
+  .c.found { box-shadow: 0 0 0 3px var(--green); }
+  .c:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+  .demo-bar {
+    display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; justify-content: center;
+    margin-top: 24px; color: var(--muted); font-size: 16px;
+  }
+  .remainder { display: flex; align-items: center; gap: 10px; }
+  .remainder svg { width: 44px; height: 61px; border-radius: 5px; background: var(--card); box-shadow: 0 0 0 1px var(--faint); }
+  .status { font-weight: 600; color: var(--ink); min-width: 12em; text-align: center; }
+  .status.ok { color: #1f8f3d; }
+  .btn {
+    font: inherit; font-size: 16px; font-weight: 600;
+    padding: 8px 16px; border-radius: 12px;
+    border: 2px solid var(--ink); background: var(--card); color: var(--ink); cursor: pointer;
+  }
+
+  /* Rule explainer */
+  .rule { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+  .rule div { font-size: 16px; color: var(--muted); }
+  .rule strong { display: block; color: var(--ink); font-size: 18px; margin-bottom: 4px; }
+
+  /* Screens */
+  .shots {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px 28px;
+  }
+  .shots figure { margin: 0; }
+  .shots img {
+    width: 100%;
+    aspect-ratio: 1320 / 2868;
+    border-radius: 26px;
+    border: 6px solid var(--ink);
+    background: var(--paper);
+  }
+  .shots figcaption { margin-top: 14px; font-size: 16px; color: var(--muted); }
+  .shots figcaption strong { display: block; color: var(--ink); font-size: 18px; }
+
+  .cta { text-align: center; padding-block: 72px; }
+  .cta .logo { margin: 0 auto 20px; }
+
+  footer { border-top: 1px solid var(--faint); padding-block: 32px 48px; color: var(--muted); font-size: 15px; }
+  footer h3 { color: var(--ink); font-size: 16px; margin: 0 0 6px; }
+  footer p { margin: 0 0 18px; max-width: 44em; }
+  .foot-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-top: 12px; }
+
+  @media (max-width: 820px) {
+    .hero { grid-template-columns: 1fr; text-align: center; padding-block: 40px 24px; gap: 40px; }
+    .logo { margin: 0 auto; }
+    .sub { margin-inline: auto; }
+    .shots { grid-template-columns: repeat(2, 1fr); gap: 28px 16px; }
+    .shots img { border-radius: 18px; border-width: 4px; }
+    .rule { grid-template-columns: 1fr; gap: 16px; }
+  }
+  @media (max-width: 480px) {
+    body { font-size: 17px; }
+    .board { gap: 8px; }
+    .demo { padding: 20px 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .c { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<main>
+  <div class="wrap hero">
+    <div>
+      <img class="logo" src="/img/icon-512.png" alt="" width="96" height="96">
+      <h1 class="wordmark">HADRON 64</h1>
+      <p class="lede">One rule.</p>
+      <p class="sub">Find cards where every dot appears an even number of times. A calm pattern-matching game for iPhone and iPad. No ads, no clutter.</p>
+      <a class="badge" href="#" data-app-store aria-label="Download on the App Store">
+        <img src="https://tools.applemarketingtools.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store" width="162" height="54" onerror="this.outerHTML='<span class=badge-fallback>Download on the App Store</span>'">
+      </a>
+      <p class="fine">Free to play. One optional purchase to unlock unlimited training and multiplayer.</p>
+    </div>
+    <div class="phone">
+      <video src="/media/preview.mp4" poster="/media/poster.webp" autoplay muted loop playsinline preload="metadata" aria-label="Gameplay preview"></video>
+    </div>
+  </div>
+
+  <section class="wrap" id="try">
+    <h2>Try it here</h2>
+    <p class="section-sub">Tap cards to pick them. When every dot shows up an even number of times — twice, four times, or not at all — you’ve found a set. Seven cards always hide at least one.</p>
+    <div class="demo">
+      <div class="board" id="board" role="group" aria-label="Seven cards"></div>
+      <div class="demo-bar">
+        <div class="remainder" title="Dots that don't cancel yet">
+          <span>Left over</span>
+          <svg id="remainder" viewBox="0 0 788 1088" aria-hidden="true"></svg>
+        </div>
+        <div class="status" id="status" aria-live="polite">Pick some cards.</div>
+        <button class="btn" id="deal" type="button">New deal</button>
+      </div>
+    </div>
+    <div class="rule">
+      <div><strong>64 cards, 6 dots</strong>Three colors, solid and striped. Every combination appears once.</div>
+      <div><strong>Sets of 3 to 7</strong>Big sets are hard to see. Small ones hide in plain sight.</div>
+      <div><strong>Always solvable</strong>Seven cards always contain a set, and every deck ends cleanly.</div>
+    </div>
+  </section>
+
+  <section class="wrap" id="screens">
+    <h2>Quiet by design</h2>
+    <p class="section-sub">Free Play, three Time Trials, focused training drills, pass-and-play multiplayer for up to four, and stats on every find.</p>
+    <div class="shots">
+      <figure><img src="/img/1-play.webp" alt="Free Play with two cards selected" loading="lazy" width="660" height="1434"><figcaption><strong>Free Play.</strong>Clear the deck at your own pace. Hints only if you ask.</figcaption></figure>
+      <figure><img src="/img/2-multiplayer.webp" alt="Multiplayer table with a score strip on each edge" loading="lazy" width="660" height="1434"><figcaption><strong>Play around one phone.</strong>Up to four players. Slide each set to whoever found it.</figcaption></figure>
+      <figure><img src="/img/3-timetrial.webp" alt="Time Trial with 42 seconds on the clock" loading="lazy" width="660" height="1434"><figcaption><strong>Hard means hard.</strong>Twenty seconds on the clock. Each set buys ten more.</figcaption></figure>
+      <figure><img src="/img/4-stats.webp" alt="Statistics with a histogram of find times and a trend chart" loading="lazy" width="660" height="1434"><figcaption><strong>Every find, timed.</strong>Watch yourself get faster, deck after deck.</figcaption></figure>
+      <figure><img src="/img/6-remainder.webp" alt="Remainder training drill" loading="lazy" width="660" height="1434"><figcaption><strong>Train each skill.</strong>Drills like Remainder teach you to read the odd dots at a glance.</figcaption></figure>
+      <figure><img src="/img/9-home.webp" alt="Home screen" loading="lazy" width="660" height="1434"><figcaption><strong>Learn by doing.</strong>A wordless tutorial in four short steps. Game Center leaderboards and achievements.</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="wrap cta">
+    <img class="logo" src="/img/icon-512.png" alt="" width="96" height="96">
+    <h2>Hadron 64</h2>
+    <p class="section-sub" style="margin-inline:auto">For iPhone and iPad.</p>
+    <a class="badge" href="#" data-app-store aria-label="Download on the App Store">
+      <img src="https://tools.applemarketingtools.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store" width="162" height="54" onerror="this.outerHTML='<span class=badge-fallback>Download on the App Store</span>'">
+    </a>
+  </section>
+</main>
+
+<footer class="wrap">
+  <div id="privacy">
+    <h3>Privacy</h3>
+    <p>Hadron 64 collects no personal data. There are no ads, analytics or tracking. Your statistics are stored only on your device. Leaderboards and achievements go through Apple’s Game Center, and purchases are handled by the App Store; neither shares your personal information with us.</p>
+  </div>
+  <div class="foot-row">
+    <span>© <span id="year">2026</span> Hadron 64</span>
+    <span>Apple, the Apple logo, iPhone and iPad are trademarks of Apple Inc. App Store is a service mark of Apple Inc.</span>
+  </div>
+</footer>
+
+<script>
+  // Replace APP_ID with the number from your App Store URL (apps.apple.com/app/id1234567890).
+  const APP_STORE_URL = "https://apps.apple.com/app/idAPP_ID";
+  document.querySelectorAll("[data-app-store]").forEach(a => a.href = APP_STORE_URL);
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Cards mirror the app: bit i is column i/3, row i%3; rows are yellow, red, blue;
+  // a dot is solid when row + column is odd, otherwise striped. Units are the app's 788 × 1088.
+  const COLORS = ["#DDAA33", "#BB5566", "#004488"];
+  const DOT_X = [250, 538], DOT_Y = [260, 544, 828], R = 92;
+
+  function cardSVG(n, uid) {
+    let defs = "", dots = "";
+    for (let i = 0; i < 6; i++) {
+      if (!(n >> i & 1)) continue;
+      const col = Math.floor(i / 3), row = i % 3, x = DOT_X[col], y = DOT_Y[row], c = COLORS[row];
+      if ((row + col) % 2) {
+        dots += `<circle cx="${x}" cy="${y}" r="${R}" fill="${c}" stroke="#000" stroke-width="16"/>`;
+      } else {
+        const id = `s${uid}-${i}`;
+        defs += `<pattern id="${id}" width="46" height="10" patternUnits="userSpaceOnUse" x="${x - R}"><rect width="46" height="10" fill="#fff"/><rect width="23" height="10" fill="${c}"/></pattern>`;
+        dots += `<circle cx="${x}" cy="${y}" r="${R}" fill="url(#${id})" stroke="#000" stroke-width="16"/>`;
+      }
+    }
+    return `<defs>${defs}</defs>${dots}`;
+  }
+
+  const board = document.getElementById("board");
+  const remainder = document.getElementById("remainder");
+  const status = document.getElementById("status");
+  let cards = [], picked = new Set(), deals = 0;
+
+  function deal() {
+    const pool = Array.from({ length: 63 }, (_, i) => i + 1);
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    cards = pool.slice(0, 7);
+    picked.clear();
+    render();
+    status.textContent = "Pick some cards.";
+    status.classList.remove("ok");
+  }
+
+  function render() {
+    deals++;
+    board.innerHTML = "";
+    cards.forEach((n, i) => {
+      const b = document.createElement("button");
+      b.className = "c";
+      b.type = "button";
+      b.setAttribute("aria-pressed", picked.has(i));
+      b.setAttribute("aria-label", `Card ${n}`);
+      b.innerHTML = `<svg viewBox="0 0 788 1088" aria-hidden="true">${cardSVG(n, `${deals}-${i}`)}</svg>`;
+      b.addEventListener("click", () => toggle(i));
+      board.appendChild(b);
+    });
+    updateRemainder();
+  }
+
+  function xorPicked() { let x = 0; picked.forEach(i => x ^= cards[i]); return x; }
+
+  function updateRemainder() {
+    remainder.innerHTML = cardSVG(xorPicked(), `r${deals}`);
+  }
+
+  function toggle(i) {
+    picked.has(i) ? picked.delete(i) : picked.add(i);
+    board.children[i].setAttribute("aria-pressed", picked.has(i));
+    updateRemainder();
+    if (picked.size >= 3 && xorPicked() === 0) {
+      status.textContent = `A set of ${picked.size}!`;
+      status.classList.add("ok");
+      picked.forEach(j => board.children[j].classList.add("found"));
+      board.style.pointerEvents = "none";
+      setTimeout(() => { board.style.pointerEvents = ""; deal(); }, 1100);
+    } else {
+      status.textContent = picked.size ? "Make the left-over card empty." : "Pick some cards.";
+      status.classList.remove("ok");
+    }
+  }
+
+  document.getElementById("deal").addEventListener("click", deal);
+  deal();
+</script>
+</body>
+</html>
