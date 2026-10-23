@@ -29,9 +29,7 @@ struct Hadron64App: App {
 enum Session: Identifiable, Hashable {
     case game(GameMode)
     case remainder
-    case remainderMatch
-    case setSize
-    case multiplayer
+    case multiplayer(GameMode)
     case tutorial
 
     var id: Self { self }
@@ -39,15 +37,14 @@ enum Session: Identifiable, Hashable {
 
 extension View {
     func sessionCover(_ session: Binding<Session?>) -> some View {
-        fullScreenCover(item: session) { session in
+        fullScreenCover(item: session) { current in
             Group {
-                switch session {
+                switch current {
                 case .game(let mode): GameScreen(mode: mode)
                 case .remainder: RemainderDrillScreen()
-                case .remainderMatch: RemainderMatchScreen()
-                case .setSize: SetSizeDrillScreen()
-                case .multiplayer: MultiplayerScreen()
-                case .tutorial: TutorialScreen()
+                case .multiplayer(let mode): MultiplayerScreen(mode: mode)
+                // Swapping the item dismisses the tutorial and presents the picked mode.
+                case .tutorial: TutorialScreen { session.wrappedValue = .game($0) }
                 }
             }
             .adaptiveScale()

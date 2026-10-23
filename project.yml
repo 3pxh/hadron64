@@ -16,7 +16,12 @@ targets:
   Hadron64:
     type: application
     platform: iOS
-    sources: [Hadron64]
+    sources:
+      - Hadron64
+      # Game Center leaderboards, achievements, challenges and activities; edit in Xcode's GameKit editor.
+      - path: Hadron64.gamekit
+        type: file
+        buildPhase: resources
     info:
       path: Hadron64/Info.plist
       properties:

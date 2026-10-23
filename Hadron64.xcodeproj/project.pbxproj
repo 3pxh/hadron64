@@ -18,6 +18,7 @@
 		31D4156FAD5CFA6EB72A7F44 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F02994FCF78C0F72EA5299 /* CardView.swift */; };
 		33B0A32C5102B97ACDF3B14E /* SupporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 858E825F204C489504B61C2D /* SupporterTests.swift */; };
 		3B517793E5E1960E9846E11B /* Drills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC0EEB5F9C43D054EFCCFB8 /* Drills.swift */; };
+		3CD6ECDD234168A1A636010B /* Hadron64.gamekit in Resources */ = {isa = PBXBuildFile; fileRef = 8994E940B6307288EE6A2A4C /* Hadron64.gamekit */; };
 		3EB1922985B2F3B2C12BEF44 /* DrillScreens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0F7BF4D10A81714AAC17DA /* DrillScreens.swift */; };
 		402013BFF948B15EE6C85BDB /* CardMathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0EAC4AACD15CE0024A6966 /* CardMathTests.swift */; };
 		4422EBAA63B7C728F8B43593 /* SupportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F313896B5EDFF731B77AC776 /* SupportView.swift */; };
@@ -37,6 +38,7 @@
 		DD4F745A892A35DAD13CB7E0 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 4120E403E9CEF4DCD42232E2 /* InfoPlist.xcstrings */; };
 		ED63A8D4D04DB8A89B9F3A48 /* EndlessDeckTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72F7E37369D89E5C755976C /* EndlessDeckTests.swift */; };
 		F1A6375A7D5E5D21A3691FC4 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96802921E0C54FFBD7707E86 /* StatisticsView.swift */; };
+		F2CB8858AA2E4D2906D7C9F5 /* GameKitBundleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C17B7771D8A428C21F526A /* GameKitBundleTests.swift */; };
 		FF8BAF3EC618A5CE4F044F5A /* GameCenterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8037E25C587B51F73C54EDD9 /* GameCenterService.swift */; };
 /* End PBXBuildFile section */
 
@@ -60,13 +62,14 @@
 		4EF41F14461D843927A3DCA3 /* ResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsView.swift; sourceTree = "<group>"; };
 		5D0F7BF4D10A81714AAC17DA /* DrillScreens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrillScreens.swift; sourceTree = "<group>"; };
 		645511F5D13FC7DDA08B930A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		70F60E846AFD20C08F1693B4 /* Hadron64Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Hadron64Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		70F60E846AFD20C08F1693B4 /* Hadron64Tests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = Hadron64Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C036C33062CF8A0CCC53F08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		7D3B48D6141C242E343FDA3A /* FriendsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsCard.swift; sourceTree = "<group>"; };
 		8037E25C587B51F73C54EDD9 /* GameCenterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterService.swift; sourceTree = "<group>"; };
 		807FDED270036EE86F433BEB /* GameClock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClock.swift; sourceTree = "<group>"; };
 		8467CB0EE9C05C283D69DEE7 /* GameCenterCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterCatalogTests.swift; sourceTree = "<group>"; };
 		858E825F204C489504B61C2D /* SupporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupporterTests.swift; sourceTree = "<group>"; };
+		8994E940B6307288EE6A2A4C /* Hadron64.gamekit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Hadron64.gamekit; sourceTree = "<group>"; };
 		89D80998D718DBB33137C844 /* Records.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Records.swift; sourceTree = "<group>"; };
 		8A65ED8977DA4AD8F4F0B72C /* Hadron64App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hadron64App.swift; sourceTree = "<group>"; };
 		927A01D8DF93D632CA9A4C39 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -78,6 +81,7 @@
 		9E720C9ADB2268DC3531F50C /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		9FB07A8F050FB0706E242AC9 /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
 		AE0EAC4AACD15CE0024A6966 /* CardMathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardMathTests.swift; sourceTree = "<group>"; };
+		B1C17B7771D8A428C21F526A /* GameKitBundleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameKitBundleTests.swift; sourceTree = "<group>"; };
 		BEF7665830E3F3F079EBEDD8 /* Table.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Table.swift; sourceTree = "<group>"; };
 		CCA08071783D1E3065260F2E /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		E0F02994FCF78C0F72EA5299 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
@@ -134,6 +138,7 @@
 		56DAE4460A26314A1194BC7A = {
 			isa = PBXGroup;
 			children = (
+				8994E940B6307288EE6A2A4C /* Hadron64.gamekit */,
 				8C06448DDFC07410389ABBD9 /* Hadron64 */,
 				693CF503BC27AF6F46CF4DD3 /* Hadron64Tests */,
 				28B75E801408D43886B1A57F /* Products */,
@@ -156,6 +161,7 @@
 				AE0EAC4AACD15CE0024A6966 /* CardMathTests.swift */,
 				E72F7E37369D89E5C755976C /* EndlessDeckTests.swift */,
 				8467CB0EE9C05C283D69DEE7 /* GameCenterCatalogTests.swift */,
+				B1C17B7771D8A428C21F526A /* GameKitBundleTests.swift */,
 				858E825F204C489504B61C2D /* SupporterTests.swift */,
 			);
 			path = Hadron64Tests;
@@ -254,7 +260,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 2610;
+				LastUpgradeCheck = 1430;
 			};
 			buildConfigurationList = B648F88F0F34232DE27F4151 /* Build configuration list for PBXProject "Hadron64" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -300,6 +306,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ACE91475D81110678C0BABBC /* Assets.xcassets in Resources */,
+				3CD6ECDD234168A1A636010B /* Hadron64.gamekit in Resources */,
 				DD4F745A892A35DAD13CB7E0 /* InfoPlist.xcstrings in Resources */,
 				068D16B1DD2FECFC371E5AE1 /* Localizable.xcstrings in Resources */,
 			);
@@ -315,6 +322,7 @@
 				402013BFF948B15EE6C85BDB /* CardMathTests.swift in Sources */,
 				ED63A8D4D04DB8A89B9F3A48 /* EndlessDeckTests.swift in Sources */,
 				09A84D0AFC33CD9792B0FA63 /* GameCenterCatalogTests.swift in Sources */,
+				F2CB8858AA2E4D2906D7C9F5 /* GameKitBundleTests.swift in Sources */,
 				33B0A32C5102B97ACDF3B14E /* SupporterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -365,7 +373,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -400,7 +407,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -416,7 +422,6 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -446,7 +451,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -481,7 +485,6 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -504,7 +507,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";

@@ -51,7 +51,7 @@ struct CardView: View {
                                  radius: CardGeometry.dotRadius * k, in: &ctx)
             }
         }
-        .background(CardShape().fill(Palette.card))
+        .background(CardShape().fill(number & CardMath.backgroundBit != 0 ? Palette.shade : Palette.card))
         .overlay(CardShape().strokeBorder(Palette.ink.opacity(0.1), lineWidth: 1))
         .accessibilityElement()
         .accessibilityLabel("Card \(number)")

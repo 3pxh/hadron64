@@ -22,6 +22,8 @@ enum Palette {
     static let muted = Color(hex: 0x8A857A)
     static let faint = Color(hex: 0xD6D0C4)
     static let card = Color.white
+    /// Extra Hard's shaded card background, dark enough to tell from white at a glance but light enough for every dot.
+    static let shade = Color(hex: 0xC9C1B1)
 }
 
 extension Font {

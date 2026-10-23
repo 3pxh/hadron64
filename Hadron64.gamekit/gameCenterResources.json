@@ -1,0 +1,832 @@
+{
+  "meta" : {
+    "version" : "2024-11-15"
+  },
+  "resources" : {
+    "achievementImages" : {
+      "h64.ach.deck_3min-en-US" : [
+        {
+          "localID" : "h64.ach.deck_3min-en-US",
+          "url" : "en-US\/AchievementImage-h64.ach.deck_3min-en-US.png"
+        }
+      ],
+      "h64.ach.deck_5min-en-US" : [
+        {
+          "localID" : "h64.ach.deck_5min-en-US",
+          "url" : "en-US\/AchievementImage-h64.ach.deck_5min-en-US.png"
+        }
+      ],
+      "h64.ach.deck_7min-en-US" : [
+        {
+          "localID" : "h64.ach.deck_7min-en-US",
+          "url" : "en-US\/AchievementImage-h64.ach.deck_7min-en-US.png"
+        }
+      ],
+      "h64.ach.deck_10min-en-US" : [
+        {
+          "localID" : "h64.ach.deck_10min-en-US",
+          "url" : "en-US\/AchievementImage-h64.ach.deck_10min-en-US.png"
+        }
+      ],
+      "h64.ach.decks_10-en-US" : [
+        {
+          "localID" : "h64.ach.decks_10-en-US",
+          "url" : "en-US\/AchievementImage-h64.ach.decks_10-en-US.png"
+        }
+      ],
+      "h64.ach.decks_100-en-US" : [
+        {
+          "localID" : "h64.ach.decks_100-en-US",
+          "url" : "en-US\/AchievementImage-h64.ach.decks_100-en-US.png"
+        }
+      ],
+      "h64.ach.first_deck-en-US" : [
+        {
+          "localID" : "h64.ach.first_deck-en-US",
+          "url" : "en-US\/AchievementImage-h64.ach.first_deck-en-US.png"
+        }
+      ],
+      "h64.ach.sets_1000-en-US" : [
+        {
+          "localID" : "h64.ach.sets_1000-en-US",
+          "url" : "en-US\/AchievementImage-h64.ach.sets_1000-en-US.png"
+        }
+      ],
+      "h64.ach.seven_set-en-US" : [
+        {
+          "localID" : "h64.ach.seven_set-en-US",
+          "url" : "en-US\/AchievementImage-h64.ach.seven_set-en-US.png"
+        }
+      ],
+      "h64.ach.streak_7-en-US" : [
+        {
+          "localID" : "h64.ach.streak_7-en-US",
+          "url" : "en-US\/AchievementImage-h64.ach.streak_7-en-US.png"
+        }
+      ],
+      "h64.ach.training_all-en-US" : [
+        {
+          "localID" : "h64.ach.training_all-en-US",
+          "url" : "en-US\/AchievementImage-h64.ach.training_all-en-US.png"
+        }
+      ],
+      "h64.ach.tt_easy_63-en-US" : [
+        {
+          "localID" : "h64.ach.tt_easy_63-en-US",
+          "url" : "en-US\/AchievementImage-h64.ach.tt_easy_63-en-US.png"
+        }
+      ],
+      "h64.ach.tt_hard_63-en-US" : [
+        {
+          "localID" : "h64.ach.tt_hard_63-en-US",
+          "url" : "en-US\/AchievementImage-h64.ach.tt_hard_63-en-US.png"
+        }
+      ],
+      "h64.ach.tt_medium_63-en-US" : [
+        {
+          "localID" : "h64.ach.tt_medium_63-en-US",
+          "url" : "en-US\/AchievementImage-h64.ach.tt_medium_63-en-US.png"
+        }
+      ]
+    },
+    "achievementLocalizations" : {
+      "h64.ach.deck_3min" : [
+        {
+          "afterEarnedDescription" : "You cleared a deck in under 3 minutes without hints.",
+          "beforeEarnedDescription" : "Clear a Free Play deck in under 3 minutes without hints.",
+          "locale" : "en-US",
+          "localID" : "h64.ach.deck_3min-en-US",
+          "name" : "Three-Minute Deck"
+        }
+      ],
+      "h64.ach.deck_5min" : [
+        {
+          "afterEarnedDescription" : "You cleared a deck in under 5 minutes without hints.",
+          "beforeEarnedDescription" : "Clear a Free Play deck in under 5 minutes without hints.",
+          "locale" : "en-US",
+          "localID" : "h64.ach.deck_5min-en-US",
+          "name" : "Five-Minute Deck"
+        }
+      ],
+      "h64.ach.deck_7min" : [
+        {
+          "afterEarnedDescription" : "You cleared a deck in under 7 minutes without hints.",
+          "beforeEarnedDescription" : "Clear a Free Play deck in under 7 minutes without hints.",
+          "locale" : "en-US",
+          "localID" : "h64.ach.deck_7min-en-US",
+          "name" : "Seven-Minute Deck"
+        }
+      ],
+      "h64.ach.deck_10min" : [
+        {
+          "afterEarnedDescription" : "You cleared a deck in under 10 minutes without hints.",
+          "beforeEarnedDescription" : "Clear a Free Play deck in under 10 minutes without hints.",
+          "locale" : "en-US",
+          "localID" : "h64.ach.deck_10min-en-US",
+          "name" : "Ten-Minute Deck"
+        }
+      ],
+      "h64.ach.decks_10" : [
+        {
+          "afterEarnedDescription" : "You cleared 10 decks.",
+          "beforeEarnedDescription" : "Clear 10 Free Play decks.",
+          "locale" : "en-US",
+          "localID" : "h64.ach.decks_10-en-US",
+          "name" : "Ten Decks"
+        }
+      ],
+      "h64.ach.decks_100" : [
+        {
+          "afterEarnedDescription" : "You cleared 100 decks.",
+          "beforeEarnedDescription" : "Clear 100 Free Play decks.",
+          "locale" : "en-US",
+          "localID" : "h64.ach.decks_100-en-US",
+          "name" : "One Hundred Decks"
+        }
+      ],
+      "h64.ach.first_deck" : [
+        {
+          "afterEarnedDescription" : "You cleared your first deck.",
+          "beforeEarnedDescription" : "Clear a Free Play deck.",
+          "locale" : "en-US",
+          "localID" : "h64.ach.first_deck-en-US",
+          "name" : "First Deck"
+        }
+      ],
+      "h64.ach.sets_1000" : [
+        {
+          "afterEarnedDescription" : "You found 1,000 sets.",
+          "beforeEarnedDescription" : "Find 1,000 sets.",
+          "locale" : "en-US",
+          "localID" : "h64.ach.sets_1000-en-US",
+          "name" : "A Thousand Sets"
+        }
+      ],
+      "h64.ach.seven_set" : [
+        {
+          "afterEarnedDescription" : "You found a set made of seven cards.",
+          "beforeEarnedDescription" : "Find a set made of seven cards.",
+          "locale" : "en-US",
+          "localID" : "h64.ach.seven_set-en-US",
+          "name" : "Seven-Card Set"
+        }
+      ],
+      "h64.ach.streak_7" : [
+        {
+          "afterEarnedDescription" : "You played on seven days in a row.",
+          "beforeEarnedDescription" : "Play on seven days in a row.",
+          "locale" : "en-US",
+          "localID" : "h64.ach.streak_7-en-US",
+          "name" : "Seven-Day Streak"
+        }
+      ],
+      "h64.ach.training_all" : [
+        {
+          "afterEarnedDescription" : "You tried every training mode.",
+          "beforeEarnedDescription" : "Try every training mode.",
+          "locale" : "en-US",
+          "localID" : "h64.ach.training_all-en-US",
+          "name" : "Well Rounded"
+        }
+      ],
+      "h64.ach.tt_easy_63" : [
+        {
+          "afterEarnedDescription" : "You collected 63 cards in one Time Trial · Easy game.",
+          "beforeEarnedDescription" : "Collect 63 cards in one Time Trial · Easy game.",
+          "locale" : "en-US",
+          "localID" : "h64.ach.tt_easy_63-en-US",
+          "name" : "Full Deck · Easy"
+        }
+      ],
+      "h64.ach.tt_hard_63" : [
+        {
+          "afterEarnedDescription" : "You collected 63 cards in one Time Trial · Hard game.",
+          "beforeEarnedDescription" : "Collect 63 cards in one Time Trial · Hard game.",
+          "locale" : "en-US",
+          "localID" : "h64.ach.tt_hard_63-en-US",
+          "name" : "Full Deck · Hard"
+        }
+      ],
+      "h64.ach.tt_medium_63" : [
+        {
+          "afterEarnedDescription" : "You collected 63 cards in one Time Trial · Medium game.",
+          "beforeEarnedDescription" : "Collect 63 cards in one Time Trial · Medium game.",
+          "locale" : "en-US",
+          "localID" : "h64.ach.tt_medium_63-en-US",
+          "name" : "Full Deck · Medium"
+        }
+      ]
+    },
+    "achievements" : [
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "points" : 20,
+        "referenceName" : "h64.ach.seven_set",
+        "repeatable" : false,
+        "showBeforeEarned" : false,
+        "vendorIdentifier" : "h64.ach.seven_set"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "points" : 10,
+        "referenceName" : "h64.ach.first_deck",
+        "repeatable" : false,
+        "showBeforeEarned" : true,
+        "vendorIdentifier" : "h64.ach.first_deck"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "points" : 20,
+        "referenceName" : "h64.ach.deck_10min",
+        "repeatable" : false,
+        "showBeforeEarned" : true,
+        "vendorIdentifier" : "h64.ach.deck_10min"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "points" : 30,
+        "referenceName" : "h64.ach.deck_7min",
+        "repeatable" : false,
+        "showBeforeEarned" : true,
+        "vendorIdentifier" : "h64.ach.deck_7min"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "points" : 50,
+        "referenceName" : "h64.ach.deck_5min",
+        "repeatable" : false,
+        "showBeforeEarned" : true,
+        "vendorIdentifier" : "h64.ach.deck_5min"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "points" : 100,
+        "referenceName" : "h64.ach.deck_3min",
+        "repeatable" : false,
+        "showBeforeEarned" : true,
+        "vendorIdentifier" : "h64.ach.deck_3min"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "points" : 20,
+        "referenceName" : "h64.ach.decks_10",
+        "repeatable" : false,
+        "showBeforeEarned" : true,
+        "vendorIdentifier" : "h64.ach.decks_10"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "points" : 75,
+        "referenceName" : "h64.ach.decks_100",
+        "repeatable" : false,
+        "showBeforeEarned" : true,
+        "vendorIdentifier" : "h64.ach.decks_100"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "points" : 50,
+        "referenceName" : "h64.ach.sets_1000",
+        "repeatable" : false,
+        "showBeforeEarned" : true,
+        "vendorIdentifier" : "h64.ach.sets_1000"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "points" : 30,
+        "referenceName" : "h64.ach.tt_easy_63",
+        "repeatable" : false,
+        "showBeforeEarned" : true,
+        "vendorIdentifier" : "h64.ach.tt_easy_63"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "points" : 50,
+        "referenceName" : "h64.ach.tt_medium_63",
+        "repeatable" : false,
+        "showBeforeEarned" : true,
+        "vendorIdentifier" : "h64.ach.tt_medium_63"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "points" : 100,
+        "referenceName" : "h64.ach.tt_hard_63",
+        "repeatable" : false,
+        "showBeforeEarned" : true,
+        "vendorIdentifier" : "h64.ach.tt_hard_63"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "points" : 30,
+        "referenceName" : "h64.ach.streak_7",
+        "repeatable" : false,
+        "showBeforeEarned" : true,
+        "vendorIdentifier" : "h64.ach.streak_7"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "points" : 20,
+        "referenceName" : "h64.ach.training_all",
+        "repeatable" : false,
+        "showBeforeEarned" : true,
+        "vendorIdentifier" : "h64.ach.training_all"
+      }
+    ],
+    "challengeDefaultImages" : {
+      "h64.challenge.freeplay" : {
+        "localID" : "h64.challenge.freeplay",
+        "url" : "ChallengeImage-h64.challenge.freeplay.png"
+      },
+      "h64.challenge.timetrial.easy" : {
+        "localID" : "h64.challenge.timetrial.easy",
+        "url" : "ChallengeImage-h64.challenge.timetrial.easy.png"
+      },
+      "h64.challenge.timetrial.hard" : {
+        "localID" : "h64.challenge.timetrial.hard",
+        "url" : "ChallengeImage-h64.challenge.timetrial.hard.png"
+      },
+      "h64.challenge.timetrial.medium" : {
+        "localID" : "h64.challenge.timetrial.medium",
+        "url" : "ChallengeImage-h64.challenge.timetrial.medium.png"
+      }
+    },
+    "challengeLeaderboardRelationships" : {
+      "h64.challenge.freeplay" : [
+        {
+          "leaderboardLocalID" : "h64.freeplay.alltime",
+          "localID" : "h64.challenge.freeplay"
+        }
+      ],
+      "h64.challenge.timetrial.easy" : [
+        {
+          "leaderboardLocalID" : "h64.timetrial.easy.alltime",
+          "localID" : "h64.challenge.timetrial.easy"
+        }
+      ],
+      "h64.challenge.timetrial.hard" : [
+        {
+          "leaderboardLocalID" : "h64.timetrial.hard.alltime",
+          "localID" : "h64.challenge.timetrial.hard"
+        }
+      ],
+      "h64.challenge.timetrial.medium" : [
+        {
+          "leaderboardLocalID" : "h64.timetrial.medium.alltime",
+          "localID" : "h64.challenge.timetrial.medium"
+        }
+      ]
+    },
+    "challengeLocalizations" : {
+      "h64.challenge.freeplay" : [
+        {
+          "description" : "Who can clear all 63 cards fastest, without hints?",
+          "locale" : "en-US",
+          "localID" : "h64.challenge.freeplay-en-US",
+          "name" : "Free Play"
+        }
+      ],
+      "h64.challenge.timetrial.easy" : [
+        {
+          "description" : "Who can collect the most cards before time runs out? Each set adds 15 seconds.",
+          "locale" : "en-US",
+          "localID" : "h64.challenge.timetrial.easy-en-US",
+          "name" : "Time Trial · Easy"
+        }
+      ],
+      "h64.challenge.timetrial.hard" : [
+        {
+          "description" : "Who can collect the most cards before time runs out? Each set adds 5 seconds.",
+          "locale" : "en-US",
+          "localID" : "h64.challenge.timetrial.hard-en-US",
+          "name" : "Time Trial · Hard"
+        }
+      ],
+      "h64.challenge.timetrial.medium" : [
+        {
+          "description" : "Who can collect the most cards before time runs out? Each set adds 10 seconds.",
+          "locale" : "en-US",
+          "localID" : "h64.challenge.timetrial.medium-en-US",
+          "name" : "Time Trial · Medium"
+        }
+      ]
+    },
+    "challenges" : [
+      {
+        "archived" : false,
+        "challengeType" : "LEADERBOARD",
+        "referenceName" : "h64.challenge.freeplay",
+        "repeatable" : true,
+        "vendorIdentifier" : "h64.challenge.freeplay"
+      },
+      {
+        "archived" : false,
+        "challengeType" : "LEADERBOARD",
+        "referenceName" : "h64.challenge.timetrial.easy",
+        "repeatable" : true,
+        "vendorIdentifier" : "h64.challenge.timetrial.easy"
+      },
+      {
+        "archived" : false,
+        "challengeType" : "LEADERBOARD",
+        "referenceName" : "h64.challenge.timetrial.medium",
+        "repeatable" : true,
+        "vendorIdentifier" : "h64.challenge.timetrial.medium"
+      },
+      {
+        "archived" : false,
+        "challengeType" : "LEADERBOARD",
+        "referenceName" : "h64.challenge.timetrial.hard",
+        "repeatable" : true,
+        "vendorIdentifier" : "h64.challenge.timetrial.hard"
+      }
+    ],
+    "gameActivities" : [
+      {
+        "archived" : false,
+        "maximumPlayersCount" : null,
+        "minimumPlayersCount" : null,
+        "playStyle" : null,
+        "properties" : {
+          "mode" : "freePlay"
+        },
+        "referenceName" : "h64.activity.freeplay",
+        "supportsPartyCode" : false,
+        "vendorIdentifier" : "h64.activity.freeplay"
+      },
+      {
+        "archived" : false,
+        "maximumPlayersCount" : null,
+        "minimumPlayersCount" : null,
+        "playStyle" : null,
+        "properties" : {
+          "mode" : "timeTrialEasy"
+        },
+        "referenceName" : "h64.activity.timetrial.easy",
+        "supportsPartyCode" : false,
+        "vendorIdentifier" : "h64.activity.timetrial.easy"
+      },
+      {
+        "archived" : false,
+        "maximumPlayersCount" : null,
+        "minimumPlayersCount" : null,
+        "playStyle" : null,
+        "properties" : {
+          "mode" : "timeTrialMedium"
+        },
+        "referenceName" : "h64.activity.timetrial.medium",
+        "supportsPartyCode" : false,
+        "vendorIdentifier" : "h64.activity.timetrial.medium"
+      },
+      {
+        "archived" : false,
+        "maximumPlayersCount" : null,
+        "minimumPlayersCount" : null,
+        "playStyle" : null,
+        "properties" : {
+          "mode" : "timeTrialHard"
+        },
+        "referenceName" : "h64.activity.timetrial.hard",
+        "supportsPartyCode" : false,
+        "vendorIdentifier" : "h64.activity.timetrial.hard"
+      }
+    ],
+    "gameActivityAssociatedResources" : [
+      "Achievement",
+      {
+        "h64.activity.freeplay" : [
+          "h64.ach.first_deck",
+          "h64.ach.deck_10min",
+          "h64.ach.deck_7min",
+          "h64.ach.deck_5min",
+          "h64.ach.deck_3min",
+          "h64.ach.decks_10",
+          "h64.ach.decks_100",
+          "h64.ach.seven_set"
+        ],
+        "h64.activity.timetrial.easy" : [
+          "h64.ach.tt_easy_63"
+        ],
+        "h64.activity.timetrial.hard" : [
+          "h64.ach.tt_hard_63"
+        ],
+        "h64.activity.timetrial.medium" : [
+          "h64.ach.tt_medium_63"
+        ]
+      },
+      "Leaderboard",
+      {
+        "h64.activity.freeplay" : [
+          "h64.freeplay.alltime",
+          "h64.freeplay.daily"
+        ],
+        "h64.activity.timetrial.easy" : [
+          "h64.timetrial.easy.alltime",
+          "h64.timetrial.easy.daily"
+        ],
+        "h64.activity.timetrial.hard" : [
+          "h64.timetrial.hard.alltime",
+          "h64.timetrial.hard.daily"
+        ],
+        "h64.activity.timetrial.medium" : [
+          "h64.timetrial.medium.alltime",
+          "h64.timetrial.medium.daily"
+        ]
+      }
+    ],
+    "gameActivityDefaultImages" : {
+      "h64.activity.freeplay" : {
+        "localID" : "h64.activity.freeplay",
+        "url" : "GameActivityImage-h64.activity.freeplay.png"
+      },
+      "h64.activity.timetrial.easy" : {
+        "localID" : "h64.activity.timetrial.easy",
+        "url" : "GameActivityImage-h64.activity.timetrial.easy.png"
+      },
+      "h64.activity.timetrial.hard" : {
+        "localID" : "h64.activity.timetrial.hard",
+        "url" : "GameActivityImage-h64.activity.timetrial.hard.png"
+      },
+      "h64.activity.timetrial.medium" : {
+        "localID" : "h64.activity.timetrial.medium",
+        "url" : "GameActivityImage-h64.activity.timetrial.medium.png"
+      }
+    },
+    "gameActivityLocalizations" : {
+      "h64.activity.freeplay" : [
+        {
+          "description" : "Clear all 63 cards as fast as you can.",
+          "locale" : "en-US",
+          "localID" : "h64.activity.freeplay-en-US",
+          "name" : "Free Play"
+        }
+      ],
+      "h64.activity.timetrial.easy" : [
+        {
+          "description" : "Collect as many cards as you can before time runs out. Each set adds 15 seconds.",
+          "locale" : "en-US",
+          "localID" : "h64.activity.timetrial.easy-en-US",
+          "name" : "Time Trial · Easy"
+        }
+      ],
+      "h64.activity.timetrial.hard" : [
+        {
+          "description" : "Collect as many cards as you can before time runs out. Each set adds 5 seconds.",
+          "locale" : "en-US",
+          "localID" : "h64.activity.timetrial.hard-en-US",
+          "name" : "Time Trial · Hard"
+        }
+      ],
+      "h64.activity.timetrial.medium" : [
+        {
+          "description" : "Collect as many cards as you can before time runs out. Each set adds 10 seconds.",
+          "locale" : "en-US",
+          "localID" : "h64.activity.timetrial.medium-en-US",
+          "name" : "Time Trial · Medium"
+        }
+      ]
+    },
+    "leaderboardLocalizations" : {
+      "h64.freeplay.alltime" : [
+        {
+          "formatterOverride" : "ELAPSED_TIME_SECOND",
+          "formatterSuffix" : "",
+          "formatterSuffixSingular" : "",
+          "locale" : "en-US",
+          "localID" : "h64.freeplay.alltime-en-US",
+          "name" : "Free Play"
+        }
+      ],
+      "h64.freeplay.daily" : [
+        {
+          "formatterOverride" : "ELAPSED_TIME_SECOND",
+          "formatterSuffix" : "",
+          "formatterSuffixSingular" : "",
+          "locale" : "en-US",
+          "localID" : "h64.freeplay.daily-en-US",
+          "name" : "Free Play · Daily"
+        }
+      ],
+      "h64.timetrial.easy.alltime" : [
+        {
+          "formatterSuffix" : " cards",
+          "formatterSuffixSingular" : " card",
+          "locale" : "en-US",
+          "localID" : "h64.timetrial.easy.alltime-en-US",
+          "name" : "Time Trial · Easy"
+        }
+      ],
+      "h64.timetrial.easy.daily" : [
+        {
+          "formatterSuffix" : " cards",
+          "formatterSuffixSingular" : " card",
+          "locale" : "en-US",
+          "localID" : "h64.timetrial.easy.daily-en-US",
+          "name" : "Time Trial · Easy · Daily"
+        }
+      ],
+      "h64.timetrial.hard.alltime" : [
+        {
+          "formatterSuffix" : " cards",
+          "formatterSuffixSingular" : " card",
+          "locale" : "en-US",
+          "localID" : "h64.timetrial.hard.alltime-en-US",
+          "name" : "Time Trial · Hard"
+        }
+      ],
+      "h64.timetrial.hard.daily" : [
+        {
+          "formatterSuffix" : " cards",
+          "formatterSuffixSingular" : " card",
+          "locale" : "en-US",
+          "localID" : "h64.timetrial.hard.daily-en-US",
+          "name" : "Time Trial · Hard · Daily"
+        }
+      ],
+      "h64.timetrial.medium.alltime" : [
+        {
+          "formatterSuffix" : " cards",
+          "formatterSuffixSingular" : " card",
+          "locale" : "en-US",
+          "localID" : "h64.timetrial.medium.alltime-en-US",
+          "name" : "Time Trial · Medium"
+        }
+      ],
+      "h64.timetrial.medium.daily" : [
+        {
+          "formatterSuffix" : " cards",
+          "formatterSuffixSingular" : " card",
+          "locale" : "en-US",
+          "localID" : "h64.timetrial.medium.daily-en-US",
+          "name" : "Time Trial · Medium · Daily"
+        }
+      ]
+    },
+    "leaderboards" : [
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "defaultFormatter" : "ELAPSED_TIME_CENTISECOND",
+        "recurrenceDuration" : "PT24H",
+        "recurrenceRule" : "FREQ=DAILY;INTERVAL=1",
+        "recurrenceStartDate" : "2026-10-24T08:00:00Z",
+        "referenceName" : "h64.freeplay.daily",
+        "scoreRangeEnd" : null,
+        "scoreRangeStart" : null,
+        "scoreSortType" : "ASC",
+        "submissionType" : "BEST_SCORE",
+        "vendorIdentifier" : "h64.freeplay.daily",
+        "visibility" : "SHOW_FOR_ALL"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "defaultFormatter" : "ELAPSED_TIME_CENTISECOND",
+        "referenceName" : "h64.freeplay.alltime",
+        "scoreRangeEnd" : null,
+        "scoreRangeStart" : null,
+        "scoreSortType" : "ASC",
+        "submissionType" : "BEST_SCORE",
+        "vendorIdentifier" : "h64.freeplay.alltime",
+        "visibility" : "SHOW_FOR_ALL"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "defaultFormatter" : "INTEGER",
+        "referenceName" : "h64.timetrial.easy.alltime",
+        "scoreRangeEnd" : null,
+        "scoreRangeStart" : null,
+        "scoreSortType" : "DESC",
+        "submissionType" : "BEST_SCORE",
+        "vendorIdentifier" : "h64.timetrial.easy.alltime",
+        "visibility" : "SHOW_FOR_ALL"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "defaultFormatter" : "INTEGER",
+        "recurrenceDuration" : "PT24H",
+        "recurrenceRule" : "FREQ=DAILY;INTERVAL=1",
+        "recurrenceStartDate" : "2026-10-24T08:00:00Z",
+        "referenceName" : "h64.timetrial.easy.daily",
+        "scoreRangeEnd" : null,
+        "scoreRangeStart" : null,
+        "scoreSortType" : "DESC",
+        "submissionType" : "BEST_SCORE",
+        "vendorIdentifier" : "h64.timetrial.easy.daily",
+        "visibility" : "SHOW_FOR_ALL"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "defaultFormatter" : "INTEGER",
+        "referenceName" : "h64.timetrial.medium.alltime",
+        "scoreRangeEnd" : null,
+        "scoreRangeStart" : null,
+        "scoreSortType" : "DESC",
+        "submissionType" : "BEST_SCORE",
+        "vendorIdentifier" : "h64.timetrial.medium.alltime",
+        "visibility" : "SHOW_FOR_ALL"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "defaultFormatter" : "INTEGER",
+        "recurrenceDuration" : "PT24H",
+        "recurrenceRule" : "FREQ=DAILY;INTERVAL=1",
+        "recurrenceStartDate" : "2026-10-24T08:00:00Z",
+        "referenceName" : "h64.timetrial.medium.daily",
+        "scoreRangeEnd" : null,
+        "scoreRangeStart" : null,
+        "scoreSortType" : "DESC",
+        "submissionType" : "BEST_SCORE",
+        "vendorIdentifier" : "h64.timetrial.medium.daily",
+        "visibility" : "SHOW_FOR_ALL"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "defaultFormatter" : "INTEGER",
+        "referenceName" : "h64.timetrial.hard.alltime",
+        "scoreRangeEnd" : null,
+        "scoreRangeStart" : null,
+        "scoreSortType" : "DESC",
+        "submissionType" : "BEST_SCORE",
+        "vendorIdentifier" : "h64.timetrial.hard.alltime",
+        "visibility" : "SHOW_FOR_ALL"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "defaultFormatter" : "INTEGER",
+        "recurrenceDuration" : "PT24H",
+        "recurrenceRule" : "FREQ=DAILY;INTERVAL=1",
+        "recurrenceStartDate" : "2026-10-24T08:00:00Z",
+        "referenceName" : "h64.timetrial.hard.daily",
+        "scoreRangeEnd" : null,
+        "scoreRangeStart" : null,
+        "scoreSortType" : "DESC",
+        "submissionType" : "BEST_SCORE",
+        "vendorIdentifier" : "h64.timetrial.hard.daily",
+        "visibility" : "SHOW_FOR_ALL"
+      }
+    ]
+  }
+}

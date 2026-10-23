@@ -52,7 +52,7 @@ struct StatisticsView: View {
     private var modePicker: some View {
         Menu {
             Picker("Mode", selection: $mode) {
-                ForEach(GameMode.allCases) { Text($0.title).tag($0) }
+                ForEach(GameMode.playable) { Text($0.title).tag($0) }
             }
         } label: {
             HStack {

@@ -1,27 +1,27 @@
 import Foundation
 
-/// Everything Hadron 64 registers with Game Center, in one place: leaderboards, achievements,
-/// challenges and activities. Each entry mirrors one record in App Store Connect, and the IDs must
-/// match it exactly. Names and descriptions here are what to type into App Store Connect (English);
-/// players see App Store Connect's copy, not these strings, so they aren't localized in the app.
+/// Everything Hadron 64 reports to Game Center: leaderboards, achievements, challenges and activities,
+/// with their scoring and unlock rules. Each entry mirrors one record in `Hadron64.gamekit`, which Xcode
+/// pushes to App Store Connect. Players see the bundle's names, descriptions and images, not the strings
+/// here; those were the bundle's starting copy and are kept as a readable reference.
 ///
-/// To add or change something: edit it here, update the setup sheet (linked in docs/GAMECENTER.md),
-/// then make the same change in App Store Connect. Never reuse or rename a live ID; retire it and
-/// make a new one instead.
+/// To add or change something: edit it here and make the same change in the GameKit bundle in Xcode;
+/// `GameKitBundleTests` fails until IDs, points, visibility and links agree. Never reuse or rename a
+/// live ID; archive it and make a new one instead.
 enum GameCenterCatalog {
 
     // MARK: - Leaderboards
 
     /// Modes with public boards. Training stays personal.
     static let leaderboards: [Leaderboard] = [
-        Leaderboard(id: "h64.freeplay.alltime", mode: .freePlay, daily: false, name: "Fastest Deck"),
-        Leaderboard(id: "h64.freeplay.daily", mode: .freePlay, daily: true, name: "Fastest Deck Today"),
+        Leaderboard(id: "h64.freeplay.alltime", mode: .freePlay, daily: false, name: "Free Play"),
+        Leaderboard(id: "h64.freeplay.daily", mode: .freePlay, daily: true, name: "Free Play · Daily"),
         Leaderboard(id: "h64.timetrial.easy.alltime", mode: .timeTrialEasy, daily: false, name: "Time Trial · Easy"),
-        Leaderboard(id: "h64.timetrial.easy.daily", mode: .timeTrialEasy, daily: true, name: "Time Trial · Easy Today"),
+        Leaderboard(id: "h64.timetrial.easy.daily", mode: .timeTrialEasy, daily: true, name: "Time Trial · Easy · Daily"),
         Leaderboard(id: "h64.timetrial.medium.alltime", mode: .timeTrialMedium, daily: false, name: "Time Trial · Medium"),
-        Leaderboard(id: "h64.timetrial.medium.daily", mode: .timeTrialMedium, daily: true, name: "Time Trial · Medium Today"),
+        Leaderboard(id: "h64.timetrial.medium.daily", mode: .timeTrialMedium, daily: true, name: "Time Trial · Medium · Daily"),
         Leaderboard(id: "h64.timetrial.hard.alltime", mode: .timeTrialHard, daily: false, name: "Time Trial · Hard"),
-        Leaderboard(id: "h64.timetrial.hard.daily", mode: .timeTrialHard, daily: true, name: "Time Trial · Hard Today"),
+        Leaderboard(id: "h64.timetrial.hard.daily", mode: .timeTrialHard, daily: true, name: "Time Trial · Hard · Daily"),
     ]
 
     // MARK: - Achievements
@@ -31,43 +31,43 @@ enum GameCenterCatalog {
     /// Game Center was switched on get credit for it on their next launch.
     static let achievements: [Achievement] = [
         Achievement(id: "h64.ach.first_deck", points: 10,
-                    title: "First Light",
+                    title: "First Deck",
                     unearned: "Clear a Free Play deck.",
                     earned: "You cleared your first deck.") { h in
             h.completedDecks.isEmpty ? 0 : 1
         },
         Achievement(id: "h64.ach.deck_10min", points: 20,
-                    title: "Ten Minute Deck",
+                    title: "Ten-Minute Deck",
                     unearned: "Clear a Free Play deck in under 10 minutes without hints.",
-                    earned: "You cleared a deck in under 10 minutes.") { h in
+                    earned: "You cleared a deck in under 10 minutes without hints.") { h in
             h.bestCleanDeck.map { $0 < 10 * 60 ? 1 : 0 } ?? 0
         },
         Achievement(id: "h64.ach.deck_7min", points: 30,
-                    title: "Seven Minute Deck",
+                    title: "Seven-Minute Deck",
                     unearned: "Clear a Free Play deck in under 7 minutes without hints.",
-                    earned: "You cleared a deck in under 7 minutes.") { h in
+                    earned: "You cleared a deck in under 7 minutes without hints.") { h in
             h.bestCleanDeck.map { $0 < 7 * 60 ? 1 : 0 } ?? 0
         },
         Achievement(id: "h64.ach.deck_5min", points: 50,
-                    title: "Five Minute Deck",
+                    title: "Five-Minute Deck",
                     unearned: "Clear a Free Play deck in under 5 minutes without hints.",
-                    earned: "You cleared a deck in under 5 minutes.") { h in
+                    earned: "You cleared a deck in under 5 minutes without hints.") { h in
             h.bestCleanDeck.map { $0 < 5 * 60 ? 1 : 0 } ?? 0
         },
         Achievement(id: "h64.ach.deck_3min", points: 100,
-                    title: "Three Minute Deck",
+                    title: "Three-Minute Deck",
                     unearned: "Clear a Free Play deck in under 3 minutes without hints.",
-                    earned: "You cleared a deck in under 3 minutes.") { h in
+                    earned: "You cleared a deck in under 3 minutes without hints.") { h in
             h.bestCleanDeck.map { $0 < 3 * 60 ? 1 : 0 } ?? 0
         },
         Achievement(id: "h64.ach.decks_10", points: 20,
-                    title: "Regular",
+                    title: "Ten Decks",
                     unearned: "Clear 10 Free Play decks.",
                     earned: "You cleared 10 decks.") { h in
             Double(h.completedDecks.count) / 10
         },
         Achievement(id: "h64.ach.decks_100", points: 75,
-                    title: "Centurion",
+                    title: "One Hundred Decks",
                     unearned: "Clear 100 Free Play decks.",
                     earned: "You cleared 100 decks.") { h in
             Double(h.completedDecks.count) / 100
@@ -79,42 +79,43 @@ enum GameCenterCatalog {
             Double(h.deckSets.count) / 1000
         },
         Achievement(id: "h64.ach.seven_set", points: 20, hidden: true,
-                    title: "Full House",
-                    unearned: "Find a set of seven cards.",
-                    earned: "You found a set of seven cards.") { h in
+                    title: "Seven-Card Set",
+                    unearned: "Find a set made of seven cards.",
+                    earned: "You found a set made of seven cards.") { h in
             h.deckSets.contains { $0.size == 7 } ? 1 : 0
         },
         // Time trials deal from an endless deck, so these ask for a whole deck's worth of cards in one game.
         Achievement(id: "h64.ach.tt_easy_63", points: 30,
-                    title: "Beat the Clock",
+                    title: "Full Deck · Easy",
                     unearned: "Collect 63 cards in one Time Trial · Easy game.",
-                    earned: "You collected 63 cards in Time Trial · Easy.") { h in
+                    earned: "You collected 63 cards in one Time Trial · Easy game.") { h in
             Double(h.mostCards(in: .timeTrialEasy)) / 63
         },
         Achievement(id: "h64.ach.tt_medium_63", points: 50,
-                    title: "Against the Clock",
+                    title: "Full Deck · Medium",
                     unearned: "Collect 63 cards in one Time Trial · Medium game.",
-                    earned: "You collected 63 cards in Time Trial · Medium.") { h in
+                    earned: "You collected 63 cards in one Time Trial · Medium game.") { h in
             Double(h.mostCards(in: .timeTrialMedium)) / 63
         },
         Achievement(id: "h64.ach.tt_hard_63", points: 100,
-                    title: "Faster Than Time",
+                    title: "Full Deck · Hard",
                     unearned: "Collect 63 cards in one Time Trial · Hard game.",
-                    earned: "You collected 63 cards in Time Trial · Hard.") { h in
+                    earned: "You collected 63 cards in one Time Trial · Hard game.") { h in
             Double(h.mostCards(in: .timeTrialHard)) / 63
         },
         Achievement(id: "h64.ach.streak_7", points: 30,
-                    title: "Seven Day Streak",
+                    title: "Seven-Day Streak",
                     unearned: "Play on seven days in a row.",
-                    earned: "You played seven days in a row.") { h in
+                    earned: "You played on seven days in a row.") { h in
             Double(h.longestDayStreak) / 7
         },
         Achievement(id: "h64.ach.training_all", points: 20,
                     title: "Well Rounded",
                     unearned: "Try every training mode.",
                     earned: "You tried every training mode.") { h in
-            let training = GameMode.allCases.filter(\.isTraining)
-            return Double(Set(h.events.map(\.mode)).intersection(training).count) / Double(training.count)
+            // Trials count toward their deck, so "every mode" means every deck and drill.
+            let training = GameMode.playable.filter { $0.isTraining && $0.base == $0 }
+            return Double(Set(h.events.map(\.mode.base)).intersection(training).count) / Double(training.count)
         },
     ]
 
@@ -125,17 +126,17 @@ enum GameCenterCatalog {
     /// Challenges build on the Classic (all-time) boards.
     static let challenges: [Challenge] = [
         Challenge(id: "h64.challenge.freeplay", leaderboardID: "h64.freeplay.alltime",
-                  name: "Fastest Deck",
-                  details: "Who can clear a whole deck fastest, without hints?"),
+                  name: "Free Play",
+                  details: "Who can clear all 63 cards fastest, without hints?"),
         Challenge(id: "h64.challenge.timetrial.easy", leaderboardID: "h64.timetrial.easy.alltime",
                   name: "Time Trial · Easy",
-                  details: "Most cards collected before the clock runs out."),
+                  details: "Who can collect the most cards before time runs out? Each set adds 15 seconds."),
         Challenge(id: "h64.challenge.timetrial.medium", leaderboardID: "h64.timetrial.medium.alltime",
                   name: "Time Trial · Medium",
-                  details: "Most cards collected before the clock runs out."),
+                  details: "Who can collect the most cards before time runs out? Each set adds 10 seconds."),
         Challenge(id: "h64.challenge.timetrial.hard", leaderboardID: "h64.timetrial.hard.alltime",
                   name: "Time Trial · Hard",
-                  details: "Most cards collected before the clock runs out."),
+                  details: "Who can collect the most cards before time runs out? Each set adds 5 seconds."),
     ]
 
     // MARK: - Activities (iOS 26)
@@ -152,15 +153,15 @@ enum GameCenterCatalog {
                                   "h64.ach.decks_100", "h64.ach.seven_set"]),
         Activity(id: "h64.activity.timetrial.easy", mode: .timeTrialEasy,
                  name: "Time Trial · Easy",
-                 details: "Collect as many cards as you can. Every set adds 15 seconds.",
+                 details: "Collect as many cards as you can before time runs out. Each set adds 15 seconds.",
                  achievementIDs: ["h64.ach.tt_easy_63"]),
         Activity(id: "h64.activity.timetrial.medium", mode: .timeTrialMedium,
                  name: "Time Trial · Medium",
-                 details: "Collect as many cards as you can. Every set adds 10 seconds.",
+                 details: "Collect as many cards as you can before time runs out. Each set adds 10 seconds.",
                  achievementIDs: ["h64.ach.tt_medium_63"]),
         Activity(id: "h64.activity.timetrial.hard", mode: .timeTrialHard,
                  name: "Time Trial · Hard",
-                 details: "Collect as many cards as you can. Every set adds 5 seconds.",
+                 details: "Collect as many cards as you can before time runs out. Each set adds 5 seconds.",
                  achievementIDs: ["h64.ach.tt_hard_63"]),
     ]
 }

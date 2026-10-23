@@ -26,8 +26,8 @@ struct GameScreen: View {
                 CardTableView(table: game.table, layout: layout, selected: game.selected,
                               marked: game.hintIncluded, crossed: game.hintExcluded,
                               celebrating: game.celebrating) { game.toggle($0) }
-                ParityCard(value: game.parity, mask: mode.dotMask, height: layout.controlsHeight,
-                           success: !game.celebrating.isEmpty)
+                ParityHex(value: game.parity, mask: mode.dotMask, height: layout.controlsHeight,
+                          success: !game.celebrating.isEmpty)
                     .position(layout.controlsCenter)
                 topBar
                     .frame(height: layout.topBarHeight)

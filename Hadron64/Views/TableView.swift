@@ -46,15 +46,20 @@ struct TableLayout {
         case 5: [2, 1, 2]
         case 6: [2, 2, 2]
         case 7: [2, 3, 2]
+        case 8: [3, 2, 3]
         default: stride(from: 0, to: count, by: 3).map { min(3, count - $0) }
         }
     }
 
-    init(size: CGSize, slotCount: Int, scale: CGFloat = 1) {
+    /// `pileInset` pulls the piles in from the sides, to clear things drawn along the edges (multiplayer scores).
+    /// `controls` is the height reserved for the controls before scaling. Without `piles` (they aren't drawn), the
+    /// controls sit at the bottom and the board takes the room the piles would have used.
+    init(size: CGSize, slotCount: Int, scale: CGFloat = 1, pileInset: CGFloat = 0, controls: CGFloat = 80,
+         piles: Bool = true) {
         self.size = size
         self.scale = scale
         topBarHeight = 56 * scale
-        controlsHeight = 64 * scale
+        controlsHeight = controls * scale
         let pad: CGFloat = 16 * scale
         let a = CardGeometry.aspect
         let gapRatio: CGFloat = 0.1
@@ -63,11 +68,13 @@ struct TableLayout {
         var w = (size.width - 2 * pad) / (3 + 2 * gapRatio)
         var h = w / a
         // Room between the piles (and their counts) for the widest controls?
-        let controlsBesidePiles = size.width - 2 * (pad + Self.pileScale * w + 50 * scale) >= 320 * scale
+        let controlsBesidePiles = !piles
+            || size.width - 2 * (pad + pileInset + Self.pileScale * w + 50 * scale) >= 320 * scale
         let rows = 3 + 2 * gapRatio * a
         if controlsBesidePiles {
             let available = size.height - topBarHeight - 28 * scale
-            h = min(h, available / (rows + Self.pileScale), (available - controlsHeight) / rows)
+            h = min(h, (available - controlsHeight) / rows)
+            if piles { h = min(h, available / (rows + Self.pileScale)) }
         } else {
             let available = size.height - topBarHeight - controlsHeight - 28 * scale
             h = min(h, available / (rows + Self.pileScale))
@@ -78,14 +85,15 @@ struct TableLayout {
 
         let pileW = w * Self.pileScale, pileH = h * Self.pileScale
         let pileY = size.height - 10 * scale - pileH / 2
-        stackCenter = CGPoint(x: pad + pileW / 2 + 6, y: pileY)
-        deckCenter = CGPoint(x: size.width - pad - pileW / 2 - 6, y: pileY)
+        stackCenter = CGPoint(x: pad + pileInset + pileW / 2 + 6, y: pileY)
+        deckCenter = CGPoint(x: size.width - pad - pileInset - pileW / 2 - 6, y: pileY)
         controlsCenter = controlsBesidePiles
-            ? CGPoint(x: size.width / 2, y: size.height - 10 * scale - max(pileH, controlsHeight) / 2)
+            ? CGPoint(x: size.width / 2, y: size.height - 10 * scale - max(piles ? pileH : 0, controlsHeight) / 2)
             : CGPoint(x: size.width / 2, y: pileY - pileH / 2 - 4 * scale - controlsHeight / 2)
 
         let boardTop = topBarHeight
-        let boardBottom = min(controlsCenter.y - controlsHeight / 2, controlsBesidePiles ? pileY - pileH / 2 : .infinity)
+        let boardBottom = min(controlsCenter.y - controlsHeight / 2,
+                              controlsBesidePiles && piles ? pileY - pileH / 2 : .infinity)
         let pattern = Self.rows(for: slotCount)
         let boardH = CGFloat(pattern.count) * h + CGFloat(pattern.count - 1) * gap
         let firstY = (boardTop + boardBottom) / 2 - boardH / 2 + h / 2
@@ -116,6 +124,10 @@ struct CardTableView: View {
     var celebrating: Set<Int> = []
     /// Show how many cards are left in the deck (deck modes only).
     var showsCounts = true
+    /// Show the collection stack. Without it, collected cards just fade away (tutorial).
+    var showsStack = true
+    /// Show the deck pile. Without it, cards still fly in from where it would be.
+    var showsDeck = true
     var onTap: ((Int) -> Void)?
 
     private enum Place { case slot(Int), stack(Int) }
@@ -127,7 +139,7 @@ struct CardTableView: View {
     }
 
     private var items: [Item] {
-        table.stack.enumerated().map { Item(card: $1, place: .stack($0)) }
+        (showsStack ? table.stack.enumerated().map { Item(card: $1, place: .stack($0)) } : [])
             + table.slots.enumerated().compactMap { i, card in card.map { Item(card: $0, place: .slot(i)) } }
     }
 
@@ -137,8 +149,12 @@ struct CardTableView: View {
 
     @ViewBuilder private var content: some View {
         ZStack {
-            pile(count: table.collectedCount, isDeck: false).position(layout.stackCenter)
-            pile(count: table.deck.count, isDeck: true).position(layout.deckCenter)
+            if showsStack {
+                pile(count: table.collectedCount, isDeck: false).position(layout.stackCenter)
+            }
+            if showsDeck {
+                pile(count: table.deck.count, isDeck: true).position(layout.deckCenter)
+            }
 
             ForEach(items) { item in
                 cardView(item)
@@ -230,57 +246,147 @@ struct CardTableView: View {
     }
 }
 
-/// A small card under the board showing which dots are odd in the current selection, at the dots'
-/// card positions. Even dots stay in place but faded; dots outside `mask` aren't drawn.
-struct ParityCard: View {
+/// The indicator under the board: the odd dots of the current selection on the app icon's hexagon.
+/// Even dots stay in place but faded; dots outside `mask` aren't drawn. When a set is found the dots fade and a check comes in.
+/// If `mask` has the background bit (Extra Hard), a small card in the middle shows whether shaded backgrounds are odd.
+/// With a `guide` (tutorial) it also counts the odd dots in the middle, glows green when one more card would finish the
+/// set, and rings in red any odd dot that nothing left on the board can clear.
+/// With `onToggle` (Remainder drill) every dot shows in full and is a button; `value` is the dots picked so far,
+/// which grow and get a ring.
+struct ParityHex: View {
+    struct Guide {
+        /// Something is selected. With nothing selected the hexagon is trivially empty, so show no count.
+        var active: Bool
+        /// One more card would finish the set.
+        var oneAway: Bool
+        /// Odd dots that no remaining card can clear.
+        var stuck: Int = 0
+    }
+
     let value: Int
     var mask: Int = CardMath.fullMask
-    var height: CGFloat = 64
-    /// A set was just found: glow green and show a check.
+    var height: CGFloat = 80
+    /// A set was just found.
     var success = false
+    var guide: Guide?
+    var onToggle: ((Dot) -> Void)?
+
+    @State private var pulse = false
+
+    private var remaining: Int { value.nonzeroBitCount }
+    private var oneAway: Bool { guide?.oneAway ?? false }
+    private var stuck: Int { guide?.stuck ?? 0 }
+
+    // Icon proportions: neighbouring dots sit one circumradius apart with a gap between them.
+    // Pickable dots sit further apart so the rings on picked neighbours don't touch.
+    private var dotRadius: CGFloat { height / (2 + sqrt(3) * (2 + gapRatio)) }
+    private var hexRadius: CGFloat { dotRadius * (2 + gapRatio) }
+    private var gapRatio: CGFloat { onToggle == nil ? 0.55 : 1.25 }
+
+    /// Rows 0/2 are the top/bottom edge vertices, row 1 the side vertices.
+    private func offset(of dot: Dot) -> CGSize {
+        let side: CGFloat = dot.column == 0 ? -1 : 1
+        return CGSize(width: side * (dot.row == 1 ? hexRadius : hexRadius / 2),
+                      height: CGFloat(dot.row - 1) * hexRadius * sqrt(3) / 2)
+    }
 
     var body: some View {
         content.fixedCardLayout()
     }
 
     @ViewBuilder private var content: some View {
-        let k = height / CardGeometry.height
-        let side = (CardGeometry.dotRadius * 2 + CardGeometry.strokeWidth) * k
-        ZStack(alignment: .topLeading) {
-            ForEach(Dot.allCases.filter { mask & $0.bit != 0 }) { dot in
-                let p = CardGeometry.center(of: dot)
-                DotView(dot: dot)
+        let r = dotRadius
+        let side = r * 2
+        let dots = Dot.allCases.filter { mask & $0.bit != 0 }
+        ZStack {
+            ForEach(dots) { dot in
+                let odd = value & dot.bit != 0
+                let isStuck = stuck & dot.bit != 0
+                Circle()
+                    .fill(isStuck ? Palette.red : Palette.green)
                     .frame(width: side, height: side)
-                    .opacity(value & dot.bit != 0 ? 1 : 0.12)
-                    .scaleEffect(value & dot.bit != 0 ? 1 : 0.85)
-                    .position(x: p.x * k, y: p.y * k)
+                    .blur(radius: r * 0.45)
+                    .scaleEffect(pulse ? 1.45 : 1.2)
+                    .opacity((isStuck || oneAway && odd) && !success ? (pulse ? 0.9 : 0.55) : 0)
+                    .offset(offset(of: dot))
             }
-        }
-        .frame(width: CardGeometry.width * k, height: height)
-        .background(CardShape().fill(Palette.card))
-        .overlay(CardShape().strokeBorder(Palette.ink.opacity(0.1), lineWidth: 1))
-        .shadow(color: .black.opacity(0.08), radius: 3, y: 1.5)
-        .background {
-            CardShape()
-                .fill(Palette.green)
-                .blur(radius: height * 0.18)
-                .opacity(success ? 0.85 : 0)
-                .scaleEffect(success ? 1.25 : 0.9)
-        }
-        .overlay {
+            ForEach(dots) { dot in
+                let odd = value & dot.bit != 0
+                if onToggle != nil {
+                    pickable(dot, picked: odd, radius: r)
+                } else {
+                    DotView(dot: dot)
+                        .frame(width: side, height: side)
+                        .opacity(success ? 0 : (odd ? 1 : 0.12))
+                        .scaleEffect(success ? 0.6 : (odd ? 1 : 0.85))
+                        .offset(offset(of: dot))
+                }
+            }
+            if mask & CardMath.backgroundBit != 0 {
+                let odd = value & CardMath.backgroundBit != 0
+                CardShape()
+                    .fill(odd ? Palette.shade : Palette.card)
+                    .overlay(CardShape().strokeBorder(Palette.ink.opacity(odd ? 0.25 : 0.12), lineWidth: 1))
+                    .frame(width: 2 * r * CardGeometry.aspect, height: 2 * r)
+                    .opacity(success ? 0 : (odd ? 1 : 0.5))
+                    .scaleEffect(success ? 0.6 : (odd ? 1 : 0.85))
+            }
+            if guide != nil {
+                Text("\(remaining)")
+                    .font(.rounded(r * 1.5).monospacedDigit())
+                    .foregroundStyle(Palette.ink)
+                    .contentTransition(.numericText(value: Double(remaining)))
+                    .animation(.spring(duration: 0.3), value: remaining)
+                    .opacity(guide?.active == true && !success ? 1 : 0)
+            }
             if success {
                 Image(systemName: "checkmark.circle.fill")
-                    .font(.system(size: height * 0.62, weight: .bold))
+                    .font(.system(size: hexRadius * 1.4, weight: .bold))
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(.white, Palette.green)
                     .shadow(color: .black.opacity(0.15), radius: 2, y: 1)
                     .transition(.scale(scale: 0.3).combined(with: .opacity))
             }
         }
+        .frame(width: 2 * (hexRadius + r), height: height)
+        // With a count, it lands on 0 first, then the dots fade and the check comes in. The check lingers after the
+        // set is collected so the win can land, then eases out. Innermost, so it wins over `value`.
+        .animation(success ? .spring(duration: 0.4, bounce: 0.5).delay(guide == nil ? 0 : 0.3)
+                           : .easeInOut(duration: 0.4).delay(0.5),
+                   value: success)
         .animation(.spring(duration: 0.25, bounce: 0.4), value: value)
-        .animation(.spring(duration: 0.35, bounce: 0.55), value: success)
-        .accessibilityElement()
+        .animation(.spring(duration: 0.3), value: oneAway)
+        .animation(.spring(duration: 0.3), value: stuck)
+        .onAppear {
+            guard guide != nil else { return }
+            withAnimation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true)) { pulse = true }
+        }
+        .accessibilityElement(children: onToggle == nil ? .ignore : .contain)
         .accessibilityLabel("Odd dots")
+        .accessibilityValue(success ? Text("Set found") : Text("\(remaining)"))
+    }
+
+    /// A dot as a button: picked dots grow and get an ink ring. Taps land anywhere within half the way to a neighbour.
+    private func pickable(_ dot: Dot, picked: Bool, radius r: CGFloat) -> some View {
+        DotView(dot: dot)
+            .frame(width: 2 * r, height: 2 * r)
+            .background {
+                Circle()
+                    .strokeBorder(Palette.ink, lineWidth: r * 0.13)
+                    .padding(-r * 0.24)
+                    .opacity(picked ? 1 : 0)
+                    .scaleEffect(picked ? 1 : 0.7)
+            }
+            .scaleEffect(success ? 0.6 : (picked ? 1.12 : 1))
+            .opacity(success ? 0 : 1)
+            .frame(width: hexRadius, height: hexRadius)
+            .contentShape(Circle())
+            .onTapGesture { onToggle?(dot) }
+            .allowsHitTesting(!success)
+            .offset(offset(of: dot))
+            .accessibilityElement()
+            .accessibilityLabel(dot.accessibilityName)
+            .accessibilityAddTraits(picked ? [.isButton, .isSelected] : .isButton)
     }
 }
 

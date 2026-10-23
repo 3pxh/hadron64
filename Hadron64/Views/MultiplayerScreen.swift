@@ -3,8 +3,10 @@ import SwiftUI
 /// Pass-and-play for up to four people around one phone lying flat on the table.
 /// Anyone can tap cards; when a set is collected it waits in the middle until it's slid toward
 /// the edge of whoever found it, which credits that player with the set and its cards.
+/// Played with any Free Play deck: the full one, Simple Cards, or Extra Hard.
 struct MultiplayerScreen: View {
-    @State private var game = DeckGame(mode: .freePlay)
+    let mode: GameMode
+    @State private var game: DeckGame
     @State private var scores: [Seat: Score] = [:]
     /// The collected set waiting to be claimed. The board is blocked until it is.
     @State private var pending: [Int]?
@@ -17,23 +19,28 @@ struct MultiplayerScreen: View {
     /// Thickness of the score strips along each edge.
     private var strip: (side: CGFloat, end: CGFloat) { (40 * s, 52 * s) }
 
+    init(mode: GameMode) {
+        self.mode = mode
+        _game = State(initialValue: DeckGame(mode: mode))
+    }
+
     var body: some View {
         GeometryReader { geo in
             let size = geo.size
-            let inner = CGSize(width: size.width - 2 * strip.side, height: size.height - 2 * strip.end)
-            let layout = TableLayout(size: inner, slotCount: game.table.slots.count, scale: s)
+            // Same board as single player: the scores hug the edges and corners, clear of the cards.
+            // Only the piles need pulling in, away from the side strips.
+            let layout = TableLayout(size: size, slotCount: game.table.slots.count, scale: s, pileInset: strip.side)
             ZStack {
                 ZStack {
                     CardTableView(table: game.table, layout: layout, selected: game.selected,
                                   celebrating: game.celebrating, showsCounts: false) { game.toggle($0) }
                         .allowsHitTesting(pending == nil)
-                    ParityCard(value: game.parity, height: layout.controlsHeight, success: !game.celebrating.isEmpty)
+                    ParityHex(value: game.parity, mask: mode.dotMask, height: layout.controlsHeight,
+                              success: !game.celebrating.isEmpty)
                         .position(layout.controlsCenter)
                     IconButton(systemName: "xmark") { dismiss() }
                         .position(x: 30 * s, y: layout.topBarHeight / 2)
                 }
-                .frame(width: inner.width, height: inner.height)
-                .position(x: size.width / 2, y: size.height / 2)
 
                 if pending != nil {
                     Palette.paper.opacity(0.45)
@@ -41,7 +48,7 @@ struct MultiplayerScreen: View {
 
                 // Above the dimming, so the players can see where the set is going.
                 ForEach(Seat.allCases) { seat in
-                    badge(seat, size: size)
+                    badge(seat, size: size, layout: layout)
                 }
 
                 if let pending {
@@ -95,9 +102,9 @@ struct MultiplayerScreen: View {
     #endif
 
     private func replay() {
-        guard supporter.allows(.multiplayer) else { showsUnlock = true; return }
-        supporter.recordPlay(.multiplayer)
-        let next = DeckGame(mode: .freePlay)
+        guard supporter.allows(.multiplayer(mode)) else { showsUnlock = true; return }
+        supporter.recordPlay(.multiplayer(mode))
+        let next = DeckGame(mode: mode)
         scores = [:]
         pending = nil
         game = next
@@ -169,13 +176,20 @@ struct MultiplayerScreen: View {
 
     // MARK: Scores
 
-    /// A score strip along `seat`'s edge, turned to face the person sitting there.
-    private func badge(_ seat: Seat, size: CGSize) -> some View {
+    /// A score strip along `seat`'s edge, turned to face the person sitting there. Side scores sit at
+    /// the end of their edge (left near the bottom, right near the top) when the board's outer rows are narrow,
+    /// or in the middle when the middle row is (Extra Hard's 3-2-3).
+    private func badge(_ seat: Seat, size: CGSize, layout: TableLayout) -> some View {
         let score = scores[seat] ?? Score()
-        let along = seat.isSide ? size.height : size.width
+        let along = seat.isSide ? size.height - 2 * strip.end : size.width
         let across = seat.isSide ? strip.side : strip.end
         let target = pending != nil && Seat.toward(drag, threshold: 40) == seat
         let leader = game.isFinished && pending == nil && isWinner(seat)
+        let rows = TableLayout.rows(for: game.table.slots.count)
+        let cornersFree = rows.count < 3 || rows[0] <= rows[1]
+        // Beside the middle row, which isn't quite the middle of the screen.
+        let middleRowY = rows.count < 3 ? size.height / 2 : layout.slotCenters[rows[0]].y
+        let centerY = seat.isSide && !cornersFree ? middleRowY : size.height / 2
         return HStack(spacing: 14 * s) {
             if leader { Image(systemName: "crown.fill").foregroundStyle(Palette.yellow) }
             Text("\(score.sets) sets", comment: "Multiplayer score: sets collected")
@@ -189,10 +203,11 @@ struct MultiplayerScreen: View {
         .overlay(Capsule().strokeBorder(target ? Palette.yellow : Palette.ink.opacity(0.12), lineWidth: target ? 2 : 1))
         .scaleEffect(target ? 1.08 : 1)
         .animation(.spring(duration: 0.2), value: target)
-        .frame(width: along, height: across)
+        // Turned ±90°, the trailing end of a side strip lands at the bottom on the left and the top on the right.
+        .frame(width: along, height: across, alignment: seat.isSide && cornersFree ? .trailing : .center)
         .rotationEffect(.degrees(seat.rotation))
         .position(x: size.width / 2 + seat.unit.width * (size.width - across) / 2,
-                  y: size.height / 2 + seat.unit.height * (size.height - across) / 2)
+                  y: centerY + seat.unit.height * (size.height - across) / 2)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text("\(seat.name): \(String(localized: "\(score.sets) sets")), \(String(localized: "\(score.cards) cards"))",
                                  comment: "Multiplayer score for one player, e.g. Bottom player: 2 sets, 7 cards"))
@@ -208,10 +223,17 @@ struct MultiplayerScreen: View {
             Image(systemName: "crown.fill")
                 .font(.system(size: 40 * s, weight: .semibold))
                 .foregroundStyle(Palette.yellow)
-            Text("DECK CLEARED")
-                .font(.rounded(13 * s, .bold))
-                .tracking(2)
-                .foregroundStyle(Palette.muted)
+            VStack(spacing: 6 * s) {
+                Text("DECK CLEARED")
+                    .font(.rounded(13 * s, .bold))
+                    .tracking(2)
+                    .foregroundStyle(Palette.muted)
+                if mode != .freePlay {
+                    Text(mode.title)
+                        .font(.rounded(15 * s, .semibold))
+                        .foregroundStyle(Palette.ink)
+                }
+            }
             HStack(spacing: 12 * s) {
                 Button(action: replay) { Image(systemName: "arrow.counterclockwise") }
                     .buttonStyle(MenuButtonStyle(filled: true))

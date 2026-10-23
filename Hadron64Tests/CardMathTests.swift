@@ -19,6 +19,16 @@ final class CardMathTests: XCTestCase {
         XCTAssertEqual(GameMode.simple5.dealSize, 6)
     }
 
+    func testExtraHardDeckAddsTheBackgroundAsASeventhProperty() {
+        let deck = CardMath.deck(mask: GameMode.extraHard.dotMask)
+        XCTAssertEqual(deck.count, 127)
+        XCTAssertEqual(Set(deck), Set(1...127))
+        XCTAssertEqual(CardMath.parity(deck), 0, "every property appears in exactly half the deck")
+        XCTAssertEqual(GameMode.extraHard.dealSize, 8)
+        XCTAssertEqual(TableLayout.rows(for: 8), [3, 2, 3])
+        XCTAssertEqual(CardMath.deck().count, 63, "other decks don't gain shaded cards")
+    }
+
     func testDotLayoutMatchesPrintReference() {
         // Bit = column * 3 + row; solid when (row + column) is odd.
         XCTAssertFalse(Dot.yellowStriped.isSolid)
@@ -35,21 +45,6 @@ final class CardMathTests: XCTestCase {
         }
     }
 
-    func testUniqueSetDealHasExactlyOneSetOfRequestedSize() {
-        var rng = SystemRandomNumberGenerator()
-        for size in 3...7 {
-            for _ in 0..<100 {
-                let deal = CardMath.uniqueSetDeal(size: size, using: &rng)
-                XCTAssertEqual(Set(deal.cards).count, 7)
-                XCTAssertFalse(deal.cards.contains(0))
-                let sets = CardMath.allSets(in: deal.cards)
-                XCTAssertEqual(sets.count, 1)
-                XCTAssertEqual(Set(sets[0]), Set(deal.set))
-                XCTAssertEqual(deal.set.count, size)
-            }
-        }
-    }
-
     func testRemainderDealIsNeverEmpty() {
         var rng = SystemRandomNumberGenerator()
         for _ in 0..<200 {
@@ -59,11 +54,12 @@ final class CardMathTests: XCTestCase {
         }
     }
 
+    @MainActor
     func testTutorialHandsHaveTheIntendedSets() {
-        let sets = TutorialModel.scripted.map { CardMath.allSets(in: $0) }
+        let sets = TutorialModel.fixedHands.map { CardMath.allSets(in: $0) }
+        XCTAssertEqual(sets.count, 2)
         XCTAssertEqual(sets[0].map(Set.init), [[3, 6, 5]])
-        XCTAssertEqual(sets[1].map(Set.init), [[9, 18, 27]])
-        XCTAssertEqual(sets[2].map(Set.init), [[11, 22, 44, 49]])
+        XCTAssertEqual(sets[1].map(Set.init), [[32, 2, 34]], "10 is the decoy: its yellow can't cancel")
     }
 
     func testHistogramPutsOutliersInLastBin() {
@@ -95,33 +91,10 @@ final class StatsStoreTests: XCTestCase {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".json")
         defer { try? FileManager.default.removeItem(at: url) }
         let store = StatsStore(fileURL: url)
-        store.log(FindEvent(mode: .setSize, duration: 2.5, cards: [1, 2, 3]))
+        store.log(FindEvent(mode: .remainder, duration: 2.5, cards: [1, 2, 3]))
         let reloaded = StatsStore(fileURL: url)
         XCTAssertEqual(reloaded.events.first?.cards, [1, 2, 3])
-        XCTAssertEqual(reloaded.events.first?.mode, .setSize)
-    }
-}
-
-final class RemainderMatchTests: XCTestCase {
-    func testYellowOnlyRemainders() {
-        XCTAssertTrue(CardMath.isYellowOnlyRemainder(Dot.yellowStriped.bit))
-        XCTAssertTrue(CardMath.isYellowOnlyRemainder(CardMath.yellowMask))
-        XCTAssertFalse(CardMath.isYellowOnlyRemainder(0))
-        XCTAssertFalse(CardMath.isYellowOnlyRemainder(Dot.yellowSolid.bit | Dot.redSolid.bit))
-    }
-
-    /// Brute-force check that `hasYellowMatch` agrees with the literal rule: two different groups
-    /// with the same yellow-only remainder.
-    func testHasYellowMatchAgreesWithBruteForce() {
-        for _ in 0..<300 {
-            let hand = Array(CardMath.deck().shuffled().prefix(7))
-            var byRemainder: [Int: Int] = [:]
-            for subset in 1..<(1 << 7) {
-                let p = hand.indices.filter { subset & (1 << $0) != 0 }.reduce(0) { $0 ^ hand[$1] }
-                if CardMath.isYellowOnlyRemainder(p) { byRemainder[p, default: 0] += 1 }
-            }
-            XCTAssertEqual(CardMath.hasYellowMatch(hand), byRemainder.values.contains { $0 >= 2 })
-        }
+        XCTAssertEqual(reloaded.events.first?.mode, .remainder)
     }
 }
 

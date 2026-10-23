@@ -5,13 +5,17 @@ The app's own `StatsStore` stays the source of truth; Game Center only receives 
 
 | File | What it holds |
 |---|---|
-| `Hadron64/GameCenter/GameCenterCatalog.swift` | **Every leaderboard, achievement, challenge and activity**: IDs, names, scoring and unlock rules. Edit here. |
+| `Hadron64.gamekit` | **The Game Center records themselves**: IDs, names, descriptions, images, formats, links. Edit in Xcode's GameKit editor; Xcode pushes it to App Store Connect. |
+| `Hadron64/GameCenter/GameCenterCatalog.swift` | The same IDs from the app's side, plus scoring and unlock rules. |
+| `Hadron64Tests/GameKitBundleTests.swift` | Fails if the bundle and the catalog disagree on IDs, points, visibility, formats or links. |
+| `scripts/make_gamecenter_art.swift` | Renders the achievement badges and activity/challenge banners into `GameCenterArt/`. |
 | `Hadron64/GameCenter/GameCenterService.swift` | GameKit plumbing: sign-in, score/achievement reporting, friends, activity deep links. |
 | `Hadron64/GameCenter/FriendsCard.swift` | Statistics screen card: friends today / all time, Add Friends, Challenge, All Players. |
 | `Hadron64Tests/GameCenterCatalogTests.swift` | Catches duplicate IDs, point-limit overruns, and challenges/activities pointing at missing records. |
 
-App Store Connect setup sheet (every ID, name, description and setting to type in):
-https://claude.ai/artifact/KnPt12hLbgTNtSARZHEiWV. Keep it in sync with the catalog.
+To add or change a record, change it in both the bundle (in Xcode) and the catalog; the bundle test keeps
+them honest. The old App Store Connect setup sheet (https://claude.ai/artifact/KnPt12hLbgTNtSARZHEiWV)
+is superseded by the bundle.
 
 ## What players get
 
@@ -39,7 +43,7 @@ https://claude.ai/artifact/KnPt12hLbgTNtSARZHEiWV. Keep it in sync with the cata
 6. **Activities**: `player(_:wantsToPlay:)` sets `requestedMode`; `HomeView` opens that game.
 
 Daily boards reset once a day at the same moment worldwide (the platform has no per-player local
-midnight). The sheet suggests 08:00 UTC, midnight Pacific in winter.
+midnight). The bundle starts them at 08:00 UTC, midnight Pacific in winter.
 
 ## Turning it on
 
@@ -50,17 +54,19 @@ midnight). The sheet suggests 08:00 UTC, midnight Pacific in winter.
      properties:
        com.apple.developer.game-center: true
    ```
-2. In App Store Connect, enable Game Center and create everything in the setup sheet.
+2. In App Store Connect, enable Game Center for the app, then open `Hadron64.gamekit` in Xcode and push
+   it to App Store Connect from the GameKit editor.
 3. Set `GameCenterService.isEnabled = true`.
-4. Test on a device with a sandbox Game Center account. Records created in App Store Connect are visible
-   to development builds before release. Challenges and activities need iOS 26.
+4. Test on a device with a sandbox Game Center account. Debug builds can use the bundle's records before
+   they're pushed. Challenges and activities need iOS 26.
 
 ## Notes and edge cases
 
 - **Offline**: GameKit queues and retries score submissions itself; failures are only logged.
-- **Cheating**: scores are client-reported. The sheet sets score ranges that reject sub-minute decks.
+- **Cheating**: scores are client-reported. Consider a score range on the Free Play boards that rejects
+  sub-minute decks (not set yet).
 - **Hints**: hinted Free Play games never reach leaderboards or the deck-time achievements.
 - **Rule changes**: if deck size or timings change, add new IDs (e.g. `h64.v2.…`) instead of mixing
   scores that can't be compared. Never rename `GameMode` raw values; activities depend on them.
-- **Localization**: names and descriptions players see come from App Store Connect's localizations, not
-  the app. The Friends card and results strings are in `Localizable.xcstrings` and need translations.
+- **Localization**: names and descriptions players see come from the bundle's localizations (en-US only so
+  far), not the app. The Friends card and results strings are in `Localizable.xcstrings` and need translations.

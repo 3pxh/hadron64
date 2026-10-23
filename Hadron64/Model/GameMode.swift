@@ -5,11 +5,19 @@ enum GameMode: String, Codable, CaseIterable, Identifiable, Hashable {
     case freePlay
     case timeTrialEasy, timeTrialMedium, timeTrialHard
     case simple3, simple4, simple5
+    case simple3TrialEasy, simple3TrialHard
+    case simple4TrialEasy, simple4TrialHard
+    case simple5TrialEasy, simple5TrialHard
     case remainder
-    case remainderMatch
-    case setSize
+    /// Retired drills. Kept so saved stats that mention them still decode; never offered or listed.
+    case remainderMatch, setSize
+    case extraHard
+    case extraHardTrialEasy, extraHardTrialHard
 
     var id: String { rawValue }
+
+    /// Modes that are still played (and shown in Statistics).
+    static var playable: [GameMode] { allCases.filter { $0 != .remainderMatch && $0 != .setSize } }
 
     var title: String {
         switch self {
@@ -20,18 +28,29 @@ enum GameMode: String, Codable, CaseIterable, Identifiable, Hashable {
         case .simple3: String(localized: "Simple Cards · 3")
         case .simple4: String(localized: "Simple Cards · 4")
         case .simple5: String(localized: "Simple Cards · 5")
+        case .simple3TrialEasy: String(localized: "Simple Cards · 3 · Easy Trial")
+        case .simple3TrialHard: String(localized: "Simple Cards · 3 · Hard Trial")
+        case .simple4TrialEasy: String(localized: "Simple Cards · 4 · Easy Trial")
+        case .simple4TrialHard: String(localized: "Simple Cards · 4 · Hard Trial")
+        case .simple5TrialEasy: String(localized: "Simple Cards · 5 · Easy Trial")
+        case .simple5TrialHard: String(localized: "Simple Cards · 5 · Hard Trial")
         case .remainder: String(localized: "Remainder")
         case .remainderMatch: String(localized: "Remainder Matching")
         case .setSize: String(localized: "Set Size")
+        case .extraHard: String(localized: "Extra Hard")
+        case .extraHardTrialEasy: String(localized: "Extra Hard · Easy Trial")
+        case .extraHardTrialHard: String(localized: "Extra Hard · Hard Trial")
         }
     }
 
-    /// Which dots exist in this mode's deck.
+    /// Which dots exist in this mode's deck. Extra Hard also includes the background bit, which counts as a seventh dot.
     var dotMask: Int {
         switch self {
+        case _ where base != self: base.dotMask                                                  // trials use their base mode's cards
         case .simple3: Dot.redSolid.bit | Dot.yellowSolid.bit | Dot.blueSolid.bit              // solids only
         case .simple4: Dot.redSolid.bit | Dot.redStriped.bit | Dot.blueSolid.bit | Dot.blueStriped.bit  // no yellow
         case .simple5: CardMath.fullMask & ~Dot.yellowStriped.bit                                  // all but yellow striped
+        case .extraHard: CardMath.fullMask | CardMath.backgroundBit                                // 127 cards, deal 8
         default: CardMath.fullMask
         }
     }
@@ -69,7 +88,31 @@ enum GameMode: String, Codable, CaseIterable, Identifiable, Hashable {
         case .timeTrialEasy: (60, 15)
         case .timeTrialMedium: (40, 10)
         case .timeTrialHard: (20, 5)
+        case .simple3TrialEasy, .simple4TrialEasy, .simple5TrialEasy, .extraHardTrialEasy: (20, 10)
+        case .simple3TrialHard, .simple4TrialHard, .simple5TrialHard, .extraHardTrialHard: (10, 5)
         default: nil
+        }
+    }
+
+    /// The time trials played with this mode's cards, easy then hard (Simple Cards and Extra Hard).
+    var trials: (easy: GameMode, hard: GameMode)? {
+        switch self {
+        case .simple3: (.simple3TrialEasy, .simple3TrialHard)
+        case .simple4: (.simple4TrialEasy, .simple4TrialHard)
+        case .simple5: (.simple5TrialEasy, .simple5TrialHard)
+        case .extraHard: (.extraHardTrialEasy, .extraHardTrialHard)
+        default: nil
+        }
+    }
+
+    /// The training mode whose cards a trial uses; itself for everything else.
+    var base: GameMode {
+        switch self {
+        case .simple3TrialEasy, .simple3TrialHard: .simple3
+        case .simple4TrialEasy, .simple4TrialHard: .simple4
+        case .simple5TrialEasy, .simple5TrialHard: .simple5
+        case .extraHardTrialEasy, .extraHardTrialHard: .extraHard
+        default: self
         }
     }
 

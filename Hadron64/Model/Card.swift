@@ -10,6 +10,8 @@ import SwiftUI
 ///
 /// A set of cards is valid when every dot appears an even number of times — i.e. the XOR of
 /// the card numbers is zero. This turns the whole game into linear algebra over GF(2)^6.
+///
+/// Extra Hard adds a seventh property, bit 6: a shaded background, which must also come in pairs. Its cards are 1...127.
 enum Dot: Int, CaseIterable, Identifiable {
     case yellowStriped = 0, redSolid, blueStriped, yellowSolid, redStriped, blueSolid
 
@@ -20,6 +22,18 @@ enum Dot: Int, CaseIterable, Identifiable {
     /// Dots alternate solid/striped in a checkerboard.
     var isSolid: Bool { (row + column) % 2 == 1 }
     var color: Color { Palette.rows[row] }
+
+    /// What VoiceOver calls the dot when it's a button (Remainder drill).
+    var accessibilityName: String {
+        switch self {
+        case .yellowStriped: String(localized: "Striped yellow")
+        case .yellowSolid: String(localized: "Solid yellow")
+        case .redSolid: String(localized: "Solid red")
+        case .redStriped: String(localized: "Striped red")
+        case .blueStriped: String(localized: "Striped blue")
+        case .blueSolid: String(localized: "Solid blue")
+        }
+    }
 
     /// The order dots are read off a card (row by row, left to right). Used by the remainder line.
     static let readingOrder: [Dot] = [.yellowStriped, .yellowSolid, .redSolid, .redStriped, .blueStriped, .blueSolid]
@@ -50,37 +64,19 @@ enum CardGeometry {
 
 enum CardMath {
     static let fullMask = 0b111111
+    /// The shaded background (Extra Hard only).
+    static let backgroundBit = 1 << 6
 
     static func parity<S: Sequence>(_ cards: S) -> Int where S.Element == Int {
         cards.reduce(0, ^)
     }
 
-    /// Every non-empty card using only the dots in `mask`. For the full mask that's 1...63.
+    /// Every non-empty card using only the properties in `mask`. For the full mask that's 1...63; with the
+    /// background bit too, 1...127.
     /// Each dot appears in exactly half of these cards, so the whole deck always XORs to zero —
     /// which means whatever is left on the board at the end is always a valid set.
     static func deck(mask: Int = fullMask) -> [Int] {
-        (1...fullMask).filter { $0 & ~mask == 0 }
-    }
-
-    static let yellowMask = Dot.yellowStriped.bit | Dot.yellowSolid.bit
-
-    /// A Remainder Matching group: some dots left over, and only yellow ones.
-    static func isYellowOnlyRemainder(_ parity: Int) -> Bool {
-        parity != 0 && parity & ~yellowMask == 0
-    }
-
-    /// Every remainder some subset of `cards` can produce (the GF(2) span).
-    static func reachableRemainders(_ cards: [Int]) -> Set<Int> {
-        cards.reduce(into: Set([0])) { span, card in span.formUnion(span.map { $0 ^ card }) }
-    }
-
-    /// Remainder Matching needs two different groups with the same yellow-only remainder r.
-    /// If the cards contain a set S and some group G has remainder r, then G and G △ S both work;
-    /// so it's enough that a set exists and some yellow-only r is reachable.
-    static func hasYellowMatch(_ cards: [Int]) -> Bool {
-        let reachable = reachableRemainders(cards)
-        return reachable.count < 1 << cards.count   // some dependency, i.e. a set exists
-            && reachable.contains(where: isYellowOnlyRemainder)
+        (1...(fullMask | backgroundBit)).filter { $0 & ~mask == 0 }
     }
 
     /// All non-empty subsets of `cards` whose dots cancel.
@@ -113,24 +109,5 @@ enum CardMath {
             let cards = Array(deck().shuffled(using: &rng).prefix(7))
             if parity(cards) != 0 { return cards }
         }
-    }
-
-    /// Seven cards containing exactly one valid set, of the given size (3...7).
-    ///
-    /// Pick a random basis b1...b6 of GF(2)^6 and add c = b1 ^ ... ^ b(size-1). Seven vectors of rank six
-    /// have a one-dimensional space of dependencies, so {b1, ..., b(size-1), c} is the only set.
-    static func uniqueSetDeal<R: RandomNumberGenerator>(size: Int, using rng: inout R) -> (cards: [Int], set: [Int]) {
-        precondition((3...7).contains(size))
-        var basis: [Int] = []
-        var span: Set<Int> = [0]
-        while basis.count < 6 {
-            let v = Int.random(in: 1...fullMask, using: &rng)
-            guard !span.contains(v) else { continue }
-            basis.append(v)
-            span = span.union(span.map { $0 ^ v })
-        }
-        let members = Array(basis.prefix(size - 1))
-        let closing = parity(members)
-        return ((basis + [closing]).shuffled(using: &rng), members + [closing])
     }
 }
